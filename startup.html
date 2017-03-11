@@ -1,15 +1,48 @@
 <!DOCTYPE html>
 <html>
 
+<style>
+	html,
+	body {
+		margin: 0 auto;
+		height: 100%;
+	}
+	
+	div {
+		margin: 0 auto;
+		width: 80%;
+		text-align: center;
+	}
+	
+	#idea {
+		font-size: 30pt;
+		height: 60px;
+		padding-top: 80px;
+		padding-bottom: 40px;
+		width: 100%;
+		transition: opacity 1s linear;
+	}
+	
+	button {
+		font-size: 16pt;
+		font-style: bold;
+		margin: 0 auto;
+		width: 20%
+	}
+</style>
+
 <head>
-  <meta charset=UTF-8>
-  <title>title</title>
+	<meta charset=UTF-8>
+	<title>Startup idea generator</title>
 </head>
 
 <body>
-<div id="idea"></div>
-<button>The next big thing</button>
-<script src="javascript/startup.js"></script>
+	<div id="content">
+		<div id="idea"></div>
+		<button id="generator">The Next Big Thing</button>
+	</div>
+
+	<script src="javascripts/startup.js"></script>
 </body>
 
 </html>
