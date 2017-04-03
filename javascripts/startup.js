@@ -13,7 +13,7 @@ function generateIdea() {
 		"Google Earth",
 		"Google Maps",
 		"Grindr",
-		"Indigogo",
+		"Indiegogo",
 		"Instagram",
 		"KakaoTalk",
 		"Microsoft Office",
@@ -160,7 +160,7 @@ function generateIdea() {
 
 	let app = apps.randomElement()
 	let target = targets.randomElement()
-	let idea = `<b>${app}</b> for <b>${target}</b>`
+	let idea = `It's like <b>${app}</b> for <b>${target}</b>`
 
 	if (Math.random() > 0.5) {
 		let tech = technologies.randomElement()
