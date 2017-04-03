@@ -4,33 +4,38 @@ Array.prototype.randomElement = function () {
 
 function generateIdea() {
 	let apps = [
-		"Gmail",
-		"Google Maps",
-		"YouTube",
-		"Facebook",
-		"WhatsApp",
-		"Instagram",
-		"Skype",
-		"Twitter",
-		"Viber",
 		"Dropbox",
-		"Pandora",
-		"Shazam",
-		"WeChat",
-		"KakaoTalk",
-		"Google Earth",
 		"eBay",
-		"Snapchat",
-		"Netflix",
-		"Firefox",
-		"SoundCloud",
-		"Waze",
-		"Retrica",
-		"Spotify",
-		"Pokemon GO",
-		"Tinder",
+		"Evernote",
+		"Facebook",
+		"Facetime",
+		"Gmail",
+		"Google Earth",
+		"Google Maps",
 		"Grindr",
-		"Uber"
+		"Indigogo",
+		"Instagram",
+		"KakaoTalk",
+		"Microsoft Office",
+		"Microsoft Paint",
+		"Netflix",
+		"Pandora",
+		"Pokemon GO",
+		"Retrica",
+		"Shazam",
+		"Skype",
+		"Snapchat",
+		"SoundCloud",
+		"Spotify",
+		"Tinder",
+		"Twitter",
+		"Uber",
+		"Viber",
+		"Waze",
+		"WeChat",
+		"WhatsApp",
+		"Yelp",
+		"YouTube"
 	]
 
 	let targets = [
@@ -122,7 +127,13 @@ function generateIdea() {
 		"Veterinary Practitioners",
 		"Vocational Education Teachers",
 		"Waiting Staffs",
-		"Welders"
+		"Welders",
+		"Amish People",
+		"Astronauts",
+		"Fishermen",
+		"Zookeepers",
+		"Bee Keepers",
+		"Oyster Farmers"
 	]
 
 	let technologies = [
@@ -138,7 +149,13 @@ function generateIdea() {
 		"Internet of Things",
 		"MongoDB",
 		"Docker",
-		"Big Data"
+		"Big Data",
+		"Genetic Algorithms",
+		"Distributed Computing",
+		"Matrix Row Reduction",
+		"Carbon Nano-fibres",
+		"Exercise Bikes",
+		"Murphy's Law"
 	]
 
 	let app = apps.randomElement()
