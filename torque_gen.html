@@ -1,0 +1,164 @@
+
+<!DOCTYPE html>
+<html>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script   src="http://code.jquery.com/jquery-3.3.1.min.js"   integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="   crossorigin="anonymous"></script>
+
+<head>
+    <meta charset=UTF-8>
+    <title>TORQUE Script Generator</title>
+</head>
+
+<style>
+    /* style from https://stackoverflow.com/questions/4309950/how-to-align-input-forms-in-html */
+    form  { display: table; border-spacing: 10px;}
+    p     { display: table-row;  }
+    label { display: table-cell; text-align: right}
+    input { display: table-cell; }
+    textarea { display: table-cell; }
+
+    div#script-container {
+        outline: 2px solid black;
+        padding: 5px;
+    }
+
+    div.pre {
+        width: 60em;
+    }
+</style>
+
+<body>
+    <div id="app">
+        <h2>TORQUE Script Generator</h2>
+        <div style="width:400px">
+            <form>
+                <p>
+                    <label for="ppn">cpus:</label>
+                    <select v-model="ppn">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                    </select>
+                </p>
+                <p>
+                    <label for="queue">queue:</label>
+                    <select v-model="queue">
+                            <option value="submit">Standard</option>
+                            <option value="submit_2xp100">GPU</option>
+                        </select>
+                </p>
+                <p>
+                    <label for="email">email:</label>
+                    <input v-model="email" id="email">
+                </p>
+                <p>
+                    <label for="notify_when">notify when: </label>
+                    <input type="checkbox" v-model="notify_when" value="a">Aborted<br>
+                    <input type="checkbox" v-model="notify_when" value="b">Start<br>
+                    <input type="checkbox" v-model="notify_when" value="e">Complete<br>
+                </p>
+                <p>
+                    <label for="walltime_h">walltime:</label>
+                    <input type="number" min="0" max="720" v-model="walltime_h" id="walltime_h"> hours<br />
+                    <input type="number" min="0" max="59" v-model="walltime_m" id="walltime_m"> minutes<br />
+                </p>
+                <p>
+                    <label for="mem">mem:</label>
+                    <input v-model="mem" id="mem">
+                </p>
+                <p>
+                    <label>working directory:</label>
+                    <input v-model="dir" id="dir">
+                </p>
+                <p>
+                    <label>command:</label>
+                    <textarea v-model="command" placeholder="Enter commands here..."></textarea><br />
+                </p>
+            </form>
+        </div>
+        <div id="script-container">
+            <pre style="outline: black;" id="script">{{ constructMessage }}</pre>
+        </div>
+    </div>
+</body>
+
+<script>
+var app = new Vue({
+    el: '#app',
+    data: {
+        nodes: '1',
+        ppn: '1',
+        mem: '1gb',
+        email: '',
+        queue: 'submit',
+        notify_when: ['a', 'b', 'e'],
+        walltime_h: '1',
+        walltime_m: '0',
+        dir: '',
+        command: ''
+    },
+    computed: {
+        constructMessage: function() {
+            output = "#!/bin/bash\n";
+            walltime = `${this.walltime_h}:${this.walltime_m.padStart(2, "0")}:00`;
+
+            if (this.queue.trim() != '') {
+                output += "#PBS -q " + this.queue.trim() + "\n";
+            }
+
+            if (this.nodes.trim() != '') {
+                output += "#PBS -l nodes=" + this.nodes.trim();
+            } else {
+                output += "#PBS -l nodes=1";
+            }
+
+            if (this.ppn.trim() != '') {
+                output += ":ppn=" + this.ppn.trim();
+            }
+            if (this.mem.trim() != '') {
+                output += ",mem=" + this.mem.trim();
+            }
+            if (walltime.length != 0) {
+                output += ",walltime=" + walltime;
+            }
+            output += "\n";
+
+            if (this.email.trim() != '') {
+                output += "#PBS -M " + this.email.trim() + "\n";
+            }
+
+            if (this.notify_when.length != 0) {
+                output += "#PBS -m " + this.notify_when.join("") + "\n";
+            }
+
+            if (this.dir.trim() != '') {
+                output += "cd " + this.dir.trim() + "\n";
+            }
+
+            if (this.command.trim() != '')
+                output += this.command.trim() + "\n";
+
+            return output;
+        }
+    }
+});
+</script>
+
+<script>
+    function selectText(containerid) {
+        if (document.selection) { // IE
+            var range = document.body.createTextRange();
+            range.moveToElementText(document.getElementById(containerid));
+            range.select();
+        } else if (window.getSelection) {
+            var range = document.createRange();
+            range.selectNode(document.getElementById(containerid));
+            window.getSelection().removeAllRanges();
+            window.getSelection().addRange(range);
+        }
+    }
+    $("#script-container").click(
+        function() { selectText("script-container"); }
+    );
+</script>
