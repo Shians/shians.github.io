@@ -47,6 +47,11 @@
     div.pre {
         width: 60em;
     }
+
+    div#app {
+        margin: auto;
+        width: 50%;
+    }
 </style>
 
 <body>
@@ -96,8 +101,8 @@
                 </p>
             </form>
         </div>
-        <div id="script-container">
-            <pre style="outline: black;" id="script">{{ constructMessage }}</pre>
+        <div id="script-container" style="width:800px; overflow:auto">
+            <pre style="outline: black" id="script"><code>{{ constructMessage }}</code></pre>
         </div>
         <a v-bind:href="constructMessageB64" download="torque-script.sh">Download Script</a>
         <p>Right-click > Save As to rename, otherwise downloads "torque-script.sh"</p>
