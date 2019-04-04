@@ -99,6 +99,8 @@
         <div id="script-container">
             <pre style="outline: black;" id="script">{{ constructMessage }}</pre>
         </div>
+        <a v-bind:href="constructMessageB64" download="torque-script.sh">Download Script</a>
+        <p>Right-click > Save As to rename, otherwise downloads "torque-script.sh"</p>
     </div>
 </body>
 
@@ -159,6 +161,9 @@
                     output += this.command.trim() + "\n";
 
                 return output;
+            },
+            constructMessageB64: function() {
+                return "data:text/plain;base64," + btoa(this.constructMessage);
             }
         }
     });
