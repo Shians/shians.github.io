@@ -63,6 +63,10 @@
         <div style="width:400px">
             <form>
                 <p>
+                    <label for="jobname">job name:</label>
+                    <input id="jobname" v-model="jobname"><br />
+                </p>
+                <p>
                     <label for="ppn">cpus:</label>
                     <input id="ppn" type="number" min="1" max="24" style="width: 50px;" v-model="ppn"><br />
                 </p>
@@ -70,7 +74,9 @@
                     <label for="queue">queue:</label>
                     <select id="queue" v-model="queue">
                         <option value="submit">Standard</option>
-                        <option value="submit_2xp100">GPU</option>
+                        <option value="skylake">Skylake</option>
+                        <option value="standard_2xp100">GPUx2</option>
+                        <option value="standard_4xp100">GPUx4</option>
                     </select>
                 </p>
                 <p>
@@ -92,7 +98,11 @@
                 </p>
                 <p>
                     <label for="mem">mem:</label>
-                    <input v-model="mem" id="mem">
+                    <input value="number" v-model="mem" id="mem">
+                    <select id="mem_unit" v-model="mem_unit">
+                        <option value="gb">GB</option>
+                        <option value="mb">MB</option>
+                    </select>
                 </p>
                 <p>
                     <label for="working-directory">working directory:</label>
@@ -116,9 +126,11 @@
     var app = new Vue({
         el: '#app',
         data: {
+            jobname: '',
             nodes: '1',
             ppn: '1',
-            mem: '1gb',
+            mem: '1',
+            mem_unit: 'gb',
             email: '',
             queue: 'submit',
             notify_when: ['a', 'b', 'e'],
@@ -131,6 +143,10 @@
             constructMessage: function () {
                 output = "#!/bin/bash\n";
                 walltime = `${this.walltime_h}:${this.walltime_m.padStart(2, "0")}:00`;
+
+                if (this.jobname.trim() != '') {
+                    output += "#PBS -N " + this.jobname.trim() + "\n";
+                }
 
                 if (this.queue.trim() != '') {
                     output += "#PBS -q " + this.queue.trim() + "\n";
@@ -146,7 +162,7 @@
                     output += ":ppn=" + this.ppn.trim();
                 }
                 if (this.mem.trim() != '') {
-                    output += ",mem=" + this.mem.trim();
+                    output += ",mem=" + this.mem.trim() + this.mem_unit;
                 }
                 if (walltime.length != 0) {
                     output += ",walltime=" + walltime;
