@@ -85,14 +85,14 @@
                 </p>
                 <p>
                     <label for="notify_when">notify when: </label>
-                    <input type="checkbox" v-model="notify_when" value="a">Aborted<br>
                     <input type="checkbox" v-model="notify_when" value="b">Start<br>
                     <input type="checkbox" v-model="notify_when" value="e">Complete<br>
+                    <input type="checkbox" v-model="notify_when" value="a">Aborted<br>
                 </p>
                 <p>
                     <label for="walltime_h">walltime:</label>
                     <input type="number" min="0" max="720" style="width: 50px;" v-model="walltime_h" id="walltime_h">
-                    hours<br />
+                    hours 
                     <input type="number" min="0" max="59" style="width: 50px;" v-model="walltime_m" id="walltime_m">
                     minutes<br />
                 </p>
@@ -174,7 +174,7 @@
                 }
 
                 if (this.notify_when.length != 0) {
-                    output += "#PBS -m " + this.notify_when.join("") + "\n";
+                    output += "#PBS -m " + this.notify_when.sort().join("") + "\n";
                 }
 
                 if (this.dir.trim() != '') {
