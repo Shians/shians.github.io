@@ -151,11 +151,11 @@
                     <label for="working-directory">
                         <a href="#"><span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-original-title="Job will be executed in this directory."></span></a>
                         working directory:</label>
-                    <input id="working-directory" v-model="dir" id="dir">
+                    <input style="width:30em" id="working-directory" v-model="dir" id="dir">
                 </p>
                 <p>
                     <label>
-                            <a href="#"><span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-original-title="These are the commands that the job will run."></span></a>
+                            <a href="#"><span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-original-title="These are the commands that the job will run. Use the \ symbol to break commands over multiple lines."></span></a>
                         command:</label>
                     <textarea cols="60" rows="6" v-model="command"
                         placeholder="Enter commands here..."></textarea><br />
@@ -226,7 +226,8 @@
                 }
 
                 if (this.dir.trim() != '') {
-                    output += "cd " + this.dir.trim() + "\n";
+                    var wd = this.dir.trim().replace(" ", "\\ ");
+                    output += "cd " + wd + "\n";
                 }
 
                 if (this.command.trim() != '')
