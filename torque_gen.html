@@ -226,7 +226,7 @@
                 }
 
                 if (this.dir.trim() != '') {
-                    var wd = this.dir.trim().replace(" ", "\\ ");
+                    var wd = this.dir.trim().replace(/ /g, "\\ ");
                     output += "cd " + wd + "\n";
                 }
 
