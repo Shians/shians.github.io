@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html>
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-    crossorigin="anonymous"></script>
-
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 <head>
     <meta charset=UTF-8>
     <title>TORQUE Script Generator</title>
@@ -42,11 +43,6 @@
         display: table-cell;
     }
 
-    div#script-container {
-        outline: 2px solid black;
-        padding: 5px;
-    }
-
     div.pre {
         width: 60em;
     }
@@ -54,6 +50,42 @@
     div#app {
         margin: auto;
         width: 50%;
+    }
+
+    .tooltip {
+    }
+
+    .tooltip .tooltiptext {
+        visibility: hidden;
+        width: 120px;
+        background-color: #555;
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px 0;
+        position: absolute;
+        z-index: 1;
+        bottom: 125%;
+        left: 50%;
+        margin-left: -60px;
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+
+    .tooltip .tooltiptext::after {
+        content: "";
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        margin-left: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: #555 transparent transparent transparent;
+    }
+
+    .tooltip:hover .tooltiptext {
+        visibility: visible;
+        opacity: 1;
     }
 </style>
 
@@ -67,11 +99,16 @@
                     <input id="jobname" v-model="jobname"><br />
                 </p>
                 <p>
-                    <label for="ppn">cpus:</label>
+                        
+                    <label for="ppn">
+                        <a href="#"><span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-original-title="Number of CPU threads to use, CPUs with hyperthreading allocate two threads per physical core."></span></a>
+                        processes:</label>
                     <input id="ppn" type="number" min="1" max="24" style="width: 50px;" v-model="ppn"><br />
                 </p>
                 <p>
-                    <label for="queue">queue:</label>
+                    <label for="queue">
+                        <a href="#"><span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-original-title="Queue determines what features you have access to, Standard is for genearal purpose CPU computing. Skylake provides Intel Skylake features. GPU queues provide access to graphical processing units either 2 or 4 P100 Nvidia GPUs"></span></a>
+                        queue:</label>
                     <select id="queue" v-model="queue">
                         <option value="submit">Standard</option>
                         <option value="skylake">Skylake</option>
@@ -80,24 +117,30 @@
                     </select>
                 </p>
                 <p>
-                    <label for="email">email:</label>
+                    <label for="email">
+                        <a href="#"><span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-original-title="Emails will be sent to this address depending on notification options"></span></a>
+                        email:</label>
                     <input v-model="email" id="email">
                 </p>
                 <p>
                     <label for="notify_when">notify when: </label>
-                    <input type="checkbox" v-model="notify_when" value="b">Start<br>
-                    <input type="checkbox" v-model="notify_when" value="e">Complete<br>
-                    <input type="checkbox" v-model="notify_when" value="a">Aborted<br>
+                    <input type="checkbox" v-model="notify_when" value="b">Job Starts<br>
+                    <input type="checkbox" v-model="notify_when" value="e">Job Completes<br>
+                    <input type="checkbox" v-model="notify_when" value="a">Job Aborts<br>
                 </p>
                 <p>
-                    <label for="walltime_h">walltime:</label>
+                    <label for="walltime_h">
+                            <a href="#"><span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-original-title="Jobs will be terminated if they run over this time."></span></a>
+                            walltime:</label>
                     <input type="number" min="0" max="720" style="width: 50px;" v-model="walltime_h" id="walltime_h">
-                    hours 
+                    hours
                     <input type="number" min="0" max="59" style="width: 50px;" v-model="walltime_m" id="walltime_m">
                     minutes<br />
                 </p>
                 <p>
-                    <label for="mem">mem:</label>
+                    <label for="mem">
+                        <a href="#"><span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-original-title="Memory allocated to job. See resources_used.mem in completed jobs notifications to determine how much RAM is needed."></span></a>
+                        mem:</label>
                     <input value="number" v-model="mem" id="mem">
                     <select id="mem_unit" v-model="mem_unit">
                         <option value="gb">GB</option>
@@ -105,12 +148,17 @@
                     </select>
                 </p>
                 <p>
-                    <label for="working-directory">working directory:</label>
+                    <label for="working-directory">
+                        <a href="#"><span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-original-title="Job will be executed in this directory."></span></a>
+                        working directory:</label>
                     <input id="working-directory" v-model="dir" id="dir">
                 </p>
                 <p>
-                    <label>command:</label>
-                    <textarea cols="60" rows="6" v-model="command" placeholder="Enter commands here..."></textarea><br />
+                    <label>
+                            <a href="#"><span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-original-title="These are the commands that the job will run."></span></a>
+                        command:</label>
+                    <textarea cols="60" rows="6" v-model="command"
+                        placeholder="Enter commands here..."></textarea><br />
                 </p>
             </form>
         </div>
@@ -134,7 +182,7 @@
             email: '',
             queue: 'submit',
             notify_when: ['a', 'b', 'e'],
-            walltime_h: '1',
+            walltime_h: '24',
             walltime_m: '0',
             dir: '',
             command: ''
@@ -186,7 +234,7 @@
 
                 return output;
             },
-            constructMessageB64: function() {
+            constructMessageB64: function () {
                 return "data:text/plain;base64," + btoa(this.constructMessage);
             }
         }
@@ -211,4 +259,9 @@
             selectText("script-container");
         }
     );
+    $(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip({
+        placement : 'bottom'
+    });
+});
 </script>
