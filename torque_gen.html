@@ -96,7 +96,7 @@
             <form>
                 <p>
                     <label for="jobname">job name:</label>
-                    <input id="jobname" v-model="jobname"><br />
+                    <input placeholder="(Optional)" id="jobname" v-model="jobname"><br />
                 </p>
                 <p>
                         
@@ -151,7 +151,7 @@
                     <label for="working-directory">
                         <a href="#"><span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-original-title="Job will be executed in this directory."></span></a>
                         working directory:</label>
-                    <input style="width:30em" id="working-directory" v-model="dir" id="dir">
+                    <input placeholder="(Optional)" style="width:30em" id="working-directory" v-model="dir" id="dir">
                 </p>
                 <p>
                     <label>
@@ -179,7 +179,7 @@
             ppn: '1',
             mem: '1',
             mem_unit: 'gb',
-            email: '',
+            email: '@wehi.edu.au',
             queue: 'submit',
             notify_when: ['a', 'b', 'e'],
             walltime_h: '24',
