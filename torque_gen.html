@@ -268,7 +268,7 @@
                     output += "#PBS -o " + this.stdout.trim() + "\n";
                 }
 
-                if (this.stderr.trim() != 0) {
+                if (this.split_output.length != 0 && this.stderr.trim() != 0) {
                     output += "#PBS -e " + this.stderr.trim() + "\n";
                 }
 
@@ -330,7 +330,7 @@
                     output += "-o " + this.stdout.trim() + " ";
                 }
 
-                if (this.stderr.trim() != 0) {
+                if (this.split_output.length != 0 && this.stderr.trim() != 0) {
                     output += "#PBS -e " + this.stderr.trim() + " ";
                 }
 
