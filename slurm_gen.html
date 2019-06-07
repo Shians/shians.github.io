@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
 
 <head>
     <meta charset=UTF-8>
@@ -249,7 +249,8 @@
                 }
 
                 if (this.notify_when.length != 0) {
-                    output += "#SBATCH --mail-type=" + this.notify_when.sort().join(",") + "\n";
+                    var notify_when = [...this.notify_when];
+                    output += "#SBATCH --mail-type=" + notify_when.sort().join(",") + "\n";
                 }
 
                 if (this.stdout.trim() != 0) {
@@ -307,7 +308,8 @@
                 }
 
                 if (this.notify_when.length != 0) {
-                    output += "-m " + this.notify_when.sort().join("") + " ";
+                    var notify_when = [...this.notify_when];
+                    output += "-m " + notify_when.sort().join(",") + " ";
                 }
 
                 if (this.split_output.length === 0) {
