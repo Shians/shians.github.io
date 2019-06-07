@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+<head>
+    <meta charset=UTF-8>
+    <title>Milton SLURM Script Generator</title>
+</head>
+
+<style>
+    /* style from https://stackoverflow.com/questions/4309950/how-to-align-input-forms-in-html */
+    form {
+        display: table;
+        border-spacing: 10px;
+    }
+
+    p {
+        display: table-row;
+    }
+
+    label {
+        display: table-cell;
+        text-align: right;
+        vertical-align: top;
+        white-space: nowrap;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+
+    input {
+        display: table-cell;
+        vertical-align: bottom;
+    }
+
+    textarea {
+        display: table-cell;
+    }
+
+    div.pre {
+        width: 60em;
+    }
+
+    div#app {
+        margin: auto;
+        width: 50%;
+    }
+
+/* style from https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_tooltip */
+    .tooltip {}
+
+    .tooltip .tooltiptext {
+        visibility: hidden;
+        width: 120px;
+        background-color: #555;
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px 0;
+        position: absolute;
+        z-index: 1;
+        bottom: 125%;
+        left: 50%;
+        margin-left: -60px;
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+
+    .tooltip .tooltiptext::after {
+        content: "";
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        margin-left: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: #555 transparent transparent transparent;
+    }
+
+    .tooltip:hover .tooltiptext {
+        visibility: visible;
+        opacity: 1;
+    }
+</style>
+
+<body>
+    <div id="app">
+        <h2>Milton SLURM Script Generator</h2>
+        <div style="width:400px">
+            <form>
+                <p>
+                    <label for="jobname">job name:</label>
+                    <input placeholder="(Optional)" id="jobname" v-model="jobname"><br />
+                </p>
+                <p>
+
+                    <label for="ppn">
+                        <a href="#"><span class="glyphicon glyphicon-question-sign" data-toggle="tooltip"
+                                data-original-title="Number of CPU threads to use, CPUs with hyperthreading allocate two threads per physical core."></span></a>
+                        processes:</label>
+                    <input id="ppn" type="number" min="1" max="24" style="width: 50px;" v-model="ppn"><br />
+                </p>
+                <p>
+                    <label for="queue">
+                        <a href="#"><span class="glyphicon glyphicon-question-sign" data-toggle="tooltip"
+                                data-original-title="Queue determines what features you have access to, Standard is for genearal purpose CPU computing. Skylake provides Intel Skylake features. GPU queues provide access to graphical processing units either 2 or 4 P100 Nvidia GPUs"></span></a>
+                        queue:</label>
+                    <select id="queue" v-model="queue">
+                        <option value="submit">Standard</option>
+                        <option value="skylake">Skylake</option>
+                        <option value="standard_2xp100">GPUx2</option>
+                        <option value="standard_4xp100">GPUx4</option>
+                    </select>
+                </p>
+                <p>
+                    <label for="email">
+                        <a href="#"><span class="glyphicon glyphicon-question-sign" data-toggle="tooltip"
+                                data-original-title="Emails will be sent to this address depending on notification options"></span></a>
+                        email:</label>
+                    <input v-model="email" id="email">
+                </p>
+                <p>
+                    <label for="split_output">
+                        <a href="#"><span class="glyphicon glyphicon-question-sign" data-toggle="tooltip"
+                            data-original-title="Split standard output and errors into separate files"></span></a>
+                        split output: </label>
+                    <input type="checkbox" v-model="split_output" value="y">
+                </p>
+                <p>
+                    <label for="stdout">
+                        standard output file:</label>
+                    <input placeholder="(Optional)" v-model="stdout" id="stdout">
+                </p>
+                <p v-if="split_output.length > 0">
+                    <label for="stderr">
+                        error output file:</label>
+                    <input placeholder="(Optional)" v-model="stderr" id="stderr">
+                </p>
+                <p>
+                    <label for="notify_when">notify when: </label>
+                    <input type="checkbox" v-model="notify_when" value="BEGIN">Job Starts<br>
+                    <input type="checkbox" v-model="notify_when" value="END">Job Completes<br>
+                    <input type="checkbox" v-model="notify_when" value="FAIL">Job Aborts<br>
+                </p>
+                <p>
+                    <label for="walltime_h">
+                        <a href="#"><span class="glyphicon glyphicon-question-sign" data-toggle="tooltip"
+                                data-original-title="Jobs will be terminated if they run over this time."></span></a>
+                        walltime:</label>
+                    <input type="number" min="0" max="720" style="width: 50px;" v-model="walltime_h" id="walltime_h">
+                    hours
+                    <input type="number" min="0" max="59" style="width: 50px;" v-model="walltime_m" id="walltime_m">
+                    minutes<br />
+                </p>
+                <p>
+                    <label for="mem">
+                        <a href="#"><span class="glyphicon glyphicon-question-sign" data-toggle="tooltip"
+                                data-original-title="Memory allocated to job. See resources_used.mem in completed jobs notifications to determine how much RAM is needed."></span></a>
+                        mem:</label>
+                    <input value="number" v-model="mem" id="mem">
+                    <select id="mem_unit" v-model="mem_unit">
+                        <option value="gb">GB</option>
+                        <option value="mb">MB</option>
+                    </select>
+                </p>
+                <p>
+                    <label for="working-directory">
+                        <a href="#"><span class="glyphicon glyphicon-question-sign" data-toggle="tooltip"
+                                data-original-title="Job will be executed in this directory."></span></a>
+                        working directory:</label>
+                    <input placeholder="(Optional)" style="width:30em" id="working-directory" v-model="dir" id="dir">
+                </p>
+                <p>
+                    <label>
+                        <a href="#"><span class="glyphicon glyphicon-question-sign" data-toggle="tooltip"
+                                data-original-title="These are the commands that the job will run. Use the \ symbol to break commands over multiple lines."></span></a>
+                        command:</label>
+                    <textarea cols="60" rows="6" v-model="command"
+                        placeholder="Enter commands here..."></textarea><br />
+                </p>
+            </form>
+        </div>
+        <h4>Generated Script:</h4>
+        <div id="script-container" style="width:800px; overflow:auto">
+            <pre style="outline: black" id="script"><code>{{ constructMessage }}</code></pre>
+        </div>
+        <a v-bind:href="constructMessageB64" download="slurm-script.sh">Download Script</a>
+        <p>Right-click > Save As to rename, otherwise downloads "slurm-script.sh"</p>
+<!-- 
+        <h4>Command-line Arguments:</h4>
+        <p>This does <b>not</b> set working directory or execute any commands. It can be appended to a <code>qsub</code> command-line call to set resource allocation and other job parameters.</p>
+        <div id="cli-container" style="width:800px; overflow:auto">
+            <pre style="outline: black" id="cli"><code>{{ cliMessage }}</code></pre>
+        </div> -->
+    </div>
+</body>
+
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            jobname: '',
+            nodes: '1',
+            ppn: '1',
+            mem: '1',
+            split_output: [],
+            stdout:'',
+            stderr:'',
+            mem_unit: 'gb',
+            email: '@wehi.edu.au',
+            queue: 'submit',
+            notify_when: ['BEGIN', 'END', 'FAIL'],
+            walltime_h: '24',
+            walltime_m: '0',
+            dir: '',
+            command: ''
+        },
+        computed: {
+            constructMessage: function () {
+                output = "#!/bin/bash\n";
+                walltime = `${this.walltime_h}:${this.walltime_m.padStart(2, "0")}:00`;
+
+                if (this.jobname.trim() != '') {
+                    output += "#SBATCH -N " + this.jobname.trim() + "\n";
+                }
+
+                if (this.queue.trim() != '') {
+                    output += "#SBATCH --partition=" + this.queue.trim() + "\n";
+                }
+
+                if (this.ppn.trim() != '') {
+                    output += "#SBATCH --ntasks=" + this.ppn.trim() + "\n";
+                }
+                if (this.mem.trim() != '') {
+                    output += "#SBATCH --mem-per-cpu=" + this.mem.trim() + this.mem_unit.toUpperCase() + "\n";
+                }
+                if (walltime.length != 0) {
+                    output += "#SBATCH --time=" + walltime  + "\n";
+                }
+
+                if (this.email.trim() != '') {
+                    output += "#SBATCH --mail-user=" + this.email.trim() + "\n";
+                }
+
+                if (this.notify_when.length != 0) {
+                    output += "#SBATCH --mail-type=" + this.notify_when.sort().join(",") + "\n";
+                }
+
+                if (this.stdout.trim() != 0) {
+                    output += "#SBATCH --output=" + this.stdout.trim() + "\n";
+                }
+
+                if (this.split_output.length > 0 && this.stderr.trim() != 0) {
+                    output += "#SBATCH --error=" + this.stderr.trim() + "\n";
+                }
+
+                if (this.dir.trim() != '') {
+                    var wd = this.dir.trim().replace(/ /g, "\\ ");
+                    output += "cd " + wd + "\n";
+                }
+
+                if (this.command.trim() != '')
+                    output += this.command.trim() + "\n";
+
+                return output;
+            },
+            constructMessageB64: function () {
+                return "data:text/plain;base64," + btoa(this.constructMessage);
+            },
+            cliMessage: function () {
+                output = "";
+                walltime = `${this.walltime_h}:${this.walltime_m.padStart(2, "0")}:00`;
+
+                if (this.jobname.trim() != '') {
+                    output += "-N " + this.jobname.trim() + " ";
+                }
+
+                if (this.queue.trim() != '') {
+                    output += "-q " + this.queue.trim() + " ";
+                }
+
+                if (this.nodes.trim() != '') {
+                    output += "-l nodes=" + this.nodes.trim();
+                } else {
+                    output += "-l nodes=1";
+                }
+
+                if (this.ppn.trim() != '') {
+                    output += ":ppn=" + this.ppn.trim();
+                }
+                if (this.mem.trim() != '') {
+                    output += ",mem=" + this.mem.trim() + this.mem_unit;
+                }
+                if (walltime.length != 0) {
+                    output += ",walltime=" + walltime;
+                }
+                output += " ";
+
+                if (this.email.trim() != '') {
+                    output += "-M " + this.email.trim() + " ";
+                }
+
+                if (this.notify_when.length != 0) {
+                    output += "-m " + this.notify_when.sort().join("") + " ";
+                }
+
+                if (this.split_output.length === 0) {
+                    output += "-j oe" + " ";
+                }
+
+                if (this.stdout.trim() != 0) {
+                    output += "-o " + this.stdout.trim() + " ";
+                }
+
+                if (this.stderr.trim() != 0) {
+                    output += "#SBATCH -e " + this.stderr.trim() + " ";
+                }
+
+                return output;
+            }
+        }
+    });
+</script>
+
+<script>
+    function selectText(containerid) {
+        if (document.selection) { // IE
+            var range = document.body.createTextRange();
+            range.moveToElementText(document.getElementById(containerid));
+            range.select();
+        } else if (window.getSelection) {
+            var range = document.createRange();
+            range.selectNode(document.getElementById(containerid));
+            window.getSelection().removeAllRanges();
+            window.getSelection().addRange(range);
+        }
+    }
+    $("#script-container").click(
+        function () {
+            selectText("script-container");
+        }
+    );
+    // $("#cli-container").click(
+    //     function () {
+    //         selectText("cli-container");
+    //     }
+    // );
+    $(document).ready(function () {
+        $('[data-toggle="tooltip"]').tooltip({
+            placement: 'bottom'
+        });
+    });
+</script>
