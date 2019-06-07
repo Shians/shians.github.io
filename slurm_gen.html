@@ -228,7 +228,7 @@
                 walltime = `${this.walltime_h}:${this.walltime_m.padStart(2, "0")}:00`;
 
                 if (this.jobname.trim() != '') {
-                    output += "#SBATCH -N " + this.jobname.trim() + "\n";
+                    output += "#SBATCH --job-name " + this.jobname.trim() + "\n";
                 }
 
                 if (this.queue.trim() != '') {
