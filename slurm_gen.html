@@ -47,6 +47,11 @@
         width: 60em;
     }
 
+    pre{
+        background-color: #EEEEEE;
+        outline: black;
+    }
+
     div#app {
         margin: auto;
         width: 50%;
@@ -188,7 +193,7 @@
         </div>
         <h4>Generated Script:</h4>
         <div id="script-container" style="width:800px; overflow:auto">
-            <pre style="outline: black" id="script"><code>{{ constructMessage }}</code></pre>
+            <pre id="script"><code>{{ constructMessage }}</code></pre>
         </div>
         <a v-bind:href="constructMessageB64" download="slurm-script.sh">Download Script</a>
         <p>Right-click > Save As to rename, otherwise downloads "slurm-script.sh"</p>
@@ -196,7 +201,7 @@
         <h4>Command-line Arguments:</h4>
         <p>This does <b>not</b> set working directory or execute any commands. It can be appended to a <code>qsub</code> command-line call to set resource allocation and other job parameters.</p>
         <div id="cli-container" style="width:800px; overflow:auto">
-            <pre style="outline: black" id="cli"><code>{{ cliMessage }}</code></pre>
+            <pre id="cli"><code>{{ cliMessage }}</code></pre>
         </div> -->
     </div>
 </body>
