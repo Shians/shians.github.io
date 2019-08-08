@@ -291,6 +291,10 @@
                 output = "";
                 walltime = `${this.walltime_h}:${this.walltime_m.padStart(2, "0")}:00`;
 
+                if (this.dir.trim() != '') {
+                    output += "-d " + this.dir.trim() + " ";
+                }
+
                 if (this.jobname.trim() != '') {
                     output += "-N " + this.jobname.trim() + " ";
                 }
