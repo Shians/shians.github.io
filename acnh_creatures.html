@@ -67,4 +67,6 @@ $(function() {
         minLength: 2
     });
 });
+
+$("#search_term").on("autocompleteselect", function(event, ui) { fill_values() });
 </script>
