@@ -16,10 +16,10 @@
 title: Shian Su's homepage
 email: su.s@wehi.edu.au
 description: >- # this means to ignore newlines until "baseurl:"
-  Arbitrary articles documenting bothersome bioinformatics.
+  
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
-twitter_username: shians_handle
+twitter_username: shians_su
 github_username:  shians
 
 # Build settings
