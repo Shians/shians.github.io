@@ -20,6 +20,14 @@
     @media (max-width: @screen-sm) {
         body{font-size: 14px;}
     }
+
+    @media (max-width: @screen-md) {
+        body{font-size: 18px;}
+    }
+
+    @media (max-width: @screen-lg) {
+        body{font-size: 24px;}
+    }
 </style>
 
 <head>
@@ -28,7 +36,7 @@
 </head>
 
 <body>
-    <div class="container">
+    <div class="container-fluid">
         <h2>Animal Crossing: New Horizons <br /> Creature Finder v0.4</h2>
         <input id="search_term" autoFocus=true>
         <table>
@@ -86,6 +94,5 @@ $(function() {
     });
 });
 
-$("#search_term").on("autocompleteselect", function(event, ui) { fill_values() });
 $("#search_term").on("autocompletechange", function(event, ui) { fill_values() });
 </script>
