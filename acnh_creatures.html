@@ -34,6 +34,16 @@ body {
 input {
     outline: none;
 }
+
+table {
+    overflow: hidden;
+}
+
+td {
+    padding: 5px;
+    height: 40px;
+}
+
 </style>
 
 <head>
@@ -58,7 +68,7 @@ input {
             <img src="images/acnh-logo.png" alt="ACNH-Logo" class="inline" style="width: 300px"/>
             <h3>Creature Finder v0.21</h3>
             <input id="search_term" autoFocus=true  style="width:300px;"">
-            <table style="width:300px; margin:3px; padding: 5px; background-color: rgba(255, 255, 255, 0.8);">
+            <table style="width:300px; margin:3px; background-color: rgba(255, 255, 255, 0.8);">
                 <tr>
                     <td style="width:35px">Name: </td>
                     <td id="name_val"></td> 
@@ -75,7 +85,7 @@ input {
                     <td style="width:35px">Time: </td>
                     <td id="time_val"></td> 
                 </tr>
-                <tr style="height:60px">
+                <tr style="height:70px">
                     <td style="width:35px">Months: </td>
                     <td id="month_val"></td> 
                 </tr>
