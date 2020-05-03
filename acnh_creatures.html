@@ -27,7 +27,7 @@
 <body>
     <div class="container-fluid">
         <div class="content">
-            <h2>Animal Crossing: New Horizons <br /> Creature Finder v0.11</h2>
+            <h2>Animal Crossing: New Horizons <br /> Creature Finder v0.12</h2>
             <input id="search_term" autoFocus=true>
             <table>
                 <tr>
@@ -86,5 +86,5 @@ $(function() {
 });
 
 $("#search_term").on("autocompleteselect", function(event, ui) { setTimeout( () => $(event.target).blur()) });
-$("#search_term").on("autocompletechange", function(event, ui) { fill_values() });
+$("#search_term").on("autocompletechange", function(event, ui) { setTimeout( () => fill_values()) });
 </script>
