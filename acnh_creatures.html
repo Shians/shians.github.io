@@ -8,10 +8,10 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    
+
     background-color: #FFE0AF;
     background-image:
-    linear-gradient(45deg, #FFDD88 25%, transparent 25%, transparent 75%, #FFDD88 75%, #FFDD88), 
+    linear-gradient(45deg, #FFDD88 25%, transparent 25%, transparent 75%, #FFDD88 75%, #FFDD88),
     linear-gradient(45deg, #FFDD88 25%, transparent 25%, transparent 75%, #FFDD88 75%, #FFDD88),
     linear-gradient(45deg, transparent, transparent 50%, #FFC87F 50%, #FFC87F);
     background-size: 100px 100px;
@@ -50,6 +50,22 @@ td {
     margin-right: auto;
     width: 50%;
 }
+
+.months li {
+    list-style-type: none;
+    display: inline-block;
+    width: 13.6%;
+    text-align: center;
+    margin-bottom: 1px;
+    font-size:12px;
+    color: #777;
+}
+
+.months li .active {
+    padding: 4px;
+    background: #1abc9c;
+    color: white !important
+}
 </style>
 
 <head>
@@ -72,54 +88,91 @@ td {
     <div class="container-fluid">
         <div class="content">
             <img src="images/acnh-logo.png" alt="ACNH-Logo" class="inline center" style="width: 220px"/>
-            <div class="center" style="text-align: center; white-space: nowrap;">Creature Finder v0.21</div>
+            <div class="center" style="text-align: center; white-space: nowrap;">Creature Finder v0.22</div>
             <input class="center" id="search_term" autoFocus=true  style="width:300px;" placeholder="Creature Name">
             <table class="center" style="width:300px; background-color: rgba(255, 255, 255, 0.8);">
                 <tr>
                     <td style="width:35px">Name: </td>
-                    <td id="name_val"></td> 
+                    <td id="name_val"></td>
                 </tr>
                 <tr>
                     <td style="width:35px">Price: </td>
-                    <td id="price_val"></td> 
+                    <td id="price_val"></td>
                 </tr>
                 <tr>
                     <td style="width:35px">Location: </td>
-                    <td id="loc_val"></td> 
+                    <td id="loc_val"></td>
                 </tr>
                 <tr>
                     <td style="width:35px">Time: </td>
-                    <td id="time_val"></td> 
+                    <td id="time_val"></td>
                 </tr>
                 <tr style="height:70px">
                     <td style="width:35px">Months: </td>
-                    <td id="month_val"></td> 
+                    <td id="month_val">
+                        <ul id="months" class="months" style="padding-inline-start: 3px;">
+                            <li><span>Jan</span></li>
+                            <li><span>Feb</span></li>
+                            <li><span>Mar</span></li>
+                            <li><span>Apr</span></li>
+                            <li><span>May</span></li>
+                            <li><span>Jun</span></li>
+                            <li><span>Jul</span></li>
+                            <li><span>Aug</span></li>
+                            <li><span>Sep</span></li>
+                            <li><span>Oct</span></li>
+                            <li><span>Nov</span></li>
+                            <li><span>Dec</span></li>
+                        </ul>
+                    </td>
                 </tr>
             </table>
         </div>
     </div>
     <script>
     var creature_names = _.map(creature_data, x => x.Name);
-    
+
+    function clear_months() {
+
+    }
+
+    function highlight_months(months) {
+        var month_spans = $("#months").children().children();
+        month_spans.removeClass("active");
+
+        console.log(months);
+        _.forEach(
+            month_spans,
+            function(x) {
+                console.log($(x).text());
+                console.log(months.includes($(x).text()));
+                if (months.includes($(x).text())) {
+                    $(x).addClass("active");
+                }
+            }
+        )
+    }
+
     function fill_values() {
         var query_name = $("#search_term").val();
         var query_obj = _.find(creature_data, x => x.Name === query_name);
-    
+
         if (!query_obj) {
             $("#name_val").text("NA");
             $("#price_val").text("NA");
             $("#loc_val").text("NA");
             $("#time_val").text("NA");
-            $("#month_val").text("NA");
+            highlight_months([]);
         }
-    
+
         $("#name_val").text(query_obj.Name);
         $("#price_val").text(query_obj.Price);
         $("#loc_val").text(query_obj.Location);
         $("#time_val").text(query_obj.Time);
-        $("#month_val").text(query_obj.Months);
+
+        highlight_months(query_obj.Months.split(", "));
     }
-    
+
     $(function() {
         $("#search_term").autocomplete({
             source: creature_names,
@@ -127,7 +180,7 @@ td {
             minLength: 2
         });
     });
-    
+
     $("#search_term").on("autocompleteselect", function(event, ui) { setTimeout( () => $(event.target).blur(), 50) });
     $("#search_term").on("autocompletechange", function(event, ui) { setTimeout( () => fill_values(), 50) });
     </script>
