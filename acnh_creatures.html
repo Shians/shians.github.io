@@ -31,7 +31,7 @@ input {
 <body>
     <div class="container-fluid">
         <div class="content">
-            <h2>Animal Crossing: New Horizons <br /> Creature Finder v0.16</h2>
+            <h2>Animal Crossing: New Horizons <br /> Creature Finder v0.17</h2>
             <input id="search_term" autoFocus=true>
             <table>
                 <tr>
@@ -84,11 +84,11 @@ function fill_values() {
 $(function() {
     $("#search_term").autocomplete({
         source: creature_names,
-        delay: 150,
+        delay: 50,
         minLength: 2
     });
 });
 
-// $("#search_term").on("autocompleteselect", function(event, ui) { setTimeout( () => $(event.target).blur(), 200) });
-// $("#search_term").on("autocompletechange", function(event, ui) { setTimeout( () => fill_values(), 100) });
+$("#search_term").on("autocompleteselect", function(event, ui) { setTimeout( () => $(event.target).blur(), 100) });
+$("#search_term").on("autocompletechange", function(event, ui) { setTimeout( () => fill_values(), 100) });
 </script>
