@@ -87,8 +87,8 @@ input {
         });
     });
     
-    $("#search_term").on("autocompleteselect", function(event, ui) { setTimeout( () => $(event.target).blur(), 100) });
-    $("#search_term").on("autocompletechange", function(event, ui) { setTimeout( () => fill_values(), 100) });
+    $("#search_term").on("autocompleteselect", function(event, ui) { setTimeout( () => $(event.target).blur(), 50) });
+    $("#search_term").on("autocompletechange", function(event, ui) { setTimeout( () => fill_values(), 50) });
     </script>
 </body>
 
