@@ -13,21 +13,11 @@
 </script>
 
 <style>
-    @media (max-width: @screen-xs) {
-        body{font-size: 10px;}
-    }
-
-    @media (max-width: @screen-sm) {
-        body{font-size: 14px;}
-    }
-
-    @media (max-width: @screen-md) {
-        body{font-size: 18px;}
-    }
-
-    @media (max-width: @screen-lg) {
-        body{font-size: 24px;}
-    }
+.content {
+    max-width: 500px;
+    margin: auto;
+    font-size: x-large;
+}
 </style>
 
 <head>
@@ -37,30 +27,32 @@
 
 <body>
     <div class="container-fluid">
-        <h2>Animal Crossing: New Horizons <br /> Creature Finder v0.6</h2>
-        <input id="search_term" autoFocus=true>
-        <table>
-            <tr>
-                <td>Name: </td>
-                <td id="name_val"></td> 
-            </tr>
-            <tr>
-                <td>Price: </td>
-                <td id="price_val"></td> 
-            </tr>
-            <tr>
-                <td>Location: </td>
-                <td id="loc_val"></td> 
-            </tr>
-            <tr>
-                <td>Time: </td>
-                <td id="time_val"></td> 
-            </tr>
-            <tr>
-                <td>Months: </td>
-                <td id="month_val"></td> 
-            </tr>
-        </table>
+        <div class="content">
+            <h2>Animal Crossing: New Horizons <br /> Creature Finder v0.7</h2>
+            <input id="search_term" autoFocus=true>
+            <table>
+                <tr>
+                    <td>Name: </td>
+                    <td id="name_val"></td> 
+                </tr>
+                <tr>
+                    <td>Price: </td>
+                    <td id="price_val"></td> 
+                </tr>
+                <tr>
+                    <td>Location: </td>
+                    <td id="loc_val"></td> 
+                </tr>
+                <tr>
+                    <td>Time: </td>
+                    <td id="time_val"></td> 
+                </tr>
+                <tr>
+                    <td>Months: </td>
+                    <td id="month_val"></td> 
+                </tr>
+            </table>
+        </div>
     </div>
 </body>
 
