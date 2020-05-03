@@ -12,22 +12,26 @@
 </script>
 
 <style>
-/* .content {
+.content {
     max-width: 500px;
     margin: auto;
-    font-size: x-large;
-} */
+    font-size: large;
+}
+
+input {
+    outline: none;
+}
 </style>
 
 <head>
-    <!-- <meta name="viewport" charset=UTF-8 content="initial-scale=1.0, maximum-scale=1.0,, user-scalable=no"> -->
+    <meta name="viewport" charset=UTF-8 content="initial-scale=1.0, maximum-scale=1.0,, user-scalable=no">
     <title>Animal Crossing: New Horizon</title>
 </head>
 
 <body>
     <div class="container-fluid">
         <div class="content">
-            <h2>Animal Crossing: New Horizons <br /> Creature Finder v0.13</h2>
+            <h2>Animal Crossing: New Horizons <br /> Creature Finder v0.14</h2>
             <input id="search_term" autoFocus=true>
             <table>
                 <tr>
@@ -85,6 +89,6 @@ $(function() {
     });
 });
 
-$("#search_term").on("autocompleteselect", function(event, ui) { setTimeout( () => $(event.target).blur()) });
+$("#search_term").on("autocompleteselect", function(event, ui) { setTimeout( () => $(event.target).blur()), 200});
 $("#search_term").on("autocompletechange", function(event, ui) { setTimeout( () => fill_values()) });
 </script>
