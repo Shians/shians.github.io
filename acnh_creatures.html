@@ -57,7 +57,8 @@ td {
     display: inline-block;
     width: 13.6%;
     text-align: center;
-    margin-bottom: 1px;
+    margin-bottom: 3px;
+    margin-top: 3px;
     font-size:12px;
     color: #777;
 }
@@ -66,6 +67,11 @@ td {
     padding: 4px;
     background: #1abc9c;
     color: white !important
+}
+
+#month_val {
+    font-family: Courier;
+    font-size: 11px;
 }
 </style>
 
@@ -89,7 +95,7 @@ td {
     <div class="container-fluid">
         <div class="content">
             <img src="images/acnh-logo.png" alt="ACNH-Logo" class="inline center" style="width: 220px"/>
-            <div class="center" style="text-align: center; white-space: nowrap;">Creature Finder v0.23</div>
+            <div class="center" style="text-align: center; white-space: nowrap;">Creature Finder v0.24</div>
 
             <input class="center" onfocus="this.value=''" id="search_term" autoFocus=true  style="width:300px;" placeholder="Creature Name">
             <table class="center" style="width:300px; background-color: rgba(255, 255, 255, 0.8);">
@@ -112,7 +118,7 @@ td {
                 <tr style="height:70px">
                     <td style="width:35px">Months: </td>
                     <td id="month_val">
-                        <ul id="months" class="months" style="padding-inline-start: 3px;">
+                        <ul id="months" class="months" style="padding-inline-start: 3px; margin:0">
                             <li><span>Jan</span></li>
                             <li><span>Feb</span></li>
                             <li><span>Mar</span></li>
