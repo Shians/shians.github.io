@@ -38,6 +38,7 @@ input {
 
 table {
     overflow: hidden;
+    margin-bottom: 5px;
 }
 
 td {
@@ -135,15 +136,19 @@ td {
                     </td>
                 </tr>
             </table>
+            <button type="button" id="hemi_toggle" class="center" onclick="toggle_hemisphere()">Southern Hemisphere</button>
         </div>
     </div>
-    <script>
-    var creature_names = _.map(creature_data, x => x.Name);
 
+</body>
+
+<script>
+    var creature_names = _.map(creature_data, x => x.Name);
+    
     function highlight_months(months) {
         var month_spans = $("#months").children().children();
         month_spans.removeClass("active");
-
+    
         console.log(months);
         _.forEach(
             month_spans,
@@ -156,11 +161,11 @@ td {
             }
         )
     }
-
+    
     function fill_values() {
         var query_name = $("#search_term").val();
         var query_obj = _.find(creature_data, x => x.Name === query_name);
-
+    
         if (!query_obj) {
             $("#name_val").text("NA");
             $("#price_val").text("NA");
@@ -168,15 +173,15 @@ td {
             $("#time_val").text("NA");
             highlight_months([]);
         }
-
+    
         $("#name_val").text(query_obj.Name);
         $("#price_val").text(query_obj.Price);
         $("#loc_val").text(query_obj.Location);
         $("#time_val").text(query_obj.Time);
-
+    
         highlight_months(query_obj.Months.split(", "));
     }
-
+    
     // initialise autocomplete
     $(function() {
         $("#search_term").autocomplete({
@@ -185,10 +190,22 @@ td {
             minLength: 2
         });
     });
-
+    
     $("#search_term").on("autocompleteselect", function(event, ui) { setTimeout( () => $(event.target).blur(), 50) });
     $("#search_term").on("autocompletechange", function(event, ui) { setTimeout( () => fill_values(), 50) });
-    </script>
-</body>
+</script>
 
+<script>
+    var hemi_map = {
+        "Southern Hemisphere": "Northern Hemisphere",
+        "Northern Hemisphere": "Southern Hemisphere"
+    }
+    function toggle_hemisphere() {
+        var current_hemi = $("#hemi_toggle").text();
+        var new_hemi = hemi_map[current_hemi];
+        $("#hemi_toggle").text(new_hemi);
+
+        
+    }
+</script>
 </html>
