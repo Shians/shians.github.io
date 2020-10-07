@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 1 Session 1 | Introduction to Base R</title>
+  <meta name="description" content="Introductory tutorial to base R, with a biological focus. In particular it will focus on analysing RNA-sequencing data with Bioconductor." />
+  <meta name="generator" content="bookdown 0.19 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 1 Session 1 | Introduction to Base R" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Introductory tutorial to base R, with a biological focus. In particular it will focus on analysing RNA-sequencing data with Bioconductor." />
+  <meta name="github-repo" content="shians/BaseR_Intro" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 1 Session 1 | Introduction to Base R" />
+  
+  <meta name="twitter:description" content="Introductory tutorial to base R, with a biological focus. In particular it will focus on analysing RNA-sequencing data with Bioconductor." />
+  
+
+<meta name="author" content="" />
+
+
+<meta name="date" content="2020-10-08" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="index.html"/>
+<link rel="next" href="session-2.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Introduction to Base R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a><ul>
+<li class="chapter" data-level="0.1" data-path="index.html"><a href="index.html#data-files"><i class="fa fa-check"></i><b>0.1</b> Data files</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="session-1.html"><a href="session-1.html"><i class="fa fa-check"></i><b>1</b> Session 1</a><ul>
+<li class="chapter" data-level="1.1" data-path="session-1.html"><a href="session-1.html#r-and-rstudio"><i class="fa fa-check"></i><b>1.1</b> R and RStudio</a></li>
+<li class="chapter" data-level="1.2" data-path="session-1.html"><a href="session-1.html#r-scripts"><i class="fa fa-check"></i><b>1.2</b> R scripts</a></li>
+<li class="chapter" data-level="1.3" data-path="session-1.html"><a href="session-1.html#working-directory"><i class="fa fa-check"></i><b>1.3</b> Working directory</a></li>
+<li class="chapter" data-level="1.4" data-path="session-1.html"><a href="session-1.html#maths"><i class="fa fa-check"></i><b>1.4</b> Maths</a></li>
+<li class="chapter" data-level="1.5" data-path="session-1.html"><a href="session-1.html#comps"><i class="fa fa-check"></i><b>1.5</b> Comparisons</a></li>
+<li class="chapter" data-level="1.6" data-path="session-1.html"><a href="session-1.html#functions"><i class="fa fa-check"></i><b>1.6</b> Functions</a></li>
+<li class="chapter" data-level="1.7" data-path="session-1.html"><a href="session-1.html#variables"><i class="fa fa-check"></i><b>1.7</b> Variables</a></li>
+<li class="chapter" data-level="1.8" data-path="session-1.html"><a href="session-1.html#data-types"><i class="fa fa-check"></i><b>1.8</b> Data types</a><ul>
+<li class="chapter" data-level="1.8.1" data-path="session-1.html"><a href="session-1.html#factors"><i class="fa fa-check"></i><b>1.8.1</b> Factors</a></li>
+</ul></li>
+<li class="chapter" data-level="1.9" data-path="session-1.html"><a href="session-1.html#data-structures"><i class="fa fa-check"></i><b>1.9</b> Data structures</a><ul>
+<li class="chapter" data-level="1.9.1" data-path="session-1.html"><a href="session-1.html#vector"><i class="fa fa-check"></i><b>1.9.1</b> Vector</a></li>
+<li class="chapter" data-level="1.9.2" data-path="session-1.html"><a href="session-1.html#matrix"><i class="fa fa-check"></i><b>1.9.2</b> Matrix</a></li>
+<li class="chapter" data-level="1.9.3" data-path="session-1.html"><a href="session-1.html#data-frame"><i class="fa fa-check"></i><b>1.9.3</b> Data Frame</a></li>
+</ul></li>
+<li class="chapter" data-level="1.10" data-path="session-1.html"><a href="session-1.html#reading-in-data"><i class="fa fa-check"></i><b>1.10</b> Reading in data</a></li>
+<li class="chapter" data-level="1.11" data-path="session-1.html"><a href="session-1.html#vect"><i class="fa fa-check"></i><b>1.11</b> Vectorised Operations</a></li>
+<li class="chapter" data-level="1.12" data-path="session-1.html"><a href="session-1.html#write"><i class="fa fa-check"></i><b>1.12</b> Writing out data</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="session-2.html"><a href="session-2.html"><i class="fa fa-check"></i><b>2</b> Session 2</a><ul>
+<li class="chapter" data-level="2.1" data-path="session-2.html"><a href="session-2.html#miss"><i class="fa fa-check"></i><b>2.1</b> Missing values</a></li>
+<li class="chapter" data-level="2.2" data-path="session-2.html"><a href="session-2.html#subsetting-vectors"><i class="fa fa-check"></i><b>2.2</b> Subsetting vectors</a><ul>
+<li class="chapter" data-level="2.2.1" data-path="session-2.html"><a href="session-2.html#subsetting-with-numeric-indicies"><i class="fa fa-check"></i><b>2.2.1</b> Subsetting with numeric indicies</a></li>
+<li class="chapter" data-level="2.2.2" data-path="session-2.html"><a href="session-2.html#subsetting-with-logical-vectors"><i class="fa fa-check"></i><b>2.2.2</b> Subsetting with logical vectors</a></li>
+<li class="chapter" data-level="2.2.3" data-path="session-2.html"><a href="session-2.html#removing-na-rows-using-complete.cases"><i class="fa fa-check"></i><b>2.2.3</b> Removing NA rows using complete.cases()</a></li>
+<li class="chapter" data-level="2.2.4" data-path="session-2.html"><a href="session-2.html#subsetting-data-structures-with-numerics"><i class="fa fa-check"></i><b>2.2.4</b> Subsetting data structures with numerics</a></li>
+<li class="chapter" data-level="2.2.5" data-path="session-2.html"><a href="session-2.html#rearranging-using-the-order-function"><i class="fa fa-check"></i><b>2.2.5</b> Rearranging using the <code>order()</code> function</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="session-2.html"><a href="session-2.html#subsetting-data-structures-with-logicals"><i class="fa fa-check"></i><b>2.3</b> Subsetting data structures with logicals</a><ul>
+<li class="chapter" data-level="2.3.1" data-path="session-2.html"><a href="session-2.html#in"><i class="fa fa-check"></i><b>2.3.1</b> %in%</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="session-2.html"><a href="session-2.html#merge"><i class="fa fa-check"></i><b>2.4</b> Merge</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Introduction to Base R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="session-1" class="section level1">
+<h1><span class="header-section-number">Chapter 1</span> Session 1</h1>
+<p>In this first session we will learn about:</p>
+<ul>
+<li>R and RStudio</li>
+<li>Data types and data structures</li>
+<li>Vectorised operations</li>
+<li>Data input and output</li>
+</ul>
+<div id="r-and-rstudio" class="section level2">
+<h2><span class="header-section-number">1.1</span> R and RStudio</h2>
+<p>R is a free and open source statistical programming language, great for performing data analysis. RStudio is a free and open source R integrated development environment (IDE) which makes it easier for you to write code. It does this by providing you with auto-completion (of variable names, function names, file paths etc.), helping with formatting and keeping track of your variables.</p>
+<p>You can think of R as the engine in a car and RStudio as the body &amp; controls. R is doing all the calculations/computations but RStudio makes it easier for you to use R.</p>
+<p>When you first open RStudio, there will be three panels - see Figure <a href="session-1.html#fig:RS1">1.1</a> (don’t worry if your RStudio does not have the same colours/appearance - different versions of RStudio look slightly different, and the colour here is not the default one.)</p>
+<div class="figure"><span id="fig:RS1"></span>
+<img src="Images/RS1.png" alt="Three panels in RStudio." width="700px" />
+<p class="caption">
+Figure 1.1: Three panels in RStudio.
+</p>
+</div>
+<ul>
+<li>Left panel: this panel features two tabs, ‘Console’, which is where you can type in commands for R to run and ‘Terminal’, which we won’t worry about in this course.</li>
+<li>Top right panel:
+<ul>
+<li>Environment - in this tab you can see all variables you have created.</li>
+<li>History - R keeps track of all commands you have run and you can review them in this tab.</li>
+<li>Connections - this tab helps you connect to data sources but we will not be using it in this course.</li>
+</ul></li>
+<li>Bottom right:
+<ul>
+<li>Files - you can explore your file directory here and we will use it to set our working directory later.</li>
+<li>Plots - plots that you create will either appear here or be saved to a file.</li>
+<li>Help - help files for R functions can be viewed in this tab. Help files tell you about what a function does and how to use it.</li>
+<li>Packages - basic R includes many useful functions. You can add even more functions by downloading packages. A package is a collection of functions, generally with a certain data analysis theme. For example, the package ‘limma’, which we will use later, includes functions for analysing RNA-sequencing data.</li>
+<li>Viewer - this tab lets you view local web content but we won’t be using it in this course.</li>
+</ul></li>
+</ul>
+</div>
+<div id="r-scripts" class="section level2">
+<h2><span class="header-section-number">1.2</span> R scripts</h2>
+<p>To open an R script, go to File &gt; New File &gt; R Script.</p>
+<div class="figure"><span id="fig:RS2"></span>
+<img src="Images/RS2.png" alt="Opening a new R Script." width="700px" />
+<p class="caption">
+Figure 1.2: Opening a new R Script.
+</p>
+</div>
+<p>This will open a fourth panel on the top left.</p>
+<div class="figure"><span id="fig:RS3"></span>
+<img src="Images/RS3.png" alt="Four panels, including a R Script." width="700px" />
+<p class="caption">
+Figure 1.3: Four panels, including a R Script.
+</p>
+</div>
+<p>An R script is a text document where can type and run commands. You can also run commands in the console but the code run in the console is not saved. Note that to run a command in the Console press <code>Enter</code> key but to run a command in a R Script you must press <code>Cmd/Ctrl + Enter</code> keys.</p>
+<p>Lastly, you add ‘comments’ in your R Script. Comments are notes regarding the code that are not interpreted by R, they begin with <code>#</code>:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="session-1.html#cb2-1"></a><span class="co"># this is a note to myself</span></span>
+<span id="cb2-2"><a href="session-1.html#cb2-2"></a><span class="dv">1</span> <span class="op">+</span><span class="st"> </span><span class="dv">1</span></span></code></pre></div>
+<pre><code>## [1] 2</code></pre>
+</div>
+<div id="working-directory" class="section level2">
+<h2><span class="header-section-number">1.3</span> Working directory</h2>
+<p>Every file on your computer is located in a specific location. This location can be referred to by a path. In Mac, paths look something like this: <code>/Users/Lucy/Documents/</code>. In Windows, paths look something like this: <code>C:\Users\Lucy\Documents\</code>.</p>
+<p>When you open an R session, it launches from a specific location. You can find out where this is using the command <code>getwd()</code>. This location is called the ‘working directory’. By default, R will look in this directory when reading in data and write out files/plots to this directory. It is often useful to have your data and R Scripts in the same directory and set this as your working directory.</p>
+<p>You can set your working directory to be anywhere you like and we will now do this:</p>
+<ol style="list-style-type: decimal">
+<li>Make a folder for this course, somewhere sensible on your computer that you will be able to easily find.</li>
+<li>Go back to your RStudio window, go to the bottom right panel, click on the ‘Files’ tab and then click on the three dots on the top right hand corner (Figure <a href="session-1.html#fig:wd1">1.4</a>).</li>
+</ol>
+<div class="figure" style="text-align: center"><span id="fig:wd1"></span>
+<img src="Images/wd1.png" alt="Setting the working directory - 1." width="500px" />
+<p class="caption">
+Figure 1.4: Setting the working directory - 1.
+</p>
+</div>
+<ol start="3" style="list-style-type: decimal">
+<li>This will open up a new window (Figure <a href="session-1.html#fig:wd2">1.5</a>) which lets you explore the files and folders on your computer. Find the new folder you created, click on it then click ‘Open’.</li>
+</ol>
+<div class="figure" style="text-align: center"><span id="fig:wd2"></span>
+<img src="Images/wd2.png" alt="Setting the working directory - 2." width="500px" />
+<p class="caption">
+Figure 1.5: Setting the working directory - 2.
+</p>
+</div>
+<ol start="4" style="list-style-type: decimal">
+<li>The files tab will now show the contents of your new folder (which should be empty). At the top of the files tab, click on More &gt; Set As Working Directory (Figure <a href="session-1.html#fig:wd3">1.6</a>).</li>
+</ol>
+<div class="figure" style="text-align: center"><span id="fig:wd3"></span>
+<img src="Images/wd3.png" alt="Setting the working directory - 3." width="500px" />
+<p class="caption">
+Figure 1.6: Setting the working directory - 3.
+</p>
+</div>
+<p>Please set your working directory to be this folder at the start of EVERY session.</p>
+</div>
+<div id="maths" class="section level2">
+<h2><span class="header-section-number">1.4</span> Maths</h2>
+<p>R performs maths and follows standard order of operations. In order of highest to lowest precedence, here is how mathematical operations are denoted in R:</p>
+<ul>
+<li><code>()</code> - parentheses</li>
+<li><code>^</code> or <code>**</code> - exponents</li>
+<li><code>/</code> - divide</li>
+<li><code>*</code> - multiply</li>
+<li><code>+</code> - add</li>
+<li><code>-</code> - subtract</li>
+<li><code>%%</code> - remainder (modulus)</li>
+</ul>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="session-1.html#cb4-1"></a><span class="dv">1</span> <span class="op">+</span><span class="st"> </span><span class="dv">2</span></span></code></pre></div>
+<pre><code>## [1] 3</code></pre>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="session-1.html#cb6-1"></a><span class="dv">1</span> <span class="op">+</span><span class="st"> </span><span class="dv">3</span> <span class="op">*</span><span class="st"> </span><span class="dv">4</span></span></code></pre></div>
+<pre><code>## [1] 13</code></pre>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="session-1.html#cb8-1"></a>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span><span class="dv">3</span>) <span class="op">*</span><span class="st"> </span><span class="dv">4</span></span></code></pre></div>
+<pre><code>## [1] 16</code></pre>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="session-1.html#cb10-1"></a><span class="dv">10</span> <span class="op">%%</span><span class="st"> </span><span class="dv">3</span></span></code></pre></div>
+<pre><code>## [1] 1</code></pre>
+</div>
+<div id="comps" class="section level2">
+<h2><span class="header-section-number">1.5</span> Comparisons</h2>
+<p>R can perform comparisons:</p>
+<ul>
+<li><code>==</code> equal to.</li>
+<li><code>!=</code> not equal to.</li>
+<li><code>&gt;</code> greater than.</li>
+<li><code>&gt;=</code> greater or equal to.</li>
+<li><code>&lt;</code> less than.</li>
+<li><code>&lt;=</code> less than or equal to.</li>
+</ul>
+<p>These operations return a <code>TRUE</code> or a <code>FALSE</code> value. This can be used to quickly summarise data or perform indexing as we will see later.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="session-1.html#cb12-1"></a><span class="dv">10</span> <span class="op">&gt;</span><span class="st"> </span><span class="dv">10</span> <span class="co"># FALSE</span></span></code></pre></div>
+<pre><code>## [1] FALSE</code></pre>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="session-1.html#cb14-1"></a><span class="dv">10</span> <span class="op">&gt;=</span><span class="st"> </span><span class="dv">10</span> <span class="co"># TRUE</span></span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<p>You can also compare words. R will use dictionary order to determine which word is ‘greater’.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="session-1.html#cb16-1"></a><span class="st">&quot;cat&quot;</span> <span class="op">&gt;</span><span class="st"> &quot;dog&quot;</span></span></code></pre></div>
+<pre><code>## [1] FALSE</code></pre>
+</div>
+<div id="functions" class="section level2">
+<h2><span class="header-section-number">1.6</span> Functions</h2>
+<p>Functions are expression in R that take inputs and produce outputs. Functions may take multiple inputs, also called ‘arguments’ to the function, each argument must be separated by comma. Arguments have a set order in which they can be given, or they can be referred to specifically by their name.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="session-1.html#cb18-1"></a>pi</span></code></pre></div>
+<pre><code>## [1] 3.141593</code></pre>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="session-1.html#cb20-1"></a><span class="kw">round</span>(pi, <span class="dt">digits =</span> <span class="dv">3</span>)</span></code></pre></div>
+<pre><code>## [1] 3.142</code></pre>
+<p>Many arguments have default values so you don’t need to specify every argument for every function. You can check the arguments of a function by using <code>args()</code>.</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="session-1.html#cb22-1"></a><span class="kw">args</span>(rnorm)</span></code></pre></div>
+<pre><code>## function (n, mean = 0, sd = 1) 
+## NULL</code></pre>
+<p>Sometimes it’s obvious what the arguments are, but if more details are needed then you can access the help pages. This can be one in one of two ways, by searching for the function in the help panel.</p>
+<div class="figure" style="text-align: center"><span id="fig:help"></span>
+<img src="Images/help.png" alt="Accessing help files via 'help' tab." width="500px" />
+<p class="caption">
+Figure 1.7: Accessing help files via ‘help’ tab.
+</p>
+</div>
+<p>Or using the command <code>?</code> followed by the name of the function:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="session-1.html#cb24-1"></a>?sum</span></code></pre></div>
+<p>Help files are very useful but can be difficult to interpret at first due to the technical language used. It is often helpful to scroll down to the bottom to see examples of how the function is used.</p>
+</div>
+<div id="variables" class="section level2">
+<h2><span class="header-section-number">1.7</span> Variables</h2>
+<p>A variable in R is an identifier to keep track of values. We assign values to variables so that we can refer to the variable later.</p>
+<p>For example, I can do some maths:</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="session-1.html#cb25-1"></a><span class="dv">2</span> <span class="op">+</span><span class="st"> </span><span class="dv">6</span> <span class="op">*</span><span class="st"> </span><span class="dv">7</span><span class="op">^</span><span class="dv">2</span></span></code></pre></div>
+<pre><code>## [1] 296</code></pre>
+<p>R outputs simply the result. To use this value later, I would need to assign the output to a variable.</p>
+<p>You can this with <code>&lt;-</code> (shortcut = <code>alt + -</code>) in R. (You can also use <code>=</code>, however, stylistically <code>&lt;-</code> is preferred.)</p>
+<p>Here R first performs the calculation on the right of <code>&lt;-</code> and then saves the result as a variable called <code>my_num</code>.</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="session-1.html#cb27-1"></a>my_num &lt;-<span class="st"> </span><span class="dv">2</span> <span class="op">+</span><span class="st"> </span><span class="dv">6</span> <span class="op">*</span><span class="st"> </span><span class="dv">7</span><span class="op">^</span><span class="dv">2</span></span>
+<span id="cb27-2"><a href="session-1.html#cb27-2"></a>my_num <span class="co"># 296</span></span></code></pre></div>
+<pre><code>## [1] 296</code></pre>
+<p>Note that variable names are case sensitive.</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="session-1.html#cb29-1"></a>var &lt;-<span class="st"> </span><span class="dv">10</span></span>
+<span id="cb29-2"><a href="session-1.html#cb29-2"></a></span>
+<span id="cb29-3"><a href="session-1.html#cb29-3"></a>VAR <span class="co"># produces error because VAR is not the same as var</span></span></code></pre></div>
+<pre><code>## Error in eval(expr, envir, enclos): object &#39;VAR&#39; not found</code></pre>
+<p>You can also ‘overwrite’ variables by assigning to them again:</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="session-1.html#cb31-1"></a>my_num &lt;-<span class="st"> </span><span class="dv">3</span> <span class="op">*</span><span class="st"> </span><span class="dv">4</span></span>
+<span id="cb31-2"><a href="session-1.html#cb31-2"></a>my_num <span class="co"># 12</span></span></code></pre></div>
+<pre><code>## [1] 12</code></pre>
+<p>Because the right hand side is evaluated first, you can also assign to a variable a calculation that involves itself.</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="session-1.html#cb33-1"></a>my_num &lt;-<span class="st"> </span>my_num <span class="op">+</span><span class="st"> </span><span class="dv">5</span></span>
+<span id="cb33-2"><a href="session-1.html#cb33-2"></a>my_num <span class="co"># 17</span></span></code></pre></div>
+<pre><code>## [1] 17</code></pre>
+<p>R has rules on valid variable names. Variable names can only contain letters, numbers, the dot or underline characters. They can only start with a letter or the dot followed by a letter.</p>
+<p>If we try to create a variable that starts with a number, R will return an error:</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="session-1.html#cb35-1"></a>2myvar &lt;-<span class="st"> </span><span class="dv">2</span> <span class="op">+</span><span class="st"> </span><span class="dv">6</span> <span class="op">*</span><span class="st"> </span><span class="dv">7</span><span class="op">^</span><span class="dv">2</span> <span class="co"># not a valid name as it start with number</span></span></code></pre></div>
+<pre><code>## Error: &lt;text&gt;:1:2: unexpected symbol
+## 1: 2myvar
+##      ^</code></pre>
+<p><strong>Challenge 1.1</strong></p>
+<ol style="list-style-type: decimal">
+<li>Guess the output the result of the following expression then evaluate them to check.</li>
+</ol>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="session-1.html#cb37-1"></a><span class="dv">4</span> <span class="op">+</span><span class="dv">2</span> <span class="op">^</span><span class="st"> </span><span class="dv">2</span></span>
+<span id="cb37-2"><a href="session-1.html#cb37-2"></a></span>
+<span id="cb37-3"><a href="session-1.html#cb37-3"></a>(<span class="dv">4</span> <span class="op">+</span><span class="st"> </span><span class="dv">2</span>) <span class="op">^</span><span class="st"> </span><span class="dv">2</span></span>
+<span id="cb37-4"><a href="session-1.html#cb37-4"></a></span>
+<span id="cb37-5"><a href="session-1.html#cb37-5"></a><span class="st">&quot;genotype&quot;</span> <span class="op">&lt;</span><span class="st"> &quot;phenotype&quot;</span></span>
+<span id="cb37-6"><a href="session-1.html#cb37-6"></a></span>
+<span id="cb37-7"><a href="session-1.html#cb37-7"></a><span class="op">!</span>(<span class="st">&quot;genetics&quot;</span> <span class="op">&lt;</span><span class="st"> &quot;epigenetics&quot;</span>)</span>
+<span id="cb37-8"><a href="session-1.html#cb37-8"></a></span>
+<span id="cb37-9"><a href="session-1.html#cb37-9"></a><span class="dv">25</span> <span class="op">%%</span><span class="st"> </span><span class="dv">4</span></span></code></pre></div>
+<ol start="2" style="list-style-type: decimal">
+<li>Which of the following are valid variable names? Those that are not, why are they not valid?</li>
+</ol>
+<ul>
+<li>var</li>
+<li>var2</li>
+<li>2var</li>
+<li>var-2</li>
+<li>var.2</li>
+</ul>
+<ol start="3" style="list-style-type: decimal">
+<li>What is the value of <code>z</code> once this code has run?</li>
+</ol>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="session-1.html#cb38-1"></a>x &lt;-<span class="st"> </span><span class="dv">3</span></span>
+<span id="cb38-2"><a href="session-1.html#cb38-2"></a>y &lt;-<span class="st"> </span><span class="dv">12</span></span>
+<span id="cb38-3"><a href="session-1.html#cb38-3"></a>x &lt;-<span class="st"> </span>x <span class="op">+</span><span class="st"> </span><span class="dv">3</span></span>
+<span id="cb38-4"><a href="session-1.html#cb38-4"></a>z &lt;-<span class="st"> </span>y <span class="op">-</span><span class="st"> </span>x</span>
+<span id="cb38-5"><a href="session-1.html#cb38-5"></a>z &lt;-<span class="st"> </span>z <span class="op">*</span><span class="st"> </span><span class="dv">2</span></span></code></pre></div>
+</div>
+<div id="data-types" class="section level2">
+<h2><span class="header-section-number">1.8</span> Data types</h2>
+<p>Every variable in R has a ‘type’. The type tells R what kind of data it is and consequently what it can and can’t do with the data. For example, it makes sense to perform mathematical functions on numbers but not on words.</p>
+<p>There are three basic types of data in R:</p>
+<ul>
+<li><code>logical</code> - either TRUE or FALSE</li>
+<li><code>numeric</code> - numbers</li>
+<li><code>character</code> - text surrounded by quotation marks</li>
+</ul>
+<p>These are called ‘atomic’ data types as they are the most basic types of data from which other data types usually derive.</p>
+<p>You can find the type of a variable using the <code>class()</code> function.</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="session-1.html#cb39-1"></a><span class="dv">1</span> <span class="co"># prints as 1</span></span>
+<span id="cb39-2"><a href="session-1.html#cb39-2"></a><span class="st">&quot;1&quot;</span> <span class="co"># prints as &quot;1&quot;</span></span>
+<span id="cb39-3"><a href="session-1.html#cb39-3"></a></span>
+<span id="cb39-4"><a href="session-1.html#cb39-4"></a><span class="kw">class</span>(<span class="ot">TRUE</span>) <span class="co"># logical</span></span>
+<span id="cb39-5"><a href="session-1.html#cb39-5"></a><span class="kw">class</span>(<span class="dv">1</span>) <span class="co"># numeric</span></span>
+<span id="cb39-6"><a href="session-1.html#cb39-6"></a><span class="kw">class</span>(<span class="st">&quot;hello&quot;</span>) <span class="co"># character</span></span>
+<span id="cb39-7"><a href="session-1.html#cb39-7"></a><span class="kw">class</span>(<span class="st">&quot;TRUE&quot;</span>) <span class="co"># character</span></span>
+<span id="cb39-8"><a href="session-1.html#cb39-8"></a><span class="kw">class</span>(<span class="st">&quot;123&quot;</span>) <span class="co"># character</span></span></code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="session-1.html#cb40-1"></a><span class="dv">1</span> <span class="op">+</span><span class="st"> </span><span class="dv">1</span> <span class="co"># works</span></span></code></pre></div>
+<pre><code>## [1] 2</code></pre>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="session-1.html#cb42-1"></a><span class="st">&quot;1&quot;</span> <span class="op">+</span><span class="st"> &quot;1&quot;</span> <span class="co"># produces error</span></span></code></pre></div>
+<pre><code>## Error in &quot;1&quot; + &quot;1&quot;: non-numeric argument to binary operator</code></pre>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="session-1.html#cb44-1"></a><span class="op">!</span><span class="ot">TRUE</span> <span class="co"># works</span></span></code></pre></div>
+<pre><code>## [1] FALSE</code></pre>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="session-1.html#cb46-1"></a><span class="op">!</span><span class="st">&quot;TRUE&quot;</span> <span class="co"># produces error</span></span></code></pre></div>
+<pre><code>## Error in !&quot;TRUE&quot;: invalid argument type</code></pre>
+<div id="factors" class="section level3">
+<h3><span class="header-section-number">1.8.1</span> Factors</h3>
+<p>Factors are a special type for encoding categorical variables. They are composed of the ‘values’ and the ‘levels’, externally they look like characters variables, but internally they are a series of integers denoting the group number and a separate series of characters denoting the identity of the groups.</p>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="session-1.html#cb48-1"></a>x &lt;-<span class="st"> </span><span class="kw">factor</span>(<span class="kw">c</span>(<span class="st">&quot;sunny&quot;</span>, <span class="st">&quot;rainy&quot;</span>, <span class="st">&quot;rainy&quot;</span>, <span class="st">&quot;cloudy&quot;</span>, <span class="st">&quot;sunny&quot;</span>))</span>
+<span id="cb48-2"><a href="session-1.html#cb48-2"></a>x</span></code></pre></div>
+<pre><code>## [1] sunny  rainy  rainy  cloudy sunny 
+## Levels: cloudy rainy sunny</code></pre>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="session-1.html#cb50-1"></a><span class="kw">levels</span>(x)</span></code></pre></div>
+<pre><code>## [1] &quot;cloudy&quot; &quot;rainy&quot;  &quot;sunny&quot;</code></pre>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="session-1.html#cb52-1"></a><span class="kw">as.numeric</span>(x)</span></code></pre></div>
+<pre><code>## [1] 3 2 2 1 3</code></pre>
+<p>Factors are generally a more efficient way of storing categorical variables, it stores only the level value as an integer and a single instance of each unique level. It also makes it possible to quickly re-encode the levels.</p>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="session-1.html#cb54-1"></a><span class="kw">levels</span>(x) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Cloudy&quot;</span>, <span class="st">&quot;Rainy&quot;</span>, <span class="st">&quot;Sunny&quot;</span>)</span>
+<span id="cb54-2"><a href="session-1.html#cb54-2"></a>x</span></code></pre></div>
+<pre><code>## [1] Sunny  Rainy  Rainy  Cloudy Sunny 
+## Levels: Cloudy Rainy Sunny</code></pre>
+<p>We can set the order of the levels if we would like using the levels argument.</p>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="session-1.html#cb56-1"></a>x &lt;-<span class="st"> </span><span class="kw">factor</span>(</span>
+<span id="cb56-2"><a href="session-1.html#cb56-2"></a>  <span class="kw">c</span>(<span class="st">&quot;low&quot;</span>, <span class="st">&quot;medium&quot;</span>, <span class="st">&quot;medium&quot;</span>, <span class="st">&quot;high&quot;</span>, <span class="st">&quot;low&quot;</span>),</span>
+<span id="cb56-3"><a href="session-1.html#cb56-3"></a>  <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">&quot;low&quot;</span>, <span class="st">&quot;high&quot;</span>, <span class="st">&quot;medium&quot;</span>)</span>
+<span id="cb56-4"><a href="session-1.html#cb56-4"></a>)</span>
+<span id="cb56-5"><a href="session-1.html#cb56-5"></a></span>
+<span id="cb56-6"><a href="session-1.html#cb56-6"></a>x</span></code></pre></div>
+<pre><code>## [1] low    medium medium high   low   
+## Levels: low high medium</code></pre>
+<p>Setting these levels can change the behaviour of the variable in models or plots.</p>
+</div>
+</div>
+<div id="data-structures" class="section level2">
+<h2><span class="header-section-number">1.9</span> Data structures</h2>
+<p>Data structures are ways to organise many values without having to assign individual names to each value. They help us keep related data together in a single variable and offer powerful ways for us to interact with that data.</p>
+<p>Three commonly used data structures are summarised below:</p>
+<div class="figure" style="text-align: center"><span id="fig:dstruct"></span>
+<img src="Images/data-structure.png" alt="Data structures. Source: http://libguides.wellesley.edu." width="700px" />
+<p class="caption">
+Figure 1.8: Data structures. Source: <a href="http://libguides.wellesley.edu" class="uri">http://libguides.wellesley.edu</a>.
+</p>
+</div>
+<p>Another useful data structure is a ‘list’, which we will talk about in Session 3.</p>
+<div id="vector" class="section level3">
+<h3><span class="header-section-number">1.9.1</span> Vector</h3>
+<p>A vector is a collection of values of the same type. Values in a vector are laid out linearly, one after another.</p>
+<p>You can create vectors with the <code>c()</code> function (‘c’ for ‘combine’):</p>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="session-1.html#cb58-1"></a>my_vect1 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>) <span class="co"># a vector of numbers</span></span>
+<span id="cb58-2"><a href="session-1.html#cb58-2"></a>my_vect2 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;vector&quot;</span>, <span class="st">&quot;of&quot;</span>, <span class="st">&quot;characters&quot;</span>) <span class="co"># a vector of characters</span></span></code></pre></div>
+<p>One useful shorthand for creating a sequence of integers is <code>a:b</code> which creates a vector from a to b.</p>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="session-1.html#cb59-1"></a><span class="dv">1</span><span class="op">:</span><span class="dv">10</span></span></code></pre></div>
+<pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="session-1.html#cb61-1"></a><span class="dv">3</span><span class="op">:</span><span class="dv">7</span></span></code></pre></div>
+<pre><code>## [1] 3 4 5 6 7</code></pre>
+<p>For very long vectors, it is useful to use the head and tail functions to inspect just a few values. These print the first and last 6 elements of a vector.</p>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="session-1.html#cb63-1"></a><span class="kw">head</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">10000</span>)</span></code></pre></div>
+<pre><code>## [1] 1 2 3 4 5 6</code></pre>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="session-1.html#cb65-1"></a><span class="kw">tail</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">10000</span>)</span></code></pre></div>
+<pre><code>## [1]  9995  9996  9997  9998  9999 10000</code></pre>
+</div>
+<div id="matrix" class="section level3">
+<h3><span class="header-section-number">1.9.2</span> Matrix</h3>
+<p>A matrix is the two-dimensional extension of the vector, it stores a collection of values of the same type but laid out in a grid with rows and columns. An example of this is a gene count matrices where each genes are represented by the rows, samples are represented by the columns and each cell represents a count for a particular gene in a particular column. The rows and columns can also be labelled with names, but these names are usually considered metadata rather than being a part of the matrix.</p>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="session-1.html#cb67-1"></a>gene_counts &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>), <span class="dt">nrow =</span> <span class="dv">2</span>, <span class="dt">ncol =</span> <span class="dv">2</span>)</span>
+<span id="cb67-2"><a href="session-1.html#cb67-2"></a><span class="kw">rownames</span>(gene_counts) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;gene1&quot;</span>, <span class="st">&quot;gene2&quot;</span>)</span>
+<span id="cb67-3"><a href="session-1.html#cb67-3"></a><span class="kw">colnames</span>(gene_counts) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;sample1&quot;</span>, <span class="st">&quot;sample2&quot;</span>)</span>
+<span id="cb67-4"><a href="session-1.html#cb67-4"></a></span>
+<span id="cb67-5"><a href="session-1.html#cb67-5"></a><span class="kw">class</span>(gene_counts)</span></code></pre></div>
+<pre><code>## [1] &quot;matrix&quot; &quot;array&quot;</code></pre>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="session-1.html#cb69-1"></a>gene_counts</span></code></pre></div>
+<pre><code>##       sample1 sample2
+## gene1       1       3
+## gene2       2       4</code></pre>
+</div>
+<div id="data-frame" class="section level3">
+<h3><span class="header-section-number">1.9.3</span> Data Frame</h3>
+<p>Data frames are similar to matrices in that they store data in rows and columns. The difference is that the data within each column can be of different types. This is the representation used for general tables that record different attributes of individual entries along the rows.</p>
+<p>A classic example of a data frame is the iris dataset.</p>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="session-1.html#cb71-1"></a><span class="kw">data</span>(iris)</span>
+<span id="cb71-2"><a href="session-1.html#cb71-2"></a></span>
+<span id="cb71-3"><a href="session-1.html#cb71-3"></a><span class="kw">class</span>(iris)</span>
+<span id="cb71-4"><a href="session-1.html#cb71-4"></a>iris <span class="co"># prints the whole data frame and floods the screen</span></span></code></pre></div>
+<p>The <code>head()</code> and <code>tail()</code> functions also work here to print the first and last 6 rows of a data frame for a quick check of the data.</p>
+<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb72-1"><a href="session-1.html#cb72-1"></a><span class="kw">head</span>(iris)</span></code></pre></div>
+<pre><code>##   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+## 1          5.1         3.5          1.4         0.2  setosa
+## 2          4.9         3.0          1.4         0.2  setosa
+## 3          4.7         3.2          1.3         0.2  setosa
+## 4          4.6         3.1          1.5         0.2  setosa
+## 5          5.0         3.6          1.4         0.2  setosa
+## 6          5.4         3.9          1.7         0.4  setosa</code></pre>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="session-1.html#cb74-1"></a><span class="kw">tail</span>(iris)</span></code></pre></div>
+<pre><code>##     Sepal.Length Sepal.Width Petal.Length Petal.Width   Species
+## 145          6.7         3.3          5.7         2.5 virginica
+## 146          6.7         3.0          5.2         2.3 virginica
+## 147          6.3         2.5          5.0         1.9 virginica
+## 148          6.5         3.0          5.2         2.0 virginica
+## 149          6.2         3.4          5.4         2.3 virginica
+## 150          5.9         3.0          5.1         1.8 virginica</code></pre>
+<p>We can construct a data frame of our own as well using <code>data.frame()</code></p>
+<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb76-1"><a href="session-1.html#cb76-1"></a>my_df &lt;-<span class="st"> </span><span class="kw">data.frame</span>(</span>
+<span id="cb76-2"><a href="session-1.html#cb76-2"></a>  <span class="dt">mouse_id =</span> <span class="kw">c</span>(<span class="st">&quot;mouse1&quot;</span>, <span class="st">&quot;mouse2&quot;</span>, <span class="st">&quot;mouse3&quot;</span>),</span>
+<span id="cb76-3"><a href="session-1.html#cb76-3"></a>  <span class="dt">age =</span> <span class="kw">c</span>(<span class="dv">48</span>, <span class="dv">48</span>, <span class="dv">52</span>),</span>
+<span id="cb76-4"><a href="session-1.html#cb76-4"></a>  <span class="dt">weight =</span> <span class="kw">c</span>(<span class="fl">39.7</span>, <span class="fl">42.2</span>, <span class="fl">46.3</span>)</span>
+<span id="cb76-5"><a href="session-1.html#cb76-5"></a>)</span>
+<span id="cb76-6"><a href="session-1.html#cb76-6"></a></span>
+<span id="cb76-7"><a href="session-1.html#cb76-7"></a><span class="kw">class</span>(my_df)</span></code></pre></div>
+<pre><code>## [1] &quot;data.frame&quot;</code></pre>
+<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="session-1.html#cb78-1"></a>my_df</span></code></pre></div>
+<pre><code>##   mouse_id age weight
+## 1   mouse1  48   39.7
+## 2   mouse2  48   42.2
+## 3   mouse3  52   46.3</code></pre>
+<p>The general form for constructing a data frame looks like this</p>
+<pre><code>data.frame(col_name1 = values1, col_names2 = values2, ...)</code></pre>
+<p>Where each value is a vector of the same length.</p>
+<p>You can access a column in a data frame with the shortcut <code>$</code>. Notice that the names of all columns of the data frame appears after typing in <code>my_df$</code>:</p>
+<div class="figure" style="text-align: center"><span id="fig:dfdollar"></span>
+<img src="Images/df_dollar.png" alt="Accessing columns in a dataframe using the '$' symbol." width="350px" />
+<p class="caption">
+Figure 1.9: Accessing columns in a dataframe using the ‘$’ symbol.
+</p>
+</div>
+<p><strong>Challenge 1.2</strong></p>
+<ol style="list-style-type: decimal">
+<li><p>Create a data frame with the columns “name”, “age”, and “height” with 3 rows of whatever value you choose.</p></li>
+<li><p>Guess the values of the following expressions</p></li>
+</ol>
+<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="session-1.html#cb81-1"></a>x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>)</span>
+<span id="cb81-2"><a href="session-1.html#cb81-2"></a>y &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">3</span>)</span>
+<span id="cb81-3"><a href="session-1.html#cb81-3"></a>z &lt;-<span class="st"> </span>x <span class="op">+</span><span class="st"> </span>y</span>
+<span id="cb81-4"><a href="session-1.html#cb81-4"></a>       </span>
+<span id="cb81-5"><a href="session-1.html#cb81-5"></a><span class="co"># i.</span></span>
+<span id="cb81-6"><a href="session-1.html#cb81-6"></a>x <span class="op">+</span><span class="st"> </span><span class="dv">3</span></span>
+<span id="cb81-7"><a href="session-1.html#cb81-7"></a></span>
+<span id="cb81-8"><a href="session-1.html#cb81-8"></a><span class="co"># ii.</span></span>
+<span id="cb81-9"><a href="session-1.html#cb81-9"></a>z[<span class="dv">3</span>]</span>
+<span id="cb81-10"><a href="session-1.html#cb81-10"></a></span>
+<span id="cb81-11"><a href="session-1.html#cb81-11"></a><span class="co"># iii.</span></span>
+<span id="cb81-12"><a href="session-1.html#cb81-12"></a>(x <span class="op">+</span><span class="st"> </span>y) <span class="op">&lt;</span><span class="st"> </span><span class="dv">5</span></span>
+<span id="cb81-13"><a href="session-1.html#cb81-13"></a></span>
+<span id="cb81-14"><a href="session-1.html#cb81-14"></a><span class="co"># iv.</span></span>
+<span id="cb81-15"><a href="session-1.html#cb81-15"></a><span class="kw">sum</span>(z)</span></code></pre></div>
+</div>
+</div>
+<div id="reading-in-data" class="section level2">
+<h2><span class="header-section-number">1.10</span> Reading in data</h2>
+<p>Let’s read in some data and start exploring it.</p>
+<p>You should have received the data files via email before the course. Please download these files and make sure they are located in your working directory. Recall, we set our working directory above. You can find the location of your working directory with the function <code>getwd()</code>.</p>
+<p>If you are following along outside of the WEHI course, you can download the data files from <a href="https://github.com/lucyleeow/BaseR_Intro/tree/master/data">Github</a> - instructions for downloading data from GitHub can be found in the Preface.</p>
+<p>The file we want to read in is named ‘Ses1_genes.tsv’.</p>
+<p>All the data files are in a directory called ‘data’ - thus the path to the file (relative to my working directory) is ‘data/Ses1_genes.tsv’. Depending on where you have put your data (in your working directory or in another file in your working directory), the path to your file ‘Ses1_genes.tsv’ may be different.</p>
+<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb82-1"><a href="session-1.html#cb82-1"></a><span class="kw">read.delim</span>(<span class="st">&quot;data/Ses1_genes.tsv&quot;</span>)</span></code></pre></div>
+<pre><code>##     SYMBOL GeneLength Count
+## 1  Gm10568       1634     0
+## 2  Gm19860        799     4
+## 3  Gm19938       3259     0
+## 4   Lypla1       2433   768
+## 5      Rp1       9747     0
+## 6    Sox17       3130     1
+## 7    Tcea1       2847   810
+## 8   Mrpl15       4203   431
+## 9     Xkr4       3634     1
+## 10   Rgs20       2241   452</code></pre>
+<p>Note that <code>read.delim()</code> also lets you specify character that separates columns of the data. The most common types are comma-separated values (csv) and tab-separated values (tsv).</p>
+<p>Example of a csv file:</p>
+<pre><code>Name, Age
+Andy, 10
+Bob, 8</code></pre>
+<p>Example of a tsv file:</p>
+<pre><code>Name  Age
+Andy  10
+Bob   8</code></pre>
+<p>By default <code>read.delim()</code> uses the tab separator ". We can see what happens if we use the wrong separator in our read.delim call.</p>
+<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb86-1"><a href="session-1.html#cb86-1"></a><span class="kw">read.delim</span>(<span class="st">&quot;data/Ses1_genes.tsv&quot;</span>, <span class="dt">sep =</span> <span class="st">&quot;,&quot;</span>)</span></code></pre></div>
+<pre><code>##    SYMBOL.GeneLength.Count
+## 1         Gm10568\t1634\t0
+## 2          Gm19860\t799\t4
+## 3         Gm19938\t3259\t0
+## 4        Lypla1\t2433\t768
+## 5             Rp1\t9747\t0
+## 6           Sox17\t3130\t1
+## 7         Tcea1\t2847\t810
+## 8        Mrpl15\t4203\t431
+## 9            Xkr4\t3634\t1
+## 10        Rgs20\t2241\t452</code></pre>
+<p>If you just read in the data, R simply prints the values out in the console. Let’s assign our data frame to a variable called <code>genes</code>:</p>
+<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb88-1"><a href="session-1.html#cb88-1"></a>genes &lt;-<span class="st"> </span><span class="kw">read.delim</span>(<span class="st">&quot;data/Ses1_genes.tsv&quot;</span>)</span></code></pre></div>
+<p>Notice how <code>genes</code> now appears in our ‘Environment’ tab:</p>
+<div class="figure" style="text-align: center"><span id="fig:import"></span>
+<img src="Images/import.png" alt="Variable in 'Environment' tab." width="500px" />
+<p class="caption">
+Figure 1.10: Variable in ‘Environment’ tab.
+</p>
+</div>
+<p>All variables that we create will be shown in this tab, so it is a useful way to keep track of variables that we have created. Notice how R also tells us that there are 10 observations (rows) and 3 variables (columns) in the <code>genes</code> data frame.</p>
+<p>One quirk that older versions of R has is that columns of character strings are automatically converted to factors. Factors look like characters when printed out, but can cause errors if you actually treat them as characters. It’s generally wise to turn off this automatic conversion. If your R is newer than version 4.0.0 then <code>stringsAsFactors</code> is off by default.</p>
+<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="session-1.html#cb89-1"></a>genes &lt;-<span class="st"> </span><span class="kw">read.delim</span>(<span class="st">&quot;data/Ses1_genes.tsv&quot;</span>, <span class="dt">stringsAsFactors =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb89-2"><a href="session-1.html#cb89-2"></a><span class="kw">str</span>(genes) <span class="co"># the SYMBOL column is of type factor</span></span></code></pre></div>
+<pre><code>## &#39;data.frame&#39;:    10 obs. of  3 variables:
+##  $ SYMBOL    : Factor w/ 10 levels &quot;Gm10568&quot;,&quot;Gm19860&quot;,..: 1 2 3 4 7 8 9 5 10 6
+##  $ GeneLength: int  1634 799 3259 2433 9747 3130 2847 4203 3634 2241
+##  $ Count     : int  0 4 0 768 0 1 810 431 1 452</code></pre>
+<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="session-1.html#cb91-1"></a>genes &lt;-<span class="st"> </span><span class="kw">read.delim</span>(<span class="st">&quot;data/Ses1_genes.tsv&quot;</span>, <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)</span>
+<span id="cb91-2"><a href="session-1.html#cb91-2"></a><span class="kw">str</span>(genes) <span class="co"># the SYMBOL column is now of type character</span></span></code></pre></div>
+<pre><code>## &#39;data.frame&#39;:    10 obs. of  3 variables:
+##  $ SYMBOL    : chr  &quot;Gm10568&quot; &quot;Gm19860&quot; &quot;Gm19938&quot; &quot;Lypla1&quot; ...
+##  $ GeneLength: int  1634 799 3259 2433 9747 3130 2847 4203 3634 2241
+##  $ Count     : int  0 4 0 768 0 1 810 431 1 452</code></pre>
+</div>
+<div id="vect" class="section level2">
+<h2><span class="header-section-number">1.11</span> Vectorised Operations</h2>
+<p>In contrast to some other programming languages where operating on vectors requires a loop structure, operations in R are generally vectorised, meaning they will be automatically applied to each element of the vector.</p>
+<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="session-1.html#cb93-1"></a>genes<span class="op">$</span>Count <span class="co"># each column of a data frame is a vector</span></span></code></pre></div>
+<pre><code>##  [1]   0   4   0 768   0   1 810 431   1 452</code></pre>
+<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="session-1.html#cb95-1"></a>genes<span class="op">$</span>Count <span class="op">+</span><span class="st"> </span><span class="dv">10</span> <span class="co"># adds 10 to each element</span></span></code></pre></div>
+<pre><code>##  [1]  10  14  10 778  10  11 820 441  11 462</code></pre>
+<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb97-1"><a href="session-1.html#cb97-1"></a>genes<span class="op">$</span>Count <span class="op">==</span><span class="st"> </span><span class="dv">0</span> <span class="co"># perform a comparison with each element</span></span></code></pre></div>
+<pre><code>##  [1]  TRUE FALSE  TRUE FALSE  TRUE FALSE FALSE FALSE FALSE FALSE</code></pre>
+<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="session-1.html#cb99-1"></a>genes<span class="op">$</span>Count <span class="op">&lt;</span><span class="st"> </span><span class="dv">100</span></span></code></pre></div>
+<pre><code>##  [1]  TRUE  TRUE  TRUE FALSE  TRUE  TRUE FALSE FALSE  TRUE FALSE</code></pre>
+<p>This can be useful for creating new columns based on existing data</p>
+<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="session-1.html#cb101-1"></a>genes<span class="op">$</span>Expressed &lt;-<span class="st"> </span>genes<span class="op">$</span>Count <span class="op">!=</span><span class="st"> </span><span class="dv">0</span></span></code></pre></div>
+<p>When assigning in this way, an existing column may be overwritten. If the column assigned to does not exist, a new column is created.</p>
+<p><strong>Challenge 1.3</strong></p>
+<p>Create a new column called <code>Prop_Count</code> that contains each count value as a proportion of the total count value of all 10 genes in the data frame. E.g. if <code>Count</code> was 10 and total count of all 10 genes is 100, that row in <code>Prop_Count</code> should be 0.1.</p>
+<p><em>Hint</em> use the <code>sum()</code> function.</p>
+</div>
+<div id="write" class="section level2">
+<h2><span class="header-section-number">1.12</span> Writing out data</h2>
+<p>The last thing we will do this session is learn to write out data using the function <code>write.table()</code>.</p>
+<p>There are a few things we must tell <code>write.table()</code>, for it to be able to write out the data the way we want:</p>
+<ul>
+<li><code>x</code> - the name of this input is not very informative, but first you must tell the function what you want to write out. In our case we want to write out our dataframe <code>genes</code>.</li>
+<li><code>file</code> - the name of the file that we want to write to.</li>
+<li><code>sep</code> - how each value in our output file is separated. Common file formats are ‘csv’ and ‘tsv’ (discussed above). In R, a tab is represented by <code>"\t"</code>.</li>
+<li><code>row.names</code> - this is either <code>TRUE</code> or <code>FALSE</code>, and let’s you specify whether you want to write out row names. If your dataframe does not have row names, put <code>FALSE</code>.</li>
+<li><code>col.names</code> - this is also either <code>TRUE</code> or <code>FALSE</code>, and let’s you specify whether you want to write out column names. If your dataframe has column names, put <code>TRUE</code>.</li>
+</ul>
+<p>We can write out our <code>genes</code> data frame into a .tsv file using the command below:</p>
+<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="session-1.html#cb102-1"></a><span class="kw">write.table</span>(<span class="dt">x =</span> genes, <span class="dt">file =</span> <span class="st">&quot;Ses1_Genes_output.tsv&quot;</span>, <span class="dt">sep =</span> <span class="st">&quot;</span><span class="ch">\t</span><span class="st">&quot;</span>,</span>
+<span id="cb102-2"><a href="session-1.html#cb102-2"></a>            <span class="dt">row.names =</span> <span class="ot">FALSE</span>, <span class="dt">col.names =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="session-2.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/01-session1.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["IntroBaseR.pdf", "IntroBaseR.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

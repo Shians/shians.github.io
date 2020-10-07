@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 2 Session 2 | Introduction to Base R</title>
+  <meta name="description" content="Introductory tutorial to base R, with a biological focus. In particular it will focus on analysing RNA-sequencing data with Bioconductor." />
+  <meta name="generator" content="bookdown 0.19 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 2 Session 2 | Introduction to Base R" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Introductory tutorial to base R, with a biological focus. In particular it will focus on analysing RNA-sequencing data with Bioconductor." />
+  <meta name="github-repo" content="shians/BaseR_Intro" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 2 Session 2 | Introduction to Base R" />
+  
+  <meta name="twitter:description" content="Introductory tutorial to base R, with a biological focus. In particular it will focus on analysing RNA-sequencing data with Bioconductor." />
+  
+
+<meta name="author" content="" />
+
+
+<meta name="date" content="2020-10-08" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="session-1.html"/>
+
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Introduction to Base R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a><ul>
+<li class="chapter" data-level="0.1" data-path="index.html"><a href="index.html#data-files"><i class="fa fa-check"></i><b>0.1</b> Data files</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="session-1.html"><a href="session-1.html"><i class="fa fa-check"></i><b>1</b> Session 1</a><ul>
+<li class="chapter" data-level="1.1" data-path="session-1.html"><a href="session-1.html#r-and-rstudio"><i class="fa fa-check"></i><b>1.1</b> R and RStudio</a></li>
+<li class="chapter" data-level="1.2" data-path="session-1.html"><a href="session-1.html#r-scripts"><i class="fa fa-check"></i><b>1.2</b> R scripts</a></li>
+<li class="chapter" data-level="1.3" data-path="session-1.html"><a href="session-1.html#working-directory"><i class="fa fa-check"></i><b>1.3</b> Working directory</a></li>
+<li class="chapter" data-level="1.4" data-path="session-1.html"><a href="session-1.html#maths"><i class="fa fa-check"></i><b>1.4</b> Maths</a></li>
+<li class="chapter" data-level="1.5" data-path="session-1.html"><a href="session-1.html#comps"><i class="fa fa-check"></i><b>1.5</b> Comparisons</a></li>
+<li class="chapter" data-level="1.6" data-path="session-1.html"><a href="session-1.html#functions"><i class="fa fa-check"></i><b>1.6</b> Functions</a></li>
+<li class="chapter" data-level="1.7" data-path="session-1.html"><a href="session-1.html#variables"><i class="fa fa-check"></i><b>1.7</b> Variables</a></li>
+<li class="chapter" data-level="1.8" data-path="session-1.html"><a href="session-1.html#data-types"><i class="fa fa-check"></i><b>1.8</b> Data types</a><ul>
+<li class="chapter" data-level="1.8.1" data-path="session-1.html"><a href="session-1.html#factors"><i class="fa fa-check"></i><b>1.8.1</b> Factors</a></li>
+</ul></li>
+<li class="chapter" data-level="1.9" data-path="session-1.html"><a href="session-1.html#data-structures"><i class="fa fa-check"></i><b>1.9</b> Data structures</a><ul>
+<li class="chapter" data-level="1.9.1" data-path="session-1.html"><a href="session-1.html#vector"><i class="fa fa-check"></i><b>1.9.1</b> Vector</a></li>
+<li class="chapter" data-level="1.9.2" data-path="session-1.html"><a href="session-1.html#matrix"><i class="fa fa-check"></i><b>1.9.2</b> Matrix</a></li>
+<li class="chapter" data-level="1.9.3" data-path="session-1.html"><a href="session-1.html#data-frame"><i class="fa fa-check"></i><b>1.9.3</b> Data Frame</a></li>
+</ul></li>
+<li class="chapter" data-level="1.10" data-path="session-1.html"><a href="session-1.html#reading-in-data"><i class="fa fa-check"></i><b>1.10</b> Reading in data</a></li>
+<li class="chapter" data-level="1.11" data-path="session-1.html"><a href="session-1.html#vect"><i class="fa fa-check"></i><b>1.11</b> Vectorised Operations</a></li>
+<li class="chapter" data-level="1.12" data-path="session-1.html"><a href="session-1.html#write"><i class="fa fa-check"></i><b>1.12</b> Writing out data</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="session-2.html"><a href="session-2.html"><i class="fa fa-check"></i><b>2</b> Session 2</a><ul>
+<li class="chapter" data-level="2.1" data-path="session-2.html"><a href="session-2.html#miss"><i class="fa fa-check"></i><b>2.1</b> Missing values</a></li>
+<li class="chapter" data-level="2.2" data-path="session-2.html"><a href="session-2.html#subsetting-vectors"><i class="fa fa-check"></i><b>2.2</b> Subsetting vectors</a><ul>
+<li class="chapter" data-level="2.2.1" data-path="session-2.html"><a href="session-2.html#subsetting-with-numeric-indicies"><i class="fa fa-check"></i><b>2.2.1</b> Subsetting with numeric indicies</a></li>
+<li class="chapter" data-level="2.2.2" data-path="session-2.html"><a href="session-2.html#subsetting-with-logical-vectors"><i class="fa fa-check"></i><b>2.2.2</b> Subsetting with logical vectors</a></li>
+<li class="chapter" data-level="2.2.3" data-path="session-2.html"><a href="session-2.html#removing-na-rows-using-complete.cases"><i class="fa fa-check"></i><b>2.2.3</b> Removing NA rows using complete.cases()</a></li>
+<li class="chapter" data-level="2.2.4" data-path="session-2.html"><a href="session-2.html#subsetting-data-structures-with-numerics"><i class="fa fa-check"></i><b>2.2.4</b> Subsetting data structures with numerics</a></li>
+<li class="chapter" data-level="2.2.5" data-path="session-2.html"><a href="session-2.html#rearranging-using-the-order-function"><i class="fa fa-check"></i><b>2.2.5</b> Rearranging using the <code>order()</code> function</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="session-2.html"><a href="session-2.html#subsetting-data-structures-with-logicals"><i class="fa fa-check"></i><b>2.3</b> Subsetting data structures with logicals</a><ul>
+<li class="chapter" data-level="2.3.1" data-path="session-2.html"><a href="session-2.html#in"><i class="fa fa-check"></i><b>2.3.1</b> %in%</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="session-2.html"><a href="session-2.html#merge"><i class="fa fa-check"></i><b>2.4</b> Merge</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Introduction to Base R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="session-2" class="section level1">
+<h1><span class="header-section-number">Chapter 2</span> Session 2</h1>
+<p>In the previous session we learned about:</p>
+<ul>
+<li>The RStudio environment</li>
+<li>Mathematical and logical operations</li>
+<li>Using functions</li>
+<li>Variables</li>
+<li>Atomic and collection data types</li>
+<li>Input and output</li>
+</ul>
+<p>In this session we will learn about:</p>
+<ul>
+<li>Missing values</li>
+<li>Subsetting data structures</li>
+<li>How to merge two dataframes</li>
+</ul>
+<div id="miss" class="section level2">
+<h2><span class="header-section-number">2.1</span> Missing values</h2>
+<p>Missing values are fairly common in data, we will look at how to deal with missing values in R. First, let’s read in some data. Recall we use the function <code>read.delim()</code> and tell R not to read strings as factors using <code>stringsAsFactors = FALSE</code>.</p>
+<p>We are using the file “Ses2_genes.tsv” today.</p>
+<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="session-2.html#cb103-1"></a>genes &lt;-<span class="st"> </span><span class="kw">read.delim</span>(<span class="st">&quot;data/Ses2_genes.tsv&quot;</span>, <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)</span>
+<span id="cb103-2"><a href="session-2.html#cb103-2"></a></span>
+<span id="cb103-3"><a href="session-2.html#cb103-3"></a><span class="kw">dim</span>(genes) <span class="co"># returns number of rows and columns</span></span></code></pre></div>
+<pre><code>## [1] 200   5</code></pre>
+<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="session-2.html#cb105-1"></a><span class="kw">head</span>(genes)</span></code></pre></div>
+<pre><code>##   EntrezID  SYMBOL TXCHROM GeneLength Count
+## 1    11480  Acvr2a    chr2       5681   979
+## 2    11634    Aire   chr10       1929    15
+## 3    12156 missing    chr2       2515   932
+## 4    12290 Cacna1e    chr1      12697     0
+## 5    12449    Ccnf   chr17       3099   214
+## 6    12563    Cdh6   chr15       2632     2</code></pre>
+<p>You can see in the environment tab that this data frame has 200 rows (observations) and 5 columns (variables). You can also click on the <code>genes</code> entry in the Environment tab (red arrow in Figure <a href="session-2.html#fig:RS4">2.1</a>) to display the data in a new window (left):</p>
+<div class="figure"><span id="fig:RS4"></span>
+<img src="Images/RS4.png" alt="Viewing data from the 'Environment' tab." width="700px" />
+<p class="caption">
+Figure 2.1: Viewing data from the ‘Environment’ tab.
+</p>
+</div>
+<p>Scrolling down the window, you can see that there are several <em>NA</em> entries. <code>NA</code> denotes a missing value in R.</p>
+<p><code>NA</code>‘s have some interesting behaviour - they are ’contagious’. For example, if we wanted to take the mean of a vector numbers, which includes a <code>NA</code>, the answer is <code>NA</code>. If we think about it, it makes sense that the mean of two numbers and a ‘missing’ number, that could be anything, is <code>NA</code>.</p>
+<div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb107-1"><a href="session-2.html#cb107-1"></a><span class="kw">mean</span>(<span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">3</span>, <span class="ot">NA</span>))</span></code></pre></div>
+<pre><code>## [1] NA</code></pre>
+<p>Luckily many mathematical functions have a <code>na.rm</code> option, where you can tell it to remove <code>NA</code> values:</p>
+<div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb109-1"><a href="session-2.html#cb109-1"></a><span class="kw">mean</span>(<span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">3</span>, <span class="ot">NA</span>), <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<pre><code>## [1] 2.5</code></pre>
+<p>Finding out if something is NA is also a bit different, due to the nature of the missing value. So we must use the <code>is.na()</code> function rather than a direct comparison.</p>
+<div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb111-1"><a href="session-2.html#cb111-1"></a><span class="ot">NA</span> <span class="op">==</span><span class="st"> </span><span class="ot">NA</span> <span class="co"># returns NA rather than TRUE</span></span></code></pre></div>
+<pre><code>## [1] NA</code></pre>
+<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb113-1"><a href="session-2.html#cb113-1"></a><span class="kw">is.na</span>(<span class="ot">NA</span>)</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb115-1"><a href="session-2.html#cb115-1"></a><span class="kw">is.na</span>(<span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">3</span>, <span class="ot">NA</span>))</span></code></pre></div>
+<pre><code>## [1] FALSE FALSE  TRUE</code></pre>
+</div>
+<div id="subsetting-vectors" class="section level2">
+<h2><span class="header-section-number">2.2</span> Subsetting vectors</h2>
+<p>Subsetting involves selecting a portion of a data structure and uses square brackets <code>[ ]</code>. There are two main ways to subset a data structure: numerical or logical indices.</p>
+<div id="subsetting-with-numeric-indicies" class="section level3">
+<h3><span class="header-section-number">2.2.1</span> Subsetting with numeric indicies</h3>
+<p>Let’s take a look at subsetting vectors first. We can use <code>$</code> to obtain just one column from the <code>genes</code> data frame. The output will be a vector.</p>
+<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb117-1"><a href="session-2.html#cb117-1"></a>genes<span class="op">$</span>Count</span></code></pre></div>
+<pre><code>##   [1]   979    15   932     0   214     2     2     0  1790    41  1033   700
+##  [13]  2075   351    22     0     0   893     3   100 32100   269    34 20005
+##  [25]  5751     0   275     9   849  7175   768   358   234  5065  2096  1994
+##  [37]   757     0  2310     0     1     0  3091   810    30   816   817     1
+##  [49]   580    33     0   941  1445   522     2  2346   572   431  5797     2
+##  [61]    70  1236   966   235     2  3009   431   452  2602  3481    99 11857
+##  [73]    35  1952     0   706  1317  1130    92     0   871   730  3892  3772
+##  [85]    20     7     0   756     1   210   101    17    21   537  1240   930
+##  [97]     1     1     0   221  1599     0    67     1     0   315     0     0
+## [109]   739     0     0   976     1   715 18636   289  1396     0   101   285
+## [121]  1665    47     2  4483     2   363   169   135     0     2     0    11
+## [133]  4088  1082    92     0  3888    17     0     0     0     0     0     0
+## [145]     0     0     0     0  2442    30  1610     0     0     0    16     1
+## [157]     2     0    47     0  1118     0     1     0     2     3    22     0
+## [169]     0     0     0     0     0     0   431     0     0    16     0     1
+## [181]     0     4     0     0     1     0     0     0     0   301     0     0
+## [193]     0     0     0     0     0     0     0    59</code></pre>
+<p>We will assign this to a variable called <code>counts</code>. <code>counts</code> is now a variable that refers to a vector containing 200 integers.</p>
+<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb119-1"><a href="session-2.html#cb119-1"></a>counts &lt;-<span class="st"> </span>genes<span class="op">$</span>Count</span>
+<span id="cb119-2"><a href="session-2.html#cb119-2"></a>counts</span></code></pre></div>
+<pre><code>##   [1]   979    15   932     0   214     2     2     0  1790    41  1033   700
+##  [13]  2075   351    22     0     0   893     3   100 32100   269    34 20005
+##  [25]  5751     0   275     9   849  7175   768   358   234  5065  2096  1994
+##  [37]   757     0  2310     0     1     0  3091   810    30   816   817     1
+##  [49]   580    33     0   941  1445   522     2  2346   572   431  5797     2
+##  [61]    70  1236   966   235     2  3009   431   452  2602  3481    99 11857
+##  [73]    35  1952     0   706  1317  1130    92     0   871   730  3892  3772
+##  [85]    20     7     0   756     1   210   101    17    21   537  1240   930
+##  [97]     1     1     0   221  1599     0    67     1     0   315     0     0
+## [109]   739     0     0   976     1   715 18636   289  1396     0   101   285
+## [121]  1665    47     2  4483     2   363   169   135     0     2     0    11
+## [133]  4088  1082    92     0  3888    17     0     0     0     0     0     0
+## [145]     0     0     0     0  2442    30  1610     0     0     0    16     1
+## [157]     2     0    47     0  1118     0     1     0     2     3    22     0
+## [169]     0     0     0     0     0     0   431     0     0    16     0     1
+## [181]     0     4     0     0     1     0     0     0     0   301     0     0
+## [193]     0     0     0     0     0     0     0    59</code></pre>
+<p>This will give you the 3rd element of the vector <code>counts</code>:</p>
+<div class="sourceCode" id="cb121"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb121-1"><a href="session-2.html#cb121-1"></a>counts[<span class="dv">3</span>]</span></code></pre></div>
+<pre><code>## [1] 932</code></pre>
+<p>It is also possible to give a vector of indices, this returns a vector of the same length as the indices given containing the elements corresponding to each index.</p>
+<div class="sourceCode" id="cb123"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb123-1"><a href="session-2.html#cb123-1"></a><span class="co"># return the 3rd to 10th elements</span></span>
+<span id="cb123-2"><a href="session-2.html#cb123-2"></a>counts[<span class="dv">3</span><span class="op">:</span><span class="dv">10</span>]</span></code></pre></div>
+<pre><code>## [1]  932    0  214    2    2    0 1790   41</code></pre>
+<p>The indices do not need to be sequential, nor do they need to be unique or in ascending order.</p>
+<div class="sourceCode" id="cb125"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb125-1"><a href="session-2.html#cb125-1"></a><span class="co"># get the 3rd, 5th and 100th elements</span></span>
+<span id="cb125-2"><a href="session-2.html#cb125-2"></a>counts[<span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">100</span>)]</span></code></pre></div>
+<pre><code>## [1] 932 214 221</code></pre>
+<div class="sourceCode" id="cb127"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb127-1"><a href="session-2.html#cb127-1"></a><span class="co"># get the 3rd element twice, and the 5th element</span></span>
+<span id="cb127-2"><a href="session-2.html#cb127-2"></a>counts[<span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">5</span>)]</span></code></pre></div>
+<pre><code>## [1] 932 932 214</code></pre>
+<div class="sourceCode" id="cb129"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb129-1"><a href="session-2.html#cb129-1"></a><span class="co"># get the 100th, 3rd, and 5th elements</span></span>
+<span id="cb129-2"><a href="session-2.html#cb129-2"></a>counts[<span class="kw">c</span>(<span class="dv">100</span>, <span class="dv">3</span>, <span class="dv">5</span>)]</span></code></pre></div>
+<pre><code>## [1] 221 932 214</code></pre>
+<p>Note that we have used <code>c()</code> within the square brackets. This is because R expects ONE ‘object’ within the square brackets. Thus, if you want to extract several indices, you must give it ONE vector containing the indices of the elements. A vector (e.g. <code>c(3,5,10)</code>) is considered one ‘object’ but the numbers <code>3,5,10</code> are considered three different ‘objects’.</p>
+<p>Indeed, <code>3:10</code>, which we used earlier, is actually a vector of the numbers 3 to 10:</p>
+<div class="sourceCode" id="cb131"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb131-1"><a href="session-2.html#cb131-1"></a><span class="dv">3</span><span class="op">:</span><span class="dv">10</span></span></code></pre></div>
+<pre><code>## [1]  3  4  5  6  7  8  9 10</code></pre>
+<p>We can also use the <code>-</code> sign to index all the elements EXCEPT the elements 10 through to 200:</p>
+<div class="sourceCode" id="cb133"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb133-1"><a href="session-2.html#cb133-1"></a>counts[<span class="op">-</span>(<span class="dv">10</span><span class="op">:</span><span class="dv">200</span>)]</span></code></pre></div>
+<pre><code>## [1]  979   15  932    0  214    2    2    0 1790</code></pre>
+<p>Note that subsetting past the end of a vector returns NA.</p>
+<div class="sourceCode" id="cb135"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb135-1"><a href="session-2.html#cb135-1"></a>short_vec &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>, <span class="st">&quot;c&quot;</span>, <span class="st">&quot;d&quot;</span>)</span>
+<span id="cb135-2"><a href="session-2.html#cb135-2"></a>short_vec[<span class="dv">5</span>]</span></code></pre></div>
+<pre><code>## [1] NA</code></pre>
+<div class="sourceCode" id="cb137"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb137-1"><a href="session-2.html#cb137-1"></a>short_vec[<span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">5</span>)]</span></code></pre></div>
+<pre><code>## [1] &quot;a&quot; &quot;c&quot; NA</code></pre>
+</div>
+<div id="subsetting-with-logical-vectors" class="section level3">
+<h3><span class="header-section-number">2.2.2</span> Subsetting with logical vectors</h3>
+<p>The alternative way to subset is using a logical vector of the same length as the vector being indexed. Each element of the logical vector denotes whether or not that element of the original vector will be returned in the result.</p>
+<div class="sourceCode" id="cb139"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb139-1"><a href="session-2.html#cb139-1"></a><span class="co"># take the 1st, 2nd and 4th elements from short_vec</span></span>
+<span id="cb139-2"><a href="session-2.html#cb139-2"></a>short_vec[<span class="kw">c</span>(<span class="ot">TRUE</span>, <span class="ot">TRUE</span>, <span class="ot">FALSE</span>, <span class="ot">TRUE</span>)]</span></code></pre></div>
+<pre><code>## [1] &quot;a&quot; &quot;b&quot; &quot;d&quot;</code></pre>
+<p>You will rarely write out these logicals by hand, instead they usually come from a comparisons, for example if we wanted to take only the non-zero values of counts</p>
+<div class="sourceCode" id="cb141"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb141-1"><a href="session-2.html#cb141-1"></a>counts[counts <span class="op">!=</span><span class="st"> </span><span class="dv">0</span>]</span></code></pre></div>
+<pre><code>##   [1]   979    15   932   214     2     2  1790    41  1033   700  2075   351
+##  [13]    22   893     3   100 32100   269    34 20005  5751   275     9   849
+##  [25]  7175   768   358   234  5065  2096  1994   757  2310     1  3091   810
+##  [37]    30   816   817     1   580    33   941  1445   522     2  2346   572
+##  [49]   431  5797     2    70  1236   966   235     2  3009   431   452  2602
+##  [61]  3481    99 11857    35  1952   706  1317  1130    92   871   730  3892
+##  [73]  3772    20     7   756     1   210   101    17    21   537  1240   930
+##  [85]     1     1   221  1599    67     1   315   739   976     1   715 18636
+##  [97]   289  1396   101   285  1665    47     2  4483     2   363   169   135
+## [109]     2    11  4088  1082    92  3888    17  2442    30  1610    16     1
+## [121]     2    47  1118     1     2     3    22   431    16     1     4     1
+## [133]   301    59</code></pre>
+<div class="sourceCode" id="cb143"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb143-1"><a href="session-2.html#cb143-1"></a><span class="co"># you can also store the indices in a variable first</span></span>
+<span id="cb143-2"><a href="session-2.html#cb143-2"></a>non_zero &lt;-<span class="st"> </span>counts <span class="op">!=</span><span class="st"> </span><span class="dv">0</span></span>
+<span id="cb143-3"><a href="session-2.html#cb143-3"></a>counts[non_zero]</span></code></pre></div>
+<pre><code>##   [1]   979    15   932   214     2     2  1790    41  1033   700  2075   351
+##  [13]    22   893     3   100 32100   269    34 20005  5751   275     9   849
+##  [25]  7175   768   358   234  5065  2096  1994   757  2310     1  3091   810
+##  [37]    30   816   817     1   580    33   941  1445   522     2  2346   572
+##  [49]   431  5797     2    70  1236   966   235     2  3009   431   452  2602
+##  [61]  3481    99 11857    35  1952   706  1317  1130    92   871   730  3892
+##  [73]  3772    20     7   756     1   210   101    17    21   537  1240   930
+##  [85]     1     1   221  1599    67     1   315   739   976     1   715 18636
+##  [97]   289  1396   101   285  1665    47     2  4483     2   363   169   135
+## [109]     2    11  4088  1082    92  3888    17  2442    30  1610    16     1
+## [121]     2    47  1118     1     2     3    22   431    16     1     4     1
+## [133]   301    59</code></pre>
+<p>Indices are like shopping lists, each element of the index tell us what we need from the original vector. In numerical indices it tells us the position in the vector to take values from, and in logical indices it tells us whether each element should be included in the result.</p>
+</div>
+<div id="removing-na-rows-using-complete.cases" class="section level3">
+<h3><span class="header-section-number">2.2.3</span> Removing NA rows using complete.cases()</h3>
+<p>Because of the care required when working with missing values, it is sometimes an option to simply remove all entries that are not complete. This can be done using the <code>complete.cases()</code> function. This function returns a logical vector indicating whether each row of a data frame contains no missing values.</p>
+<div class="sourceCode" id="cb145"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb145-1"><a href="session-2.html#cb145-1"></a><span class="co"># returns logical of same length as number of rows in genes</span></span>
+<span id="cb145-2"><a href="session-2.html#cb145-2"></a><span class="kw">complete.cases</span>(genes)</span>
+<span id="cb145-3"><a href="session-2.html#cb145-3"></a></span>
+<span id="cb145-4"><a href="session-2.html#cb145-4"></a><span class="co"># can be used to filter rows down to only complete rows</span></span>
+<span id="cb145-5"><a href="session-2.html#cb145-5"></a>complete_genes &lt;-<span class="st"> </span>genes[<span class="kw">complete.cases</span>(genes), ]</span>
+<span id="cb145-6"><a href="session-2.html#cb145-6"></a>complete_genes</span></code></pre></div>
+</div>
+<div id="subsetting-data-structures-with-numerics" class="section level3">
+<h3><span class="header-section-number">2.2.4</span> Subsetting data structures with numerics</h3>
+<p>Subsetting a 2 dimensional data structure (e.g. a data frame or a matrix) is similar to subsetting a vector, except you now must specify which rows AND which columns you want. The general syntax for the <code>genes</code> data frame looks like this:</p>
+<pre><code>genes[(rows you want) , (columns you want)]</code></pre>
+<p>Within the square brackets, you will specify which rows you want, followed by a comma, then what columns you want.</p>
+<div class="sourceCode" id="cb147"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb147-1"><a href="session-2.html#cb147-1"></a><span class="co"># take the 5th to 9th rows and the 2nd and 4th columns.</span></span>
+<span id="cb147-2"><a href="session-2.html#cb147-2"></a>genes[<span class="dv">5</span><span class="op">:</span><span class="dv">9</span>, <span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">4</span>)]</span></code></pre></div>
+<pre><code>##   SYMBOL GeneLength
+## 5   Ccnf       3099
+## 6   Cdh6       2632
+## 7   Cdh9       2903
+## 8   Chat       2810
+## 9  Clock       7478</code></pre>
+<p>We could have also done this using the names of the columns. Note that column names are enclosed in quotes signifying that they are of the ‘character’ data type.</p>
+<div class="sourceCode" id="cb149"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb149-1"><a href="session-2.html#cb149-1"></a>genes[<span class="dv">5</span><span class="op">:</span><span class="dv">9</span>, <span class="kw">c</span>(<span class="st">&quot;SYMBOL&quot;</span>, <span class="st">&quot;GeneLength&quot;</span>)]</span></code></pre></div>
+<pre><code>##   SYMBOL GeneLength
+## 5   Ccnf       3099
+## 6   Cdh6       2632
+## 7   Cdh9       2903
+## 8   Chat       2810
+## 9  Clock       7478</code></pre>
+<p>If you leave the left side of comma empty, R will give you ALL the rows. If you leave the right side of the comma empty, R will give you ALL the columns.</p>
+<p>This will give you the 2nd row and all the columns.</p>
+<div class="sourceCode" id="cb151"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb151-1"><a href="session-2.html#cb151-1"></a>genes[<span class="dv">2</span>, ]</span></code></pre></div>
+<pre><code>##   EntrezID SYMBOL TXCHROM GeneLength Count
+## 2    11634   Aire   chr10       1929    15</code></pre>
+</div>
+<div id="rearranging-using-the-order-function" class="section level3">
+<h3><span class="header-section-number">2.2.5</span> Rearranging using the <code>order()</code> function</h3>
+<p>We have seen before that numeric indices can be used to change the order of the output relative to the original input. A common application of this is to arrange a table by the values in some column using the <code>order()</code> function.</p>
+<p>The order function returns a vector of numerics of the same length with values such that the the vector would be sorted.</p>
+<div class="sourceCode" id="cb153"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb153-1"><a href="session-2.html#cb153-1"></a><span class="co"># order returns a vector of numerics that can be use to index</span></span>
+<span id="cb153-2"><a href="session-2.html#cb153-2"></a><span class="kw">order</span>(genes<span class="op">$</span>TXCHROM)</span>
+<span id="cb153-3"><a href="session-2.html#cb153-3"></a></span>
+<span id="cb153-4"><a href="session-2.html#cb153-4"></a><span class="co"># using this to index will result in a sorted vector</span></span>
+<span id="cb153-5"><a href="session-2.html#cb153-5"></a>genes<span class="op">$</span>TXCHROM[<span class="kw">order</span>(genes<span class="op">$</span>TXCHROM)]</span>
+<span id="cb153-6"><a href="session-2.html#cb153-6"></a></span>
+<span id="cb153-7"><a href="session-2.html#cb153-7"></a><span class="co"># it can also be applied to data frames to sort by a column</span></span>
+<span id="cb153-8"><a href="session-2.html#cb153-8"></a>genes[<span class="kw">order</span>(genes<span class="op">$</span>TXCHROM), ]</span>
+<span id="cb153-9"><a href="session-2.html#cb153-9"></a></span>
+<span id="cb153-10"><a href="session-2.html#cb153-10"></a><span class="co"># multiple arguments can be given to order to sort by multiple columns</span></span>
+<span id="cb153-11"><a href="session-2.html#cb153-11"></a>genes[<span class="kw">order</span>(genes<span class="op">$</span>TXCHROM, genes<span class="op">$</span>SYMBOL), ]</span></code></pre></div>
+</div>
+</div>
+<div id="subsetting-data-structures-with-logicals" class="section level2">
+<h2><span class="header-section-number">2.3</span> Subsetting data structures with logicals</h2>
+<p>One very useful operation is to subset a whole table based on the values of a particular column.</p>
+<p>As an example, we subset our genes table to only the genes with a count of at least 100.</p>
+<div class="sourceCode" id="cb154"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb154-1"><a href="session-2.html#cb154-1"></a>counts[counts <span class="op">&gt;</span><span class="st"> </span><span class="dv">100</span>]</span>
+<span id="cb154-2"><a href="session-2.html#cb154-2"></a>genes[genes<span class="op">$</span>Count <span class="op">==</span><span class="st"> </span><span class="dv">0</span>, ]</span></code></pre></div>
+<div class="sourceCode" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb155-1"><a href="session-2.html#cb155-1"></a><span class="co"># subset all the genes with 0 counts and every column</span></span>
+<span id="cb155-2"><a href="session-2.html#cb155-2"></a>genes[genes<span class="op">$</span>Count <span class="op">==</span><span class="st"> </span><span class="dv">0</span>, ]</span>
+<span id="cb155-3"><a href="session-2.html#cb155-3"></a></span>
+<span id="cb155-4"><a href="session-2.html#cb155-4"></a><span class="co"># subset all the genes with &gt;0 counts and every column</span></span>
+<span id="cb155-5"><a href="session-2.html#cb155-5"></a>genes[genes<span class="op">$</span>Count <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>, ]</span></code></pre></div>
+<p>This allows tables to be filtered based on a specific column.</p>
+<div id="in" class="section level3">
+<h3><span class="header-section-number">2.3.1</span> %in%</h3>
+<p>The <code>%in%</code> operator tests whether elements of the first vector is contained within the second vector. It will return TRUE where the elements of the first vector is found in the second.</p>
+<div class="sourceCode" id="cb156"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb156-1"><a href="session-2.html#cb156-1"></a><span class="co"># %in% operator tests membership</span></span>
+<span id="cb156-2"><a href="session-2.html#cb156-2"></a><span class="kw">c</span>(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>, <span class="st">&quot;c&quot;</span>, <span class="st">&quot;d&quot;</span>) <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;b&quot;</span>, <span class="st">&quot;d&quot;</span>)</span>
+<span id="cb156-3"><a href="session-2.html#cb156-3"></a></span>
+<span id="cb156-4"><a href="session-2.html#cb156-4"></a><span class="co"># result of in can be used as a filtering for multiple matches</span></span>
+<span id="cb156-5"><a href="session-2.html#cb156-5"></a>genes<span class="op">$</span>TXCHROM <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;chr1&quot;</span>, <span class="st">&quot;chr2&quot;</span>)</span>
+<span id="cb156-6"><a href="session-2.html#cb156-6"></a>genes[genes<span class="op">$</span>TXCHROM <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;chr1&quot;</span>, <span class="st">&quot;chr2&quot;</span>), ]</span></code></pre></div>
+</div>
+</div>
+<div id="merge" class="section level2">
+<h2><span class="header-section-number">2.4</span> Merge</h2>
+<p>Two dataframes can be combined with the <code>merge()</code> function.</p>
+<p>For example, let’s say we have two dataframes (dataframe1 and dataframe2), each containing different information about 3 genes:</p>
+<div class="figure"><span id="fig:merge1"></span>
+<img src="Images/merge1.png" alt="The two dataframes to merge." width="750px" />
+<p class="caption">
+Figure 2.2: The two dataframes to merge.
+</p>
+</div>
+<p>We can merge these dataframes together into one data frame that contains all the information about genes. Notice that the order of the genes is not the same in the two dataframes. During the merge we want R to match each row according to the <code>Gene</code> column in each data frame such that the correct information is added to the correct row. The result would have 4 columns, 3 rows and the correct information along each row.</p>
+<div class="figure"><span id="fig:merge2"></span>
+<img src="Images/merge2.png" alt="The two dataframes merged." width="750px" />
+<p class="caption">
+Figure 2.3: The two dataframes merged.
+</p>
+</div>
+<p>Let’s practice merging on the files “Ses2_genes.tsv” and “Ses2_geneNames.tsv”. “Ses2_genes.tsv” contains gene EntrezIDs, gene symbol, gene chromosome, gene length and their count value. “Ses2_geneNames.tsv” contains gene names and their corresponding EntrezIDs.</p>
+<p>First we will read in both files:</p>
+<div class="sourceCode" id="cb157"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb157-1"><a href="session-2.html#cb157-1"></a>genes &lt;-<span class="st"> </span><span class="kw">read.delim</span>(<span class="st">&quot;data/Ses2_genes.tsv&quot;</span>, <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)</span>
+<span id="cb157-2"><a href="session-2.html#cb157-2"></a>gene_names &lt;-<span class="st"> </span><span class="kw">read.delim</span>(<span class="st">&quot;data/Ses2_geneNames.tsv&quot;</span>, </span>
+<span id="cb157-3"><a href="session-2.html#cb157-3"></a>                         <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
+<p>What we want to do now, is to merge the two data frames into one data frame with 6 columns, containing the information from both data frames. We also want to make sure that when R merges the data frames, the correct information is added to the correct row. You will notice that both the <code>genes</code> and <code>gene_names</code> data frames have a column giving the EntrezIDs. This column can be used as the “index” or “ID” column to make sure the correct information is added to each row. We can do this by telling <code>merge()</code> to match rows in the two data frames using EntrezIDs during the merge.</p>
+<p><code>merge()</code> has the following syntax:</p>
+<div class="sourceCode" id="cb158"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb158-1"><a href="session-2.html#cb158-1"></a><span class="kw">merge</span>(</span>
+<span id="cb158-2"><a href="session-2.html#cb158-2"></a>  <span class="dt">x =</span>    <span class="co"># name of the first dataframe to merge</span></span>
+<span id="cb158-3"><a href="session-2.html#cb158-3"></a>  <span class="dt">y =</span>    <span class="co"># name of the second dataframe to merge</span></span>
+<span id="cb158-4"><a href="session-2.html#cb158-4"></a>  <span class="dt">by.x =</span> <span class="co"># name of the column to match, in the first data frame</span></span>
+<span id="cb158-5"><a href="session-2.html#cb158-5"></a>  <span class="dt">by.y =</span> <span class="co"># name of the column to match in the second data frame</span></span>
+<span id="cb158-6"><a href="session-2.html#cb158-6"></a>)</span></code></pre></div>
+<p>Thus, to merge our two dataframes, using the EntrezID column of each data frame to match rows, we can use:</p>
+<div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb159-1"><a href="session-2.html#cb159-1"></a>genes2 &lt;-<span class="st"> </span><span class="kw">merge</span>(<span class="dt">x =</span> genes, <span class="dt">y =</span> gene_names, </span>
+<span id="cb159-2"><a href="session-2.html#cb159-2"></a>                <span class="dt">by.x =</span> <span class="st">&quot;EntrezID&quot;</span>, <span class="dt">by.y =</span> <span class="st">&quot;ENTREZID&quot;</span>)</span>
+<span id="cb159-3"><a href="session-2.html#cb159-3"></a></span>
+<span id="cb159-4"><a href="session-2.html#cb159-4"></a><span class="kw">head</span>(genes2)</span></code></pre></div>
+<pre><code>##   EntrezID  SYMBOL TXCHROM GeneLength Count
+## 1    11480  Acvr2a    chr2       5681   979
+## 2    11634    Aire   chr10       1929    15
+## 3    12156 missing    chr2       2515   932
+## 4    12290 Cacna1e    chr1      12697     0
+## 5    12449    Ccnf   chr17       3099   214
+## 6    12563    Cdh6   chr15       2632     2
+##                                                                                GENENAME
+## 1                                                                  activin receptor IIA
+## 2 autoimmune regulator (autoimmune polyendocrinopathy candidiasis ectodermal dystrophy)
+## 3                                                          bone morphogenetic protein 2
+## 4                          calcium channel, voltage-dependent, R type, alpha 1E subunit
+## 5                                                                              cyclin F
+## 6                                                                            cadherin 6</code></pre>
+<p>You may have noticed that there are 200 rows in the <code>genes</code> data frame but 290 rows in the <code>gene_names</code> data frame. This means that there are more genes in the <code>gene_names</code> data frame than there are in the <code>genes</code> data frame. This means that there are a few ways to merge the two data frames. We can either keep all rows from both data frames, keep only rows where there is a corresponding “index” value in both dataframes or keep only rows from one of the two data frames.</p>
+<p>We can specify which rows to keep using the following additional arguments in <code>merge()</code>:</p>
+<div class="sourceCode" id="cb161"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb161-1"><a href="session-2.html#cb161-1"></a><span class="kw">merge</span>(</span>
+<span id="cb161-2"><a href="session-2.html#cb161-2"></a>  <span class="dt">x =</span>     <span class="co"># name of the first dataframe to merge</span></span>
+<span id="cb161-3"><a href="session-2.html#cb161-3"></a>  <span class="dt">y =</span>     <span class="co"># name of the second dataframe to merge</span></span>
+<span id="cb161-4"><a href="session-2.html#cb161-4"></a>  <span class="dt">by.x =</span>  <span class="co"># name of the column to match, in the first dataframe</span></span>
+<span id="cb161-5"><a href="session-2.html#cb161-5"></a>  <span class="dt">by.y =</span>  <span class="co"># name of the column to match in the second dataframe</span></span>
+<span id="cb161-6"><a href="session-2.html#cb161-6"></a>  <span class="dt">all.x =</span> <span class="co"># logical. If TRUE, keep all rows from the first dataframe, </span></span>
+<span id="cb161-7"><a href="session-2.html#cb161-7"></a>          <span class="co"># even if does not have a matching row in the second dataframe</span></span>
+<span id="cb161-8"><a href="session-2.html#cb161-8"></a>  <span class="dt">all.y =</span> <span class="co"># logical. If TRUE, keep all rows from the second dataframe, </span></span>
+<span id="cb161-9"><a href="session-2.html#cb161-9"></a>          <span class="co"># even if does not have a matching row in the second dataframe</span></span>
+<span id="cb161-10"><a href="session-2.html#cb161-10"></a>)</span></code></pre></div>
+<p>By default, <code>merge()</code> will only keep rows that have corresponding “index” values in both data frames.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="session-1.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/02-session2.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["IntroBaseR.pdf", "IntroBaseR.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>
