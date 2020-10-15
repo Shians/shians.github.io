@@ -237,10 +237,10 @@ compare two variables against each other.</p>
 <p>There are two ways to use <code>plot()</code>, by specifying the x and y variables or by
 putting in a special notation using <code>~</code>. For the version using x and y values
 the input the equal length vectors for x and y axis values as two arguments.</p>
-<div class="sourceCode" id="cb180"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb180-1"><a href="session-3.html#cb180-1"></a><span class="co"># x-y style</span></span>
+<div class="sourceCode" id="cb180"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb180-1"><a href="session-3.html#cb180-1"></a><span class="co"># y~x style</span></span>
 <span id="cb180-2"><a href="session-3.html#cb180-2"></a><span class="kw">plot</span>(genes<span class="op">$</span>GeneLength, genes<span class="op">$</span>Count)</span></code></pre></div>
 <p><img src="IntroBaseR_files/figure-html/unnamed-chunk-77-1.png" width="672" /></p>
-<p>For the version using ~ you put in x ~ y as column names from a data frame and
+<p>For the version using ~ you put in y ~ x as column names from a data frame and
 the data frame to be used as arguments.</p>
 <div class="sourceCode" id="cb181"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb181-1"><a href="session-3.html#cb181-1"></a><span class="co"># ~ style</span></span>
 <span id="cb181-2"><a href="session-3.html#cb181-2"></a><span class="kw">plot</span>(Count <span class="op">~</span><span class="st"> </span>GeneLength, <span class="dt">data =</span> genes)</span></code></pre></div>
