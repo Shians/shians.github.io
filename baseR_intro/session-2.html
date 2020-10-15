@@ -24,7 +24,7 @@
 <meta name="author" content="" />
 
 
-<meta name="date" content="2020-10-12" />
+<meta name="date" content="2020-10-16" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -32,7 +32,7 @@
   
   
 <link rel="prev" href="session-1.html"/>
-
+<link rel="next" href="session-3.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -170,9 +170,25 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2.3.3" data-path="session-2.html"><a href="session-2.html#removing-na-rows-using-complete.cases"><i class="fa fa-check"></i><b>2.3.3</b> Removing NA rows using complete.cases()</a></li>
 <li class="chapter" data-level="2.3.4" data-path="session-2.html"><a href="session-2.html#rearranging-using-the-order-function"><i class="fa fa-check"></i><b>2.3.4</b> Rearranging using the <code>order()</code> function</a></li>
 <li class="chapter" data-level="2.3.5" data-path="session-2.html"><a href="session-2.html#subsetting-data-structures-with-logicals"><i class="fa fa-check"></i><b>2.3.5</b> Subsetting data structures with logicals</a></li>
-<li class="chapter" data-level="2.3.6" data-path="session-2.html"><a href="session-2.html#in"><i class="fa fa-check"></i><b>2.3.6</b> %in%</a></li>
+<li class="chapter" data-level="2.3.6" data-path="session-2.html"><a href="session-2.html#in-and"><i class="fa fa-check"></i><b>2.3.6</b> %in%, &amp; and |</a></li>
 </ul></li>
 <li class="chapter" data-level="2.4" data-path="session-2.html"><a href="session-2.html#merge"><i class="fa fa-check"></i><b>2.4</b> Merge</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="session-3.html"><a href="session-3.html"><i class="fa fa-check"></i><b>3</b> Session 3</a><ul>
+<li class="chapter" data-level="3.1" data-path="session-3.html"><a href="session-3.html#basic-plotting"><i class="fa fa-check"></i><b>3.1</b> Basic plotting</a><ul>
+<li class="chapter" data-level="3.1.1" data-path="session-3.html"><a href="session-3.html#scatter-plots"><i class="fa fa-check"></i><b>3.1.1</b> Scatter plots</a></li>
+<li class="chapter" data-level="3.1.2" data-path="session-3.html"><a href="session-3.html#histograms"><i class="fa fa-check"></i><b>3.1.2</b> Histograms</a></li>
+<li class="chapter" data-level="3.1.3" data-path="session-3.html"><a href="session-3.html#boxplots"><i class="fa fa-check"></i><b>3.1.3</b> Boxplots</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="session-3.html"><a href="session-3.html#lists"><i class="fa fa-check"></i><b>3.2</b> Lists</a><ul>
+<li class="chapter" data-level="3.2.1" data-path="session-3.html"><a href="session-3.html#indexing-lists"><i class="fa fa-check"></i><b>3.2.1</b> Indexing lists</a></li>
+<li class="chapter" data-level="3.2.2" data-path="session-3.html"><a href="session-3.html#chaining-list-indices"><i class="fa fa-check"></i><b>3.2.2</b> Chaining list indices</a></li>
+<li class="chapter" data-level="3.2.3" data-path="session-3.html"><a href="session-3.html#named-list"><i class="fa fa-check"></i><b>3.2.3</b> Named list</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="session-3.html"><a href="session-3.html#classes"><i class="fa fa-check"></i><b>3.3</b> Classes</a></li>
+<li class="chapter" data-level="3.4" data-path="session-3.html"><a href="session-3.html#packages"><i class="fa fa-check"></i><b>3.4</b> Packages</a><ul>
+<li class="chapter" data-level="3.4.1" data-path="session-3.html"><a href="session-3.html#dgelist"><i class="fa fa-check"></i><b>3.4.1</b> DGEList</a></li>
+</ul></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -471,7 +487,7 @@ Figure 2.1: Viewing data from the ‘Environment’ tab.
 </ol>
 <div class="sourceCode" id="cb167"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb167-1"><a href="session-2.html#cb167-1"></a>char_vec &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;*&quot;</span>, <span class="st">&quot;*&quot;</span>, <span class="st">&quot;n&quot;</span>, <span class="st">&quot;*&quot;</span>, <span class="st">&quot;t&quot;</span>, <span class="st">&quot;i&quot;</span>, <span class="st">&quot;*&quot;</span>, <span class="st">&quot;s&quot;</span>)</span></code></pre></div>
 <ol start="3" style="list-style-type: decimal">
-<li>Take the <code>genes</code> data frame and symbol, chromosome and count of only complete cases with gene symbols.</li>
+<li>Take the <code>genes</code> data frame and select the symbol, chromosome and count columns of only complete cases that are not missing gene symbols.</li>
 </ol>
 </div>
 <div id="rearranging-using-the-order-function" class="section level3">
@@ -503,8 +519,8 @@ Figure 2.1: Viewing data from the ‘Environment’ tab.
 <span id="cb170-5"><a href="session-2.html#cb170-5"></a>genes[genes<span class="op">$</span>Count <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>, ]</span></code></pre></div>
 <p>This allows tables to be filtered based on a specific column.</p>
 </div>
-<div id="in" class="section level3">
-<h3><span class="header-section-number">2.3.6</span> %in%</h3>
+<div id="in-and" class="section level3">
+<h3><span class="header-section-number">2.3.6</span> %in%, &amp; and |</h3>
 <p>The <code>%in%</code> operator tests whether elements of the first vector is contained within the second vector. It will return TRUE where the elements of the first vector is found in the second.</p>
 <div class="sourceCode" id="cb171"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb171-1"><a href="session-2.html#cb171-1"></a><span class="co"># %in% operator tests membership</span></span>
 <span id="cb171-2"><a href="session-2.html#cb171-2"></a><span class="kw">c</span>(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>, <span class="st">&quot;c&quot;</span>, <span class="st">&quot;d&quot;</span>) <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;b&quot;</span>, <span class="st">&quot;d&quot;</span>)</span>
@@ -512,6 +528,18 @@ Figure 2.1: Viewing data from the ‘Environment’ tab.
 <span id="cb171-4"><a href="session-2.html#cb171-4"></a><span class="co"># result of in can be used as a filtering for multiple matches</span></span>
 <span id="cb171-5"><a href="session-2.html#cb171-5"></a>genes<span class="op">$</span>TXCHROM <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;chr1&quot;</span>, <span class="st">&quot;chr2&quot;</span>)</span>
 <span id="cb171-6"><a href="session-2.html#cb171-6"></a>genes[genes<span class="op">$</span>TXCHROM <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;chr1&quot;</span>, <span class="st">&quot;chr2&quot;</span>), ]</span></code></pre></div>
+<p>The <code>&amp;</code> (AND) operator takes two logical vectors and performs an AND operation
+on them, this means that along the positions of the two vectors, TRUE is
+returned only if it is TRUE in those positions of both vectors.</p>
+<p>Rather than thinking about the logcail AND operation, it’s easier to just read
+the expression literally. For example if we wanted to select genes from
+chromosome 1 and with counts greater than 500, we use the following row index.</p>
+<div class="sourceCode" id="cb172"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb172-1"><a href="session-2.html#cb172-1"></a>genes[genes<span class="op">$</span>TXCHROM <span class="op">==</span><span class="st"> &quot;chr1&quot;</span> <span class="op">&amp;</span><span class="st"> </span>genes<span class="op">$</span>Count <span class="op">&gt;</span><span class="st"> </span><span class="dv">500</span>, ]</span></code></pre></div>
+<p>The <code>|</code> (OR) is a complementary operation that takes two logical and performs an
+OR operation, this returns TRUE if one or both values are TRUE. Once again we
+can simply read the expression literally. If we wanted genes that are from
+chromosome 1 or have counts greater than 500 we can use the following row index.</p>
+<div class="sourceCode" id="cb173"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb173-1"><a href="session-2.html#cb173-1"></a>genes[genes<span class="op">$</span>TXCHROM <span class="op">==</span><span class="st"> &quot;chr1&quot;</span> <span class="op">&amp;</span><span class="st"> </span>genes<span class="op">$</span>Count <span class="op">&gt;</span><span class="st"> </span><span class="dv">500</span>, ]</span></code></pre></div>
 </div>
 </div>
 <div id="merge" class="section level2">
@@ -533,29 +561,29 @@ Figure 2.3: The two dataframes merged.
 </div>
 <p>Let’s practice merging on the files “Ses2_genes.tsv” and “Ses2_geneNames.tsv”. “Ses2_genes.tsv” contains gene EntrezIDs, gene symbol, gene chromosome, gene length and their count value. “Ses2_geneNames.tsv” contains gene names and their corresponding EntrezIDs.</p>
 <p>First we will read in both files:</p>
-<div class="sourceCode" id="cb172"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb172-1"><a href="session-2.html#cb172-1"></a>genes &lt;-<span class="st"> </span><span class="kw">read.delim</span>(</span>
-<span id="cb172-2"><a href="session-2.html#cb172-2"></a>  <span class="st">&quot;data/Ses2_genes.tsv&quot;</span>,</span>
-<span id="cb172-3"><a href="session-2.html#cb172-3"></a>  <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>,</span>
-<span id="cb172-4"><a href="session-2.html#cb172-4"></a>  <span class="dt">na.strings =</span> <span class="kw">c</span>(<span class="st">&quot;NA&quot;</span>, <span class="st">&quot;missing&quot;</span>, <span class="st">&quot;Missing&quot;</span>)</span>
-<span id="cb172-5"><a href="session-2.html#cb172-5"></a>)</span>
-<span id="cb172-6"><a href="session-2.html#cb172-6"></a></span>
-<span id="cb172-7"><a href="session-2.html#cb172-7"></a>gene_names &lt;-<span class="st"> </span><span class="kw">read.delim</span>(</span>
-<span id="cb172-8"><a href="session-2.html#cb172-8"></a>  <span class="st">&quot;data/Ses2_geneNames.tsv&quot;</span>, </span>
-<span id="cb172-9"><a href="session-2.html#cb172-9"></a>  <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span></span>
-<span id="cb172-10"><a href="session-2.html#cb172-10"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb174"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb174-1"><a href="session-2.html#cb174-1"></a>genes &lt;-<span class="st"> </span><span class="kw">read.delim</span>(</span>
+<span id="cb174-2"><a href="session-2.html#cb174-2"></a>  <span class="st">&quot;data/Ses2_genes.tsv&quot;</span>,</span>
+<span id="cb174-3"><a href="session-2.html#cb174-3"></a>  <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>,</span>
+<span id="cb174-4"><a href="session-2.html#cb174-4"></a>  <span class="dt">na.strings =</span> <span class="kw">c</span>(<span class="st">&quot;NA&quot;</span>, <span class="st">&quot;missing&quot;</span>, <span class="st">&quot;Missing&quot;</span>)</span>
+<span id="cb174-5"><a href="session-2.html#cb174-5"></a>)</span>
+<span id="cb174-6"><a href="session-2.html#cb174-6"></a></span>
+<span id="cb174-7"><a href="session-2.html#cb174-7"></a>gene_names &lt;-<span class="st"> </span><span class="kw">read.delim</span>(</span>
+<span id="cb174-8"><a href="session-2.html#cb174-8"></a>  <span class="st">&quot;data/Ses2_geneNames.tsv&quot;</span>, </span>
+<span id="cb174-9"><a href="session-2.html#cb174-9"></a>  <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span></span>
+<span id="cb174-10"><a href="session-2.html#cb174-10"></a>)</span></code></pre></div>
 <p>What we want to do now, is to merge the two data frames into one data frame with 6 columns, containing the information from both data frames. We also want to make sure that when R merges the data frames, the correct information is added to the correct row. You will notice that both the <code>genes</code> and <code>gene_names</code> data frames have a column giving the EntrezIDs. This column can be used as the “index” or “ID” column to make sure the correct information is added to each row. We can do this by telling <code>merge()</code> to match rows in the two data frames using EntrezIDs during the merge.</p>
 <p><code>merge()</code> has the following syntax:</p>
-<div class="sourceCode" id="cb173"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb173-1"><a href="session-2.html#cb173-1"></a><span class="kw">merge</span>(</span>
-<span id="cb173-2"><a href="session-2.html#cb173-2"></a>  <span class="dt">x =</span>    <span class="co"># name of the first dataframe to merge</span></span>
-<span id="cb173-3"><a href="session-2.html#cb173-3"></a>  <span class="dt">y =</span>    <span class="co"># name of the second dataframe to merge</span></span>
-<span id="cb173-4"><a href="session-2.html#cb173-4"></a>  <span class="dt">by.x =</span> <span class="co"># name of the column to match, in the first data frame</span></span>
-<span id="cb173-5"><a href="session-2.html#cb173-5"></a>  <span class="dt">by.y =</span> <span class="co"># name of the column to match in the second data frame</span></span>
-<span id="cb173-6"><a href="session-2.html#cb173-6"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb175"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb175-1"><a href="session-2.html#cb175-1"></a><span class="kw">merge</span>(</span>
+<span id="cb175-2"><a href="session-2.html#cb175-2"></a>  <span class="dt">x =</span>    <span class="co"># name of the first dataframe to merge</span></span>
+<span id="cb175-3"><a href="session-2.html#cb175-3"></a>  <span class="dt">y =</span>    <span class="co"># name of the second dataframe to merge</span></span>
+<span id="cb175-4"><a href="session-2.html#cb175-4"></a>  <span class="dt">by.x =</span> <span class="co"># name of the column to match, in the first data frame</span></span>
+<span id="cb175-5"><a href="session-2.html#cb175-5"></a>  <span class="dt">by.y =</span> <span class="co"># name of the column to match in the second data frame</span></span>
+<span id="cb175-6"><a href="session-2.html#cb175-6"></a>)</span></code></pre></div>
 <p>Thus, to merge our two dataframes, using the EntrezID column of each data frame to match rows, we can use:</p>
-<div class="sourceCode" id="cb174"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb174-1"><a href="session-2.html#cb174-1"></a>genes2 &lt;-<span class="st"> </span><span class="kw">merge</span>(<span class="dt">x =</span> genes, <span class="dt">y =</span> gene_names, </span>
-<span id="cb174-2"><a href="session-2.html#cb174-2"></a>                <span class="dt">by.x =</span> <span class="st">&quot;EntrezID&quot;</span>, <span class="dt">by.y =</span> <span class="st">&quot;ENTREZID&quot;</span>)</span>
-<span id="cb174-3"><a href="session-2.html#cb174-3"></a></span>
-<span id="cb174-4"><a href="session-2.html#cb174-4"></a><span class="kw">head</span>(genes2)</span></code></pre></div>
+<div class="sourceCode" id="cb176"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb176-1"><a href="session-2.html#cb176-1"></a>genes2 &lt;-<span class="st"> </span><span class="kw">merge</span>(<span class="dt">x =</span> genes, <span class="dt">y =</span> gene_names, </span>
+<span id="cb176-2"><a href="session-2.html#cb176-2"></a>                <span class="dt">by.x =</span> <span class="st">&quot;EntrezID&quot;</span>, <span class="dt">by.y =</span> <span class="st">&quot;ENTREZID&quot;</span>)</span>
+<span id="cb176-3"><a href="session-2.html#cb176-3"></a></span>
+<span id="cb176-4"><a href="session-2.html#cb176-4"></a><span class="kw">head</span>(genes2)</span></code></pre></div>
 <pre><code>##   EntrezID  SYMBOL TXCHROM GeneLength Count
 ## 1    11480  Acvr2a    chr2       5681   979
 ## 2    11634    Aire   chr10       1929    15
@@ -572,16 +600,16 @@ Figure 2.3: The two dataframes merged.
 ## 6                                                                            cadherin 6</code></pre>
 <p>You may have noticed that there are 200 rows in the <code>genes</code> data frame but 290 rows in the <code>gene_names</code> data frame. This means that there are more genes in the <code>gene_names</code> data frame than there are in the <code>genes</code> data frame. This means that there are a few ways to merge the two data frames. We can either keep all rows from both data frames, keep only rows where there is a corresponding “index” value in both dataframes or keep only rows from one of the two data frames.</p>
 <p>We can specify which rows to keep using the following additional arguments in <code>merge()</code>:</p>
-<div class="sourceCode" id="cb176"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb176-1"><a href="session-2.html#cb176-1"></a><span class="kw">merge</span>(</span>
-<span id="cb176-2"><a href="session-2.html#cb176-2"></a>  <span class="dt">x =</span>     <span class="co"># name of the first dataframe to merge</span></span>
-<span id="cb176-3"><a href="session-2.html#cb176-3"></a>  <span class="dt">y =</span>     <span class="co"># name of the second dataframe to merge</span></span>
-<span id="cb176-4"><a href="session-2.html#cb176-4"></a>  <span class="dt">by.x =</span>  <span class="co"># name of the column to match, in the first dataframe</span></span>
-<span id="cb176-5"><a href="session-2.html#cb176-5"></a>  <span class="dt">by.y =</span>  <span class="co"># name of the column to match in the second dataframe</span></span>
-<span id="cb176-6"><a href="session-2.html#cb176-6"></a>  <span class="dt">all.x =</span> <span class="co"># logical. If TRUE, keep all rows from the first dataframe, </span></span>
-<span id="cb176-7"><a href="session-2.html#cb176-7"></a>          <span class="co"># even if does not have a matching row in the second dataframe</span></span>
-<span id="cb176-8"><a href="session-2.html#cb176-8"></a>  <span class="dt">all.y =</span> <span class="co"># logical. If TRUE, keep all rows from the second dataframe, </span></span>
-<span id="cb176-9"><a href="session-2.html#cb176-9"></a>          <span class="co"># even if does not have a matching row in the second dataframe</span></span>
-<span id="cb176-10"><a href="session-2.html#cb176-10"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb178"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb178-1"><a href="session-2.html#cb178-1"></a><span class="kw">merge</span>(</span>
+<span id="cb178-2"><a href="session-2.html#cb178-2"></a>  <span class="dt">x =</span>     <span class="co"># name of the first dataframe to merge</span></span>
+<span id="cb178-3"><a href="session-2.html#cb178-3"></a>  <span class="dt">y =</span>     <span class="co"># name of the second dataframe to merge</span></span>
+<span id="cb178-4"><a href="session-2.html#cb178-4"></a>  <span class="dt">by.x =</span>  <span class="co"># name of the column to match, in the first dataframe</span></span>
+<span id="cb178-5"><a href="session-2.html#cb178-5"></a>  <span class="dt">by.y =</span>  <span class="co"># name of the column to match in the second dataframe</span></span>
+<span id="cb178-6"><a href="session-2.html#cb178-6"></a>  <span class="dt">all.x =</span> <span class="co"># logical. If TRUE, keep all rows from the first dataframe, </span></span>
+<span id="cb178-7"><a href="session-2.html#cb178-7"></a>          <span class="co"># even if does not have a matching row in the second dataframe</span></span>
+<span id="cb178-8"><a href="session-2.html#cb178-8"></a>  <span class="dt">all.y =</span> <span class="co"># logical. If TRUE, keep all rows from the second dataframe, </span></span>
+<span id="cb178-9"><a href="session-2.html#cb178-9"></a>          <span class="co"># even if does not have a matching row in the second dataframe</span></span>
+<span id="cb178-10"><a href="session-2.html#cb178-10"></a>)</span></code></pre></div>
 <p>By default, <code>merge()</code> will only keep rows that have corresponding “index” values in both data frames.</p>
 <p><strong>Challenge 2.3</strong></p>
 <ol style="list-style-type: decimal">
@@ -597,8 +625,8 @@ Figure 2.3: The two dataframes merged.
           </div>
         </div>
       </div>
-<a href="session-1.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-
+<a href="session-1.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="session-3.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

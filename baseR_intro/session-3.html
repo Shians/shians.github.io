@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 3 Session 3 | Introduction to Base R</title>
+  <meta name="description" content="Introductory tutorial to base R, with a biological focus. In particular it will focus on analysing RNA-sequencing data with Bioconductor." />
+  <meta name="generator" content="bookdown 0.19 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 3 Session 3 | Introduction to Base R" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Introductory tutorial to base R, with a biological focus. In particular it will focus on analysing RNA-sequencing data with Bioconductor." />
+  <meta name="github-repo" content="shians/BaseR_Intro" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 3 Session 3 | Introduction to Base R" />
+  
+  <meta name="twitter:description" content="Introductory tutorial to base R, with a biological focus. In particular it will focus on analysing RNA-sequencing data with Bioconductor." />
+  
+
+<meta name="author" content="" />
+
+
+<meta name="date" content="2020-10-16" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="session-2.html"/>
+
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Introduction to Base R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a><ul>
+<li class="chapter" data-level="0.1" data-path="index.html"><a href="index.html#data-files"><i class="fa fa-check"></i><b>0.1</b> Data files</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="session-1.html"><a href="session-1.html"><i class="fa fa-check"></i><b>1</b> Session 1</a><ul>
+<li class="chapter" data-level="1.1" data-path="session-1.html"><a href="session-1.html#r-and-rstudio"><i class="fa fa-check"></i><b>1.1</b> R and RStudio</a></li>
+<li class="chapter" data-level="1.2" data-path="session-1.html"><a href="session-1.html#r-scripts"><i class="fa fa-check"></i><b>1.2</b> R scripts</a></li>
+<li class="chapter" data-level="1.3" data-path="session-1.html"><a href="session-1.html#working-directory"><i class="fa fa-check"></i><b>1.3</b> Working directory</a></li>
+<li class="chapter" data-level="1.4" data-path="session-1.html"><a href="session-1.html#maths"><i class="fa fa-check"></i><b>1.4</b> Maths</a></li>
+<li class="chapter" data-level="1.5" data-path="session-1.html"><a href="session-1.html#comps"><i class="fa fa-check"></i><b>1.5</b> Comparisons</a></li>
+<li class="chapter" data-level="1.6" data-path="session-1.html"><a href="session-1.html#functions"><i class="fa fa-check"></i><b>1.6</b> Functions</a></li>
+<li class="chapter" data-level="1.7" data-path="session-1.html"><a href="session-1.html#variables"><i class="fa fa-check"></i><b>1.7</b> Variables</a></li>
+<li class="chapter" data-level="1.8" data-path="session-1.html"><a href="session-1.html#data-types"><i class="fa fa-check"></i><b>1.8</b> Data types</a><ul>
+<li class="chapter" data-level="1.8.1" data-path="session-1.html"><a href="session-1.html#factors"><i class="fa fa-check"></i><b>1.8.1</b> Factors</a></li>
+</ul></li>
+<li class="chapter" data-level="1.9" data-path="session-1.html"><a href="session-1.html#data-structures"><i class="fa fa-check"></i><b>1.9</b> Data structures</a><ul>
+<li class="chapter" data-level="1.9.1" data-path="session-1.html"><a href="session-1.html#vector"><i class="fa fa-check"></i><b>1.9.1</b> Vector</a></li>
+<li class="chapter" data-level="1.9.2" data-path="session-1.html"><a href="session-1.html#matrix"><i class="fa fa-check"></i><b>1.9.2</b> Matrix</a></li>
+<li class="chapter" data-level="1.9.3" data-path="session-1.html"><a href="session-1.html#data-frame"><i class="fa fa-check"></i><b>1.9.3</b> Data Frame</a></li>
+</ul></li>
+<li class="chapter" data-level="1.10" data-path="session-1.html"><a href="session-1.html#reading-in-data"><i class="fa fa-check"></i><b>1.10</b> Reading in data</a></li>
+<li class="chapter" data-level="1.11" data-path="session-1.html"><a href="session-1.html#vect"><i class="fa fa-check"></i><b>1.11</b> Vectorised Operations</a></li>
+<li class="chapter" data-level="1.12" data-path="session-1.html"><a href="session-1.html#write"><i class="fa fa-check"></i><b>1.12</b> Writing out data</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="session-2.html"><a href="session-2.html"><i class="fa fa-check"></i><b>2</b> Session 2</a><ul>
+<li class="chapter" data-level="2.1" data-path="session-2.html"><a href="session-2.html#miss"><i class="fa fa-check"></i><b>2.1</b> Missing values</a></li>
+<li class="chapter" data-level="2.2" data-path="session-2.html"><a href="session-2.html#subsetting-vectors"><i class="fa fa-check"></i><b>2.2</b> Subsetting vectors</a><ul>
+<li class="chapter" data-level="2.2.1" data-path="session-2.html"><a href="session-2.html#subsetting-with-numeric-indicies"><i class="fa fa-check"></i><b>2.2.1</b> Subsetting with numeric indicies</a></li>
+<li class="chapter" data-level="2.2.2" data-path="session-2.html"><a href="session-2.html#subsetting-with-logical-vectors"><i class="fa fa-check"></i><b>2.2.2</b> Subsetting with logical vectors</a></li>
+<li class="chapter" data-level="2.2.3" data-path="session-2.html"><a href="session-2.html#useful-summaries-of-logical-vectors"><i class="fa fa-check"></i><b>2.2.3</b> Useful summaries of logical vectors</a></li>
+<li class="chapter" data-level="2.2.4" data-path="session-2.html"><a href="session-2.html#overwriting-subset-values"><i class="fa fa-check"></i><b>2.2.4</b> Overwriting subset values</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="session-2.html"><a href="session-2.html#subsetting-data-structures"><i class="fa fa-check"></i><b>2.3</b> Subsetting data structures</a><ul>
+<li class="chapter" data-level="2.3.1" data-path="session-2.html"><a href="session-2.html#subsetting-data-structures-with-numerics"><i class="fa fa-check"></i><b>2.3.1</b> Subsetting data structures with numerics</a></li>
+<li class="chapter" data-level="2.3.2" data-path="session-2.html"><a href="session-2.html#subsettting-data-frames-using-characters"><i class="fa fa-check"></i><b>2.3.2</b> Subsettting data frames using characters</a></li>
+<li class="chapter" data-level="2.3.3" data-path="session-2.html"><a href="session-2.html#removing-na-rows-using-complete.cases"><i class="fa fa-check"></i><b>2.3.3</b> Removing NA rows using complete.cases()</a></li>
+<li class="chapter" data-level="2.3.4" data-path="session-2.html"><a href="session-2.html#rearranging-using-the-order-function"><i class="fa fa-check"></i><b>2.3.4</b> Rearranging using the <code>order()</code> function</a></li>
+<li class="chapter" data-level="2.3.5" data-path="session-2.html"><a href="session-2.html#subsetting-data-structures-with-logicals"><i class="fa fa-check"></i><b>2.3.5</b> Subsetting data structures with logicals</a></li>
+<li class="chapter" data-level="2.3.6" data-path="session-2.html"><a href="session-2.html#in-and"><i class="fa fa-check"></i><b>2.3.6</b> %in%, &amp; and |</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="session-2.html"><a href="session-2.html#merge"><i class="fa fa-check"></i><b>2.4</b> Merge</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="session-3.html"><a href="session-3.html"><i class="fa fa-check"></i><b>3</b> Session 3</a><ul>
+<li class="chapter" data-level="3.1" data-path="session-3.html"><a href="session-3.html#basic-plotting"><i class="fa fa-check"></i><b>3.1</b> Basic plotting</a><ul>
+<li class="chapter" data-level="3.1.1" data-path="session-3.html"><a href="session-3.html#scatter-plots"><i class="fa fa-check"></i><b>3.1.1</b> Scatter plots</a></li>
+<li class="chapter" data-level="3.1.2" data-path="session-3.html"><a href="session-3.html#histograms"><i class="fa fa-check"></i><b>3.1.2</b> Histograms</a></li>
+<li class="chapter" data-level="3.1.3" data-path="session-3.html"><a href="session-3.html#boxplots"><i class="fa fa-check"></i><b>3.1.3</b> Boxplots</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="session-3.html"><a href="session-3.html#lists"><i class="fa fa-check"></i><b>3.2</b> Lists</a><ul>
+<li class="chapter" data-level="3.2.1" data-path="session-3.html"><a href="session-3.html#indexing-lists"><i class="fa fa-check"></i><b>3.2.1</b> Indexing lists</a></li>
+<li class="chapter" data-level="3.2.2" data-path="session-3.html"><a href="session-3.html#chaining-list-indices"><i class="fa fa-check"></i><b>3.2.2</b> Chaining list indices</a></li>
+<li class="chapter" data-level="3.2.3" data-path="session-3.html"><a href="session-3.html#named-list"><i class="fa fa-check"></i><b>3.2.3</b> Named list</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="session-3.html"><a href="session-3.html#classes"><i class="fa fa-check"></i><b>3.3</b> Classes</a></li>
+<li class="chapter" data-level="3.4" data-path="session-3.html"><a href="session-3.html#packages"><i class="fa fa-check"></i><b>3.4</b> Packages</a><ul>
+<li class="chapter" data-level="3.4.1" data-path="session-3.html"><a href="session-3.html#dgelist"><i class="fa fa-check"></i><b>3.4.1</b> DGEList</a></li>
+</ul></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Introduction to Base R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="session-3" class="section level1">
+<h1><span class="header-section-number">Chapter 3</span> Session 3</h1>
+<p>In this session we will learn:</p>
+<ul>
+<li>Basic plotting</li>
+<li>The list data structure</li>
+<li>Classes</li>
+<li>The DGEList object from the package limma</li>
+</ul>
+<div id="basic-plotting" class="section level2">
+<h2><span class="header-section-number">3.1</span> Basic plotting</h2>
+<p>R is great for creating publication quality plots. There is an enormous number
+of plotting functions available through external packages, but we’ll only
+briefly cover the basic plots included with R.</p>
+<p>We will use our genes data from the previous session to demonstrate the plots.</p>
+<div class="sourceCode" id="cb179"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb179-1"><a href="session-3.html#cb179-1"></a>genes &lt;-<span class="st"> </span><span class="kw">read.delim</span>(</span>
+<span id="cb179-2"><a href="session-3.html#cb179-2"></a>  <span class="st">&quot;data/Ses2_genes.tsv&quot;</span>,</span>
+<span id="cb179-3"><a href="session-3.html#cb179-3"></a>  <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>,</span>
+<span id="cb179-4"><a href="session-3.html#cb179-4"></a>  <span class="dt">na.strings =</span> <span class="kw">c</span>(<span class="st">&quot;NA&quot;</span>, <span class="st">&quot;missing&quot;</span>, <span class="st">&quot;Missing&quot;</span>)</span>
+<span id="cb179-5"><a href="session-3.html#cb179-5"></a>)</span></code></pre></div>
+<div id="scatter-plots" class="section level3">
+<h3><span class="header-section-number">3.1.1</span> Scatter plots</h3>
+<p>Scatter plots can be created using the <code>plot()</code> function. This plot is used to
+compare two variables against each other.</p>
+<p>There are two ways to use <code>plot()</code>, by specifying the x and y variables or by
+putting in a special notation using <code>~</code>. For the version using x and y values
+the input the equal length vectors for x and y axis values as two arguments.</p>
+<div class="sourceCode" id="cb180"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb180-1"><a href="session-3.html#cb180-1"></a><span class="co"># x-y style</span></span>
+<span id="cb180-2"><a href="session-3.html#cb180-2"></a><span class="kw">plot</span>(genes<span class="op">$</span>GeneLength, genes<span class="op">$</span>Count)</span></code></pre></div>
+<p><img src="IntroBaseR_files/figure-html/unnamed-chunk-77-1.png" width="672" /></p>
+<p>For the version using ~ you put in x ~ y as column names from a data frame and
+the data frame to be used as arguments.</p>
+<div class="sourceCode" id="cb181"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb181-1"><a href="session-3.html#cb181-1"></a><span class="co"># ~ style</span></span>
+<span id="cb181-2"><a href="session-3.html#cb181-2"></a><span class="kw">plot</span>(Count <span class="op">~</span><span class="st"> </span>GeneLength, <span class="dt">data =</span> genes)</span></code></pre></div>
+<p><img src="IntroBaseR_files/figure-html/unnamed-chunk-78-1.png" width="672" /></p>
+<p>The basic scatter plot has many options that can be found in the help page. For
+example we can change the title of the plot, the axes and the take the log
+of one axis.</p>
+<div class="sourceCode" id="cb182"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb182-1"><a href="session-3.html#cb182-1"></a><span class="kw">plot</span>(</span>
+<span id="cb182-2"><a href="session-3.html#cb182-2"></a>  Count <span class="op">~</span><span class="st"> </span>GeneLength,</span>
+<span id="cb182-3"><a href="session-3.html#cb182-3"></a>  <span class="dt">data =</span> genes,</span>
+<span id="cb182-4"><a href="session-3.html#cb182-4"></a>  <span class="dt">main =</span> <span class="st">&quot;Count vs Gene Length&quot;</span>,</span>
+<span id="cb182-5"><a href="session-3.html#cb182-5"></a>  <span class="dt">xlab =</span> <span class="st">&quot;Gene Length&quot;</span>,</span>
+<span id="cb182-6"><a href="session-3.html#cb182-6"></a>  <span class="dt">ylab =</span> <span class="st">&quot;Count&quot;</span></span>
+<span id="cb182-7"><a href="session-3.html#cb182-7"></a>)</span></code></pre></div>
+<p><img src="IntroBaseR_files/figure-html/unnamed-chunk-79-1.png" width="672" /></p>
+</div>
+<div id="histograms" class="section level3">
+<h3><span class="header-section-number">3.1.2</span> Histograms</h3>
+<p>Histograms are used to show the distribution of single variables. In R they
+are created using the <code>hist()</code> function.</p>
+<div class="sourceCode" id="cb183"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb183-1"><a href="session-3.html#cb183-1"></a><span class="kw">hist</span>(genes<span class="op">$</span>GeneLength)</span></code></pre></div>
+<p><img src="IntroBaseR_files/figure-html/unnamed-chunk-80-1.png" width="672" /></p>
+</div>
+<div id="boxplots" class="section level3">
+<h3><span class="header-section-number">3.1.3</span> Boxplots</h3>
+<p>Box plots are used to visualise the distribution of values by their medians,
+quartiles and interquartile ranges. It can be useful for comparing the
+distribution of multiple groups. The simplest way to create a boxplot is to
+use the format <code>x ~ group</code>, where x is the variable on the y-axis and group
+is the grouping variable along the x-axis.</p>
+<p>For example we can create box plots of the gene lengths across chromosomes.</p>
+<div class="sourceCode" id="cb184"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb184-1"><a href="session-3.html#cb184-1"></a><span class="kw">boxplot</span>(GeneLength <span class="op">~</span><span class="st"> </span>TXCHROM, <span class="dt">data =</span> genes)</span></code></pre></div>
+<p><img src="IntroBaseR_files/figure-html/unnamed-chunk-81-1.png" width="672" /></p>
+</div>
+</div>
+<div id="lists" class="section level2">
+<h2><span class="header-section-number">3.2</span> Lists</h2>
+<p>We previously saw the data structures vectors, matrices and data frames. These
+help us track collections of related data values using a single variable.
+Another fundamental data structure is a list, it is like a vector in that it is
+1-dimensional. However, the list can contain any combination of data types
+within itself, even another list.</p>
+<div class="sourceCode" id="cb185"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb185-1"><a href="session-3.html#cb185-1"></a><span class="kw">list</span>(<span class="dv">1</span>, <span class="st">&quot;a&quot;</span>, <span class="fl">1.5</span>)</span></code></pre></div>
+<pre><code>## [[1]]
+## [1] 1
+## 
+## [[2]]
+## [1] &quot;a&quot;
+## 
+## [[3]]
+## [1] 1.5</code></pre>
+<p>Not only can you put different data types into a list, you can also put a data
+data structure into one element of a list. In the list below, the first element
+is a vector that contains 3 numbers, the second element is a character and the
+third element is a data frame that has two columns.</p>
+<div class="sourceCode" id="cb187"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb187-1"><a href="session-3.html#cb187-1"></a><span class="kw">list</span>(</span>
+<span id="cb187-2"><a href="session-3.html#cb187-2"></a>  <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>),</span>
+<span id="cb187-3"><a href="session-3.html#cb187-3"></a>  <span class="kw">c</span>(<span class="st">&quot;words&quot;</span>, <span class="st">&quot;letters&quot;</span>),</span>
+<span id="cb187-4"><a href="session-3.html#cb187-4"></a>  <span class="kw">data.frame</span>(</span>
+<span id="cb187-5"><a href="session-3.html#cb187-5"></a>    <span class="dt">column1 =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>),</span>
+<span id="cb187-6"><a href="session-3.html#cb187-6"></a>    <span class="dt">column2 =</span> <span class="kw">c</span>(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>, <span class="st">&quot;c&quot;</span>)</span>
+<span id="cb187-7"><a href="session-3.html#cb187-7"></a>  )</span>
+<span id="cb187-8"><a href="session-3.html#cb187-8"></a>)</span></code></pre></div>
+<pre><code>## [[1]]
+## [1] 1 2 3
+## 
+## [[2]]
+## [1] &quot;words&quot;   &quot;letters&quot;
+## 
+## [[3]]
+##   column1 column2
+## 1       1       a
+## 2       2       b
+## 3       3       c</code></pre>
+<p>The output can often help you understand how the list is structured. The double
+brackets (e.g. <code>[[1]]</code>) signifies an element of the list and which index it is
+at. Underneath the <code>[[1]]</code> and <code>[[2]]</code>, there is a <code>[1]</code> - this indicates that
+the first and second elements both contain a vector. Underneath <code>[[3]]</code> you see
+the standard output for a data frame, which we have seen before.</p>
+<p>You can have a list as an element of a list, so this can extend into a
+hierarchical structure resembling folders in a computer.</p>
+<div class="sourceCode" id="cb189"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb189-1"><a href="session-3.html#cb189-1"></a><span class="kw">list</span>(<span class="dv">1</span>, <span class="kw">list</span>(<span class="dv">1</span>,<span class="st">&quot;a&quot;</span>))</span></code></pre></div>
+<pre><code>## [[1]]
+## [1] 1
+## 
+## [[2]]
+## [[2]][[1]]
+## [1] 1
+## 
+## [[2]][[2]]
+## [1] &quot;a&quot;</code></pre>
+<ul>
+<li>The first element, indicated by <code>[[1]]</code>, is a vector, indicated by the <code>[1]</code> underneath.</li>
+<li>The second element, indicated by the first <code>[[2]]</code> contains a list:
+<ul>
+<li><code>[[2]][[1]]</code> - tells you that the second element is a list, of which the first element of the inner list is the number 1.</li>
+<li><code>[[2]][[2]]</code> - tells you that the second element is a list, of which the second element of the inner list is “a”.</li>
+</ul></li>
+</ul>
+<p>Many Bioconductor packages, including limma, use lists so it is an important data structure to understand.</p>
+<p><strong>Challenge 3.1</strong></p>
+<div id="indexing-lists" class="section level3">
+<h3><span class="header-section-number">3.2.1</span> Indexing lists</h3>
+<p>We can access elements of a list using square brackets. You may have noticed that there are often double square brackets <code>[[]]</code>. There is a subtle but important difference between single square brackets and double square brackets when subsetting lists.</p>
+<ul>
+<li>Single brackets <code>[]</code> will return a list.</li>
+<li>Double brackets <code>[[]]</code> will return elements of the list.</li>
+</ul>
+<p>To demonsterate, let’s make a list:</p>
+<div class="sourceCode" id="cb191"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb191-1"><a href="session-3.html#cb191-1"></a>my_list &lt;-<span class="st"> </span><span class="kw">list</span>(</span>
+<span id="cb191-2"><a href="session-3.html#cb191-2"></a>  <span class="kw">c</span>(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>),</span>
+<span id="cb191-3"><a href="session-3.html#cb191-3"></a>  <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>),</span>
+<span id="cb191-4"><a href="session-3.html#cb191-4"></a>  <span class="kw">c</span>(<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>)</span>
+<span id="cb191-5"><a href="session-3.html#cb191-5"></a>)</span></code></pre></div>
+<p>Take a look at the output of obtaining the first element with single square brackets and double square brackets:</p>
+<div class="sourceCode" id="cb192"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb192-1"><a href="session-3.html#cb192-1"></a>my_list[<span class="dv">1</span>]</span></code></pre></div>
+<pre><code>## [[1]]
+## [1] &quot;a&quot; &quot;b&quot;</code></pre>
+<div class="sourceCode" id="cb194"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb194-1"><a href="session-3.html#cb194-1"></a><span class="kw">class</span>(my_list[<span class="dv">1</span>])</span></code></pre></div>
+<pre><code>## [1] &quot;list&quot;</code></pre>
+<div class="sourceCode" id="cb196"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb196-1"><a href="session-3.html#cb196-1"></a>my_list[[<span class="dv">1</span>]]</span></code></pre></div>
+<pre><code>## [1] &quot;a&quot; &quot;b&quot;</code></pre>
+<div class="sourceCode" id="cb198"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb198-1"><a href="session-3.html#cb198-1"></a><span class="kw">class</span>(my_list[[<span class="dv">1</span>]])</span></code></pre></div>
+<pre><code>## [1] &quot;character&quot;</code></pre>
+<p>The difference is minor; with <code>my_list[1]</code> there is an extra <code>[[1]]</code> at the top, with <code>my_list[[1]]</code> there is no <code>[[1]]</code> at the top. Using single brackets is taking a subset of the list, but still as a list structure, while using double brackets unwraps the value from within the list.</p>
+<p>The <code>str()</code> function gives us some more information:</p>
+<div class="sourceCode" id="cb200"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb200-1"><a href="session-3.html#cb200-1"></a><span class="kw">str</span>(my_list[<span class="dv">1</span>])</span></code></pre></div>
+<pre><code>## List of 1
+##  $ : chr [1:2] &quot;a&quot; &quot;b&quot;</code></pre>
+<div class="sourceCode" id="cb202"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb202-1"><a href="session-3.html#cb202-1"></a><span class="kw">str</span>(my_list[[<span class="dv">1</span>]])</span></code></pre></div>
+<pre><code>##  chr [1:2] &quot;a&quot; &quot;b&quot;</code></pre>
+<p>This tells us that when you use single brackets, the output is a list containing one element, which is a vector. When you use double brackets, the output is just a vector, not contained within a list.</p>
+</div>
+<div id="chaining-list-indices" class="section level3">
+<h3><span class="header-section-number">3.2.2</span> Chaining list indices</h3>
+<p>Because of the hierarchical or folder-like nature of lists, you may have to
+index multiple times to get to the value you want. To do this we can chain
+indexes together, they are applied from left to right.</p>
+<div class="sourceCode" id="cb204"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb204-1"><a href="session-3.html#cb204-1"></a>my_list[[<span class="dv">1</span>]]</span></code></pre></div>
+<pre><code>## [1] &quot;a&quot; &quot;b&quot;</code></pre>
+<div class="sourceCode" id="cb206"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb206-1"><a href="session-3.html#cb206-1"></a>my_list[[<span class="dv">1</span>]][<span class="dv">1</span>]</span></code></pre></div>
+<pre><code>## [1] &quot;a&quot;</code></pre>
+</div>
+<div id="named-list" class="section level3">
+<h3><span class="header-section-number">3.2.3</span> Named list</h3>
+<p>Traversing a list using numeric indices can get very confusing very quickly.
+It is easy to make mistakes and code containing only numeric indices becomes
+extremely difficult to decipher. So often it is wise to create named lists,
+where each element has name that will help with context on the values stored.</p>
+<div class="sourceCode" id="cb208"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb208-1"><a href="session-3.html#cb208-1"></a>named_list &lt;-<span class="st"> </span><span class="kw">list</span>(</span>
+<span id="cb208-2"><a href="session-3.html#cb208-2"></a>  <span class="dt">name =</span> <span class="kw">c</span>(<span class="st">&quot;Andy&quot;</span>, <span class="st">&quot;Sally&quot;</span>),</span>
+<span id="cb208-3"><a href="session-3.html#cb208-3"></a>  <span class="dt">age =</span> <span class="kw">c</span>(<span class="dv">32</span>, <span class="dv">40</span>)</span>
+<span id="cb208-4"><a href="session-3.html#cb208-4"></a>)</span>
+<span id="cb208-5"><a href="session-3.html#cb208-5"></a>named_list</span></code></pre></div>
+<pre><code>## $name
+## [1] &quot;Andy&quot;  &quot;Sally&quot;
+## 
+## $age
+## [1] 32 40</code></pre>
+<p>If your list is named, you can use <code>$</code> or a character value to access elements.
+The following two approaches are identical.</p>
+<div class="sourceCode" id="cb210"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb210-1"><a href="session-3.html#cb210-1"></a>named_list<span class="op">$</span>name</span></code></pre></div>
+<pre><code>## [1] &quot;Andy&quot;  &quot;Sally&quot;</code></pre>
+<div class="sourceCode" id="cb212"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb212-1"><a href="session-3.html#cb212-1"></a>named_list[[<span class="st">&quot;name&quot;</span>]]</span></code></pre></div>
+<pre><code>## [1] &quot;Andy&quot;  &quot;Sally&quot;</code></pre>
+</div>
+</div>
+<div id="classes" class="section level2">
+<h2><span class="header-section-number">3.3</span> Classes</h2>
+<p>Everything in R is an ‘object’, each object falls under a ‘class’. A class
+defines the properties an object and determines what can be done with it. These
+are analogous to file formats of regular files on the computer.</p>
+<p>We have seen the basic classes of objects such as character, numerics and
+logicals. Bioconductor packages often define their own classes in order to
+represent more complex data. For example, the limma package uses the <code>DGEList</code>
+class. This is a class that is designed for storing read count data from RNA
+sequencing. It is a special ‘list’ that must contain two components:</p>
+<ul>
+<li><code>counts</code> - which must be a numeric matrix, that stores counts. Each row must
+be a gene and each column must be a sample.</li>
+<li><code>samples</code> - which must be a data frame, that contains information about each
+sample. Each row must be a sample and must contain information about the group
+(e.g. treatment group) the sample belongs to, the library size of that sample
+and the normalisation factor for that sample.</li>
+</ul>
+<p>There are also a number of optional components of the <code>DGEList</code> class, such as
+a data frame containing gene annotation information.</p>
+<p>The main purpose of having a special class rather than just a regular list is
+to guarantee specific properties on the data. For example the samples data frame
+must have the same number of rows as the counts matrix has columns. These
+constraints allow methods developers to create functions with confidence in what
+data is present within the objects.</p>
+</div>
+<div id="packages" class="section level2">
+<h2><span class="header-section-number">3.4</span> Packages</h2>
+<p>In addition to the functional included in a vanilla R installation, an enormous
+amount of functionality exists in external packages that can be installed using
+<code>install.packages()</code> function or via the ‘Packages’ tab.</p>
+<p>Note that <code>install.packages()</code> will only find packages in the default CRAN
+repository. Most Bioinformatics softwares are in a separate repository called
+Bioconductor, packages from Bioconductor can be installed through the
+‘BiocManager’ package. To do this you first need to install ‘BiocManager’ from
+CRAN, then we can use it to install the Bioconductor packages ‘limma’ and
+‘edgeR’.</p>
+<div class="sourceCode" id="cb214"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb214-1"><a href="session-3.html#cb214-1"></a><span class="kw">install.packages</span>(<span class="st">&quot;BiocManager&quot;</span>)</span>
+<span id="cb214-2"><a href="session-3.html#cb214-2"></a></span>
+<span id="cb214-3"><a href="session-3.html#cb214-3"></a>BiocManager<span class="op">::</span><span class="kw">install</span>(<span class="kw">c</span>(<span class="st">&quot;limma&quot;</span>, <span class="st">&quot;edgeR&quot;</span>))</span></code></pre></div>
+<p>Once a package is installed, you can load it in the make all the functions
+within available. This is done using the ‘library’ function. Note that quotation
+marks are not required around the package name, this is a rare behaviour granted
+to the library function to save some typing because it’s so commonly used.</p>
+<div class="sourceCode" id="cb215"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb215-1"><a href="session-3.html#cb215-1"></a><span class="kw">library</span>(edgeR)</span></code></pre></div>
+<pre><code>## Loading required package: limma</code></pre>
+<div class="sourceCode" id="cb217"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb217-1"><a href="session-3.html#cb217-1"></a><span class="kw">library</span>(limma)</span></code></pre></div>
+<div id="dgelist" class="section level3">
+<h3><span class="header-section-number">3.4.1</span> DGEList</h3>
+<p>The RNA sequencing analysis we will go through is a simplified version of that performed in the article from Law <em>et al.</em> <span class="citation">(Law et al. <a href="#ref-law2016rna" role="doc-biblioref">2016</a>)</span>. The RNA sequencing data we will use is from Sheridan <em>et al.</em> <span class="citation">(Sheridan et al. <a href="#ref-sheridan2015pooled" role="doc-biblioref">2015</a>)</span>. It consists of 9 samples from 3 cell populations; basal, luminal progenitor (LP) and mature luminal (ML), which has been sorted from the mammary glands of female virgin mice. The reads have been aligned to the mouse reference genome (mm10) and reads summarised at the gene-level (using mm10 RefSeq-based annotation) to obtain gene counts. Gene level summarisation involves counting the number of reads mapped to each gene, for each sample. The resulting ‘count of reads’ is often referred to simply as ‘counts’.</p>
+<p>Each data file corresponds to one sample and thus there is one data file for each sample. Each data file details the number of reads mapped to every gene for the sample corresponding to that data file. Within each data file, there are 3 columns - ‘EntrezID’, ‘GeneLength’ and ‘Count.’ ‘EntrezID’ and ‘GeneLength’ gives the EntrezID and gene length of one gene and ‘Count’ gives the number of reads mapped to that gene. The first four lines of one file (and thus one sample) is shown below:</p>
+<pre><code>EntrezID    GeneLength  Count
+497097  3634    2
+100503874   3259    0
+100038431   1634    0
+19888   9747    1</code></pre>
+<p>We will be looking at 9 samples (and using 9 data files) in total. Their details are shown below:</p>
+<table>
+<caption><span id="tab:samps">Table 3.1: </span>Summary of samples.</caption>
+<thead>
+<tr class="header">
+<th align="left">File name</th>
+<th align="left">Sample name</th>
+<th align="left">Phenotype group</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">GSM1545535_10_6_5_11.txt</td>
+<td align="left">10_6_5_11</td>
+<td align="left">LP</td>
+</tr>
+<tr class="even">
+<td align="left">GSM1545536_9_6_5_11.txt</td>
+<td align="left">9_6_5_11</td>
+<td align="left">ML</td>
+</tr>
+<tr class="odd">
+<td align="left">GSM1545538_purep53.txt</td>
+<td align="left">purep53</td>
+<td align="left">Basal</td>
+</tr>
+<tr class="even">
+<td align="left">GSM1545539_JMS8-2.txt</td>
+<td align="left">JMS8-2</td>
+<td align="left">Basal</td>
+</tr>
+<tr class="odd">
+<td align="left">GSM1545540_JMS8-3.txt</td>
+<td align="left">JMS8-3</td>
+<td align="left">ML</td>
+</tr>
+<tr class="even">
+<td align="left">GSM1545541_JMS8-4.txt</td>
+<td align="left">JMS8-4</td>
+<td align="left">LP</td>
+</tr>
+<tr class="odd">
+<td align="left">GSM1545542_JMS8-5.txt</td>
+<td align="left">JMS8-5</td>
+<td align="left">Basal</td>
+</tr>
+<tr class="even">
+<td align="left">GSM1545544_JMS9-P7c.txt</td>
+<td align="left">JMS9-P7c</td>
+<td align="left">ML</td>
+</tr>
+<tr class="odd">
+<td align="left">GSM1545545_JMS9-P8c.txt</td>
+<td align="left">JMS9-P8c</td>
+<td align="left">LP</td>
+</tr>
+</tbody>
+</table>
+<p>To create a <code>DGEList</code> object, we will use the <code>readDGE()</code> function. There are three important arguments to this function:</p>
+<ul>
+<li><code>files</code> - a vector of data file names</li>
+<li><code>path</code> - the path to the directory that contains your data files. If the data files are in your working directory, don’t worry about this argument. If the data files are somewhere else, like a folder called ‘data’, in your working directory you must give the path to that folder</li>
+<li><code>colums</code> - the columns of the input files which have the gene names and counts respectively (as the column indices)</li>
+</ul>
+<p>First, we will create a vector of the file names. You can simply copy and paste this code into your R script.</p>
+<div class="sourceCode" id="cb219"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb219-1"><a href="session-3.html#cb219-1"></a>files &lt;-<span class="st"> </span><span class="kw">c</span>(</span>
+<span id="cb219-2"><a href="session-3.html#cb219-2"></a>  <span class="st">&quot;GSM1545535_10_6_5_11.txt&quot;</span>, </span>
+<span id="cb219-3"><a href="session-3.html#cb219-3"></a>  <span class="st">&quot;GSM1545536_9_6_5_11.txt&quot;</span>, </span>
+<span id="cb219-4"><a href="session-3.html#cb219-4"></a>  <span class="st">&quot;GSM1545538_purep53.txt&quot;</span>, </span>
+<span id="cb219-5"><a href="session-3.html#cb219-5"></a>  <span class="st">&quot;GSM1545539_JMS8-2.txt&quot;</span>, </span>
+<span id="cb219-6"><a href="session-3.html#cb219-6"></a>  <span class="st">&quot;GSM1545540_JMS8-3.txt&quot;</span>, </span>
+<span id="cb219-7"><a href="session-3.html#cb219-7"></a>  <span class="st">&quot;GSM1545541_JMS8-4.txt&quot;</span>, </span>
+<span id="cb219-8"><a href="session-3.html#cb219-8"></a>  <span class="st">&quot;GSM1545542_JMS8-5.txt&quot;</span>, </span>
+<span id="cb219-9"><a href="session-3.html#cb219-9"></a>  <span class="st">&quot;GSM1545544_JMS9-P7c.txt&quot;</span>, </span>
+<span id="cb219-10"><a href="session-3.html#cb219-10"></a>  <span class="st">&quot;GSM1545545_JMS9-P8c.txt&quot;</span></span>
+<span id="cb219-11"><a href="session-3.html#cb219-11"></a>)</span></code></pre></div>
+<p>Next, we will create our <code>DGEList</code> object. I have put my data files in a folder
+called “data” (within my working directory). Thus, I must specify
+<code>path = "data"</code>. Depending on where you have put your data files, you may need
+a different input to <code>path</code> or not have to include the <code>path</code> argument
+(if your data files are NOT within a folder in your working directory).</p>
+<div class="sourceCode" id="cb220"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb220-1"><a href="session-3.html#cb220-1"></a>x &lt;-<span class="st"> </span><span class="kw">readDGE</span>(files, <span class="dt">path =</span> <span class="st">&quot;data/counts&quot;</span>, <span class="dt">columns =</span> <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">3</span>))</span></code></pre></div>
+<p>The <code>readDGE()</code> function uses the read counts from our 9 data files
+(and thus 9 samples) to create a <code>DGEList</code> object containing count information
+for all 9 samples and every gene included in our data files.</p>
+<p>It has 2 elements, one named <code>samples</code> and one named <code>counts</code>. For small enough
+matrices, if you are using RStudio, you can take a look at each using <code>View()</code>:</p>
+<div class="sourceCode" id="cb221"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb221-1"><a href="session-3.html#cb221-1"></a><span class="kw">View</span>(x<span class="op">$</span>counts)</span></code></pre></div>
+<p>Note that the column names are the file names. The <code>DGEList</code> object was created
+using the information in the “.txt” files. The function <code>readDGE()</code> has used the
+file name as the name of each sample because we have not told <code>readDGE()</code> what
+the sample names are. It has therefore simply used the file names. This makes
+logical sense as each file contained the count data for one sample.</p>
+<p>The <code>samples</code> data frame can also be viewed:</p>
+<div class="sourceCode" id="cb222"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb222-1"><a href="session-3.html#cb222-1"></a><span class="kw">View</span>(x<span class="op">$</span>samples)</span></code></pre></div>
+<p>The output should look something like this:</p>
+<div class="figure" style="text-align: center"><span id="fig:dgesamples"></span>
+<img src="Images/samplesdf.png" alt="View of the samples data frame from the DGEList object we created and called x." width="700px" />
+<p class="caption">
+Figure 3.1: View of the samples data frame from the DGEList object we created and called x.
+</p>
+</div>
+<p>This is a data frame where each row is 1 sample, and details of each sample is given in the 4 columns.</p>
+<ul>
+<li><code>files</code> gives the file names.</li>
+<li><code>group</code> details the phenotype group the sample belongs to. As we have not specified this yet, the default <code>1</code> is given for each sample.</li>
+<li><code>lib.size</code> gives the library size. This is the total sum of all counts for that sample.</li>
+<li><code>norm.factors</code> this gives the normalisation factor for each sample. As we have not calculated any normalisation factors, this is 1 for each sample.</li>
+</ul>
+<p>This data frame also has row names, which are currently the file names of each
+sample. Again, because we have not told <code>readDGE()</code> what the sample names are,
+it has used the file names.</p>
+<p>Let’s change the row names to be the sample names, instead of the full file name
+(see Table <a href="session-3.html#tab:samps">3.1</a>).</p>
+<p>We can do this by first creating a vector of sample names. You can simply copy
+and paste the code below into your R script.</p>
+<div class="sourceCode" id="cb223"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb223-1"><a href="session-3.html#cb223-1"></a>samplenames &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;10_6_5_11&quot;</span>, <span class="st">&quot;9_6_5_11&quot;</span>, <span class="st">&quot;purep53&quot;</span>, <span class="st">&quot;JMS8-2&quot;</span>, <span class="st">&quot;JMS8-3&quot;</span>,</span>
+<span id="cb223-2"><a href="session-3.html#cb223-2"></a>                 <span class="st">&quot;JMS8-4&quot;</span>, <span class="st">&quot;JMS8-5&quot;</span>, <span class="st">&quot;JMS9-P7c&quot;</span>, <span class="st">&quot;JMS9-P8c&quot;</span>)</span></code></pre></div>
+<p>We can change the row names in the <code>samples</code> data frame using the <code>rownames()</code>
+function. This function will give you the row names of a data structure (a data
+frame in this instance):</p>
+<div class="sourceCode" id="cb224"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb224-1"><a href="session-3.html#cb224-1"></a><span class="kw">rownames</span>(x<span class="op">$</span>samples) </span></code></pre></div>
+<pre><code>## [1] &quot;GSM1545535_10_6_5_11&quot; &quot;GSM1545536_9_6_5_11&quot;  &quot;GSM1545538_purep53&quot;  
+## [4] &quot;GSM1545539_JMS8-2&quot;    &quot;GSM1545540_JMS8-3&quot;    &quot;GSM1545541_JMS8-4&quot;   
+## [7] &quot;GSM1545542_JMS8-5&quot;    &quot;GSM1545544_JMS9-P7c&quot;  &quot;GSM1545545_JMS9-P8c&quot;</code></pre>
+<p>We can see that the row names are the file names as we saw above. To replace
+these file names with the sample names we can run:</p>
+<div class="sourceCode" id="cb226"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb226-1"><a href="session-3.html#cb226-1"></a><span class="kw">rownames</span>(x<span class="op">$</span>samples) &lt;-<span class="st"> </span>samplenames</span></code></pre></div>
+
+<div id="refs" class="references">
+<div>
+<p>Law, Charity W, Monther Alhamdoosh, Shian Su, Gordon K Smyth, and Matthew E Ritchie. 2016. “RNA-Seq Analysis Is Easy as 1-2-3 with Limma, Glimma and edgeR.” <em>F1000Research</em> 5.</p>
+</div>
+<div>
+<p>Sheridan, Julie M, Matthew E Ritchie, Sarah A Best, Kun Jiang, Tamara J Beck, François Vaillant, Kevin Liu, et al. 2015. “A Pooled shRNA Screen for Regulators of Primary Mammary Stem and Progenitor Cells Identifies Roles for Asap1 and Prox1.” <em>BMC Cancer</em> 15 (1): 221.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references">
+<div id="ref-law2016rna">
+<p>Law, Charity W, Monther Alhamdoosh, Shian Su, Gordon K Smyth, and Matthew E Ritchie. 2016. “RNA-Seq Analysis Is Easy as 1-2-3 with Limma, Glimma and edgeR.” <em>F1000Research</em> 5.</p>
+</div>
+<div id="ref-sheridan2015pooled">
+<p>Sheridan, Julie M, Matthew E Ritchie, Sarah A Best, Kun Jiang, Tamara J Beck, François Vaillant, Kevin Liu, et al. 2015. “A Pooled shRNA Screen for Regulators of Primary Mammary Stem and Progenitor Cells Identifies Roles for Asap1 and Prox1.” <em>BMC Cancer</em> 15 (1): 221.</p>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="session-2.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/03-session3.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["IntroBaseR.pdf", "IntroBaseR.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>
