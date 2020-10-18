@@ -24,7 +24,7 @@
 <meta name="author" content="" />
 
 
-<meta name="date" content="2020-10-16" />
+<meta name="date" content="2020-10-19" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -212,6 +212,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="session-3" class="section level1">
 <h1><span class="header-section-number">Chapter 3</span> Session 3</h1>
+<p>In the last session we learned about:</p>
+<ul>
+<li>Missing values</li>
+<li>Subsetting data structures</li>
+<li>How to merge two dataframes</li>
+</ul>
 <p>In this session we will learn:</p>
 <ul>
 <li>Basic plotting</li>
@@ -274,6 +280,18 @@ is the grouping variable along the x-axis.</p>
 <p>For example we can create box plots of the gene lengths across chromosomes.</p>
 <div class="sourceCode" id="cb184"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb184-1"><a href="session-3.html#cb184-1"></a><span class="kw">boxplot</span>(GeneLength <span class="op">~</span><span class="st"> </span>TXCHROM, <span class="dt">data =</span> genes)</span></code></pre></div>
 <p><img src="IntroBaseR_files/figure-html/unnamed-chunk-81-1.png" width="672" /></p>
+<p><strong>Challenge 3.1</strong></p>
+<ol style="list-style-type: decimal">
+<li><p>Plot the gene length against the log of the counts.</p></li>
+<li><p>Using arguments in the “Details” section of the <code>plot()</code> function’s help
+page, change the plotting symbol from circles to solid dots.</p></li>
+<li><p>Find the argument in the help page of <code>hist()</code> that allows you to create a
+histogram that is broken into 40 cells/bins. Create the histogram with 40
+cells. Set the title of the plot to “Histogram of gene lengths” and the x-axis
+label to “Gene length”.</p></li>
+<li><p>Find and use the argument of <code>boxplot()</code> that allows the boxplots to be
+drawn horizontally.</p></li>
+</ol>
 </div>
 </div>
 <div id="lists" class="section level2">
@@ -341,7 +359,6 @@ hierarchical structure resembling folders in a computer.</p>
 </ul></li>
 </ul>
 <p>Many Bioconductor packages, including limma, use lists so it is an important data structure to understand.</p>
-<p><strong>Challenge 3.1</strong></p>
 <div id="indexing-lists" class="section level3">
 <h3><span class="header-section-number">3.2.1</span> Indexing lists</h3>
 <p>We can access elements of a list using square brackets. You may have noticed that there are often double square brackets <code>[[]]</code>. There is a subtle but important difference between single square brackets and double square brackets when subsetting lists.</p>
@@ -406,6 +423,69 @@ The following two approaches are identical.</p>
 <pre><code>## [1] &quot;Andy&quot;  &quot;Sally&quot;</code></pre>
 <div class="sourceCode" id="cb212"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb212-1"><a href="session-3.html#cb212-1"></a>named_list[[<span class="st">&quot;name&quot;</span>]]</span></code></pre></div>
 <pre><code>## [1] &quot;Andy&quot;  &quot;Sally&quot;</code></pre>
+<p>You can use the <code>names()</code> function on a list to find all the names at the
+first layer.</p>
+<div class="sourceCode" id="cb214"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb214-1"><a href="session-3.html#cb214-1"></a><span class="kw">names</span>(named_list)</span></code></pre></div>
+<pre><code>## [1] &quot;name&quot; &quot;age&quot;</code></pre>
+<p>Assigning values to elements of a list that don’t exist adds that element
+onto the list.</p>
+<div class="sourceCode" id="cb216"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb216-1"><a href="session-3.html#cb216-1"></a>my_list &lt;-<span class="st"> </span><span class="kw">list</span>(</span>
+<span id="cb216-2"><a href="session-3.html#cb216-2"></a>  <span class="dt">item =</span> <span class="st">&quot;banana&quot;</span>,</span>
+<span id="cb216-3"><a href="session-3.html#cb216-3"></a>  <span class="dt">weight =</span> <span class="dv">120</span></span>
+<span id="cb216-4"><a href="session-3.html#cb216-4"></a>)</span>
+<span id="cb216-5"><a href="session-3.html#cb216-5"></a>my_list</span></code></pre></div>
+<pre><code>## $item
+## [1] &quot;banana&quot;
+## 
+## $weight
+## [1] 120</code></pre>
+<div class="sourceCode" id="cb218"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb218-1"><a href="session-3.html#cb218-1"></a>my_list<span class="op">$</span>price &lt;-<span class="st"> </span><span class="dv">10</span></span>
+<span id="cb218-2"><a href="session-3.html#cb218-2"></a>my_list</span></code></pre></div>
+<pre><code>## $item
+## [1] &quot;banana&quot;
+## 
+## $weight
+## [1] 120
+## 
+## $price
+## [1] 10</code></pre>
+<p>Much like how indices can be chained together, named access of elements can
+also be chained together.</p>
+<div class="sourceCode" id="cb220"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb220-1"><a href="session-3.html#cb220-1"></a>person &lt;-<span class="st"> </span><span class="kw">list</span>(</span>
+<span id="cb220-2"><a href="session-3.html#cb220-2"></a>  <span class="dt">name =</span> <span class="st">&quot;Alice&quot;</span>,</span>
+<span id="cb220-3"><a href="session-3.html#cb220-3"></a>  <span class="dt">address =</span> <span class="kw">list</span>(</span>
+<span id="cb220-4"><a href="session-3.html#cb220-4"></a>    <span class="dt">home =</span> <span class="st">&quot;123 Home Street&quot;</span>,</span>
+<span id="cb220-5"><a href="session-3.html#cb220-5"></a>    <span class="dt">work =</span> <span class="st">&quot;321 Work Street&quot;</span></span>
+<span id="cb220-6"><a href="session-3.html#cb220-6"></a>  )</span>
+<span id="cb220-7"><a href="session-3.html#cb220-7"></a>)</span>
+<span id="cb220-8"><a href="session-3.html#cb220-8"></a></span>
+<span id="cb220-9"><a href="session-3.html#cb220-9"></a>person<span class="op">$</span>addres<span class="op">$</span>home</span></code></pre></div>
+<pre><code>## [1] &quot;123 Home Street&quot;</code></pre>
+<p><strong>Challenge 3.2</strong></p>
+<ol style="list-style-type: decimal">
+<li><p>Using our <code>genes</code> data frame, create a list <code>genes_list</code> containing
+3 elements: “chr1”, “chr2” and “chr3” where each element contains the subset
+data frame of genes belonging to that chromosome.</p></li>
+<li><p>Use str to inspect the following list and access the value “success!” using
+both double bracket numeric indices and named $ indices.</p></li>
+</ol>
+<div class="sourceCode" id="cb222"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb222-1"><a href="session-3.html#cb222-1"></a>maze_list &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">a =</span> <span class="st">&quot;nope&quot;</span>, <span class="dt">b =</span> <span class="kw">list</span>(<span class="dt">x =</span> <span class="st">&quot;nope&quot;</span>, <span class="dt">y =</span> <span class="kw">list</span>(<span class="dt">i =</span> <span class="st">&quot;nope&quot;</span>,</span>
+<span id="cb222-2"><a href="session-3.html#cb222-2"></a>  <span class="dt">ii =</span> <span class="st">&quot;nope&quot;</span>), <span class="dt">z =</span> <span class="kw">list</span>(<span class="dt">i =</span> <span class="st">&quot;nope&quot;</span>, <span class="dt">ii =</span> <span class="st">&quot;nope&quot;</span>, <span class="dt">iii =</span> <span class="st">&quot;success!&quot;</span>)),</span>
+<span id="cb222-3"><a href="session-3.html#cb222-3"></a>  <span class="dt">c =</span> <span class="st">&quot;nope&quot;</span>)</span></code></pre></div>
+<ol start="3" style="list-style-type: decimal">
+<li>Create a list “my_gene” that has the follwing structure.</li>
+</ol>
+<pre><code>&gt; str(my_gene)
+
+List of 4
+ $ entrezID : num 59272
+ $ ensemblID: chr &quot;ENSG00000130234&quot;
+ $ position :List of 4
+  ..$ chromosome: chr &quot;chrX&quot;
+  ..$ strand    : chr &quot;-&quot;
+  ..$ start     : num 15561033
+  ..$ end       : num 15602158
+ $ enhancers: chr [1:2] &quot;GH0XJ015596&quot; &quot;GH0XJ015579&quot;</code></pre>
 </div>
 </div>
 <div id="classes" class="section level2">
@@ -445,16 +525,16 @@ Bioconductor, packages from Bioconductor can be installed through the
 ‘BiocManager’ package. To do this you first need to install ‘BiocManager’ from
 CRAN, then we can use it to install the Bioconductor packages ‘limma’ and
 ‘edgeR’.</p>
-<div class="sourceCode" id="cb214"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb214-1"><a href="session-3.html#cb214-1"></a><span class="kw">install.packages</span>(<span class="st">&quot;BiocManager&quot;</span>)</span>
-<span id="cb214-2"><a href="session-3.html#cb214-2"></a></span>
-<span id="cb214-3"><a href="session-3.html#cb214-3"></a>BiocManager<span class="op">::</span><span class="kw">install</span>(<span class="kw">c</span>(<span class="st">&quot;limma&quot;</span>, <span class="st">&quot;edgeR&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb224"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb224-1"><a href="session-3.html#cb224-1"></a><span class="kw">install.packages</span>(<span class="st">&quot;BiocManager&quot;</span>)</span>
+<span id="cb224-2"><a href="session-3.html#cb224-2"></a></span>
+<span id="cb224-3"><a href="session-3.html#cb224-3"></a>BiocManager<span class="op">::</span><span class="kw">install</span>(<span class="kw">c</span>(<span class="st">&quot;limma&quot;</span>, <span class="st">&quot;edgeR&quot;</span>))</span></code></pre></div>
 <p>Once a package is installed, you can load it in the make all the functions
 within available. This is done using the ‘library’ function. Note that quotation
 marks are not required around the package name, this is a rare behaviour granted
 to the library function to save some typing because it’s so commonly used.</p>
-<div class="sourceCode" id="cb215"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb215-1"><a href="session-3.html#cb215-1"></a><span class="kw">library</span>(edgeR)</span></code></pre></div>
+<div class="sourceCode" id="cb225"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb225-1"><a href="session-3.html#cb225-1"></a><span class="kw">library</span>(edgeR)</span></code></pre></div>
 <pre><code>## Loading required package: limma</code></pre>
-<div class="sourceCode" id="cb217"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb217-1"><a href="session-3.html#cb217-1"></a><span class="kw">library</span>(limma)</span></code></pre></div>
+<div class="sourceCode" id="cb227"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb227-1"><a href="session-3.html#cb227-1"></a><span class="kw">library</span>(limma)</span></code></pre></div>
 <div id="dgelist" class="section level3">
 <h3><span class="header-section-number">3.4.1</span> DGEList</h3>
 <p>The RNA sequencing analysis we will go through is a simplified version of that performed in the article from Law <em>et al.</em> <span class="citation">(Law et al. <a href="#ref-law2016rna" role="doc-biblioref">2016</a>)</span>. The RNA sequencing data we will use is from Sheridan <em>et al.</em> <span class="citation">(Sheridan et al. <a href="#ref-sheridan2015pooled" role="doc-biblioref">2015</a>)</span>. It consists of 9 samples from 3 cell populations; basal, luminal progenitor (LP) and mature luminal (ML), which has been sorted from the mammary glands of female virgin mice. The reads have been aligned to the mouse reference genome (mm10) and reads summarised at the gene-level (using mm10 RefSeq-based annotation) to obtain gene counts. Gene level summarisation involves counting the number of reads mapped to each gene, for each sample. The resulting ‘count of reads’ is often referred to simply as ‘counts’.</p>
@@ -529,36 +609,40 @@ to the library function to save some typing because it’s so commonly used.</p>
 <li><code>colums</code> - the columns of the input files which have the gene names and counts respectively (as the column indices)</li>
 </ul>
 <p>First, we will create a vector of the file names. You can simply copy and paste this code into your R script.</p>
-<div class="sourceCode" id="cb219"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb219-1"><a href="session-3.html#cb219-1"></a>files &lt;-<span class="st"> </span><span class="kw">c</span>(</span>
-<span id="cb219-2"><a href="session-3.html#cb219-2"></a>  <span class="st">&quot;GSM1545535_10_6_5_11.txt&quot;</span>, </span>
-<span id="cb219-3"><a href="session-3.html#cb219-3"></a>  <span class="st">&quot;GSM1545536_9_6_5_11.txt&quot;</span>, </span>
-<span id="cb219-4"><a href="session-3.html#cb219-4"></a>  <span class="st">&quot;GSM1545538_purep53.txt&quot;</span>, </span>
-<span id="cb219-5"><a href="session-3.html#cb219-5"></a>  <span class="st">&quot;GSM1545539_JMS8-2.txt&quot;</span>, </span>
-<span id="cb219-6"><a href="session-3.html#cb219-6"></a>  <span class="st">&quot;GSM1545540_JMS8-3.txt&quot;</span>, </span>
-<span id="cb219-7"><a href="session-3.html#cb219-7"></a>  <span class="st">&quot;GSM1545541_JMS8-4.txt&quot;</span>, </span>
-<span id="cb219-8"><a href="session-3.html#cb219-8"></a>  <span class="st">&quot;GSM1545542_JMS8-5.txt&quot;</span>, </span>
-<span id="cb219-9"><a href="session-3.html#cb219-9"></a>  <span class="st">&quot;GSM1545544_JMS9-P7c.txt&quot;</span>, </span>
-<span id="cb219-10"><a href="session-3.html#cb219-10"></a>  <span class="st">&quot;GSM1545545_JMS9-P8c.txt&quot;</span></span>
-<span id="cb219-11"><a href="session-3.html#cb219-11"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb229"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb229-1"><a href="session-3.html#cb229-1"></a>files &lt;-<span class="st"> </span><span class="kw">c</span>(</span>
+<span id="cb229-2"><a href="session-3.html#cb229-2"></a>  <span class="st">&quot;GSM1545535_10_6_5_11.txt&quot;</span>, </span>
+<span id="cb229-3"><a href="session-3.html#cb229-3"></a>  <span class="st">&quot;GSM1545536_9_6_5_11.txt&quot;</span>, </span>
+<span id="cb229-4"><a href="session-3.html#cb229-4"></a>  <span class="st">&quot;GSM1545538_purep53.txt&quot;</span>, </span>
+<span id="cb229-5"><a href="session-3.html#cb229-5"></a>  <span class="st">&quot;GSM1545539_JMS8-2.txt&quot;</span>, </span>
+<span id="cb229-6"><a href="session-3.html#cb229-6"></a>  <span class="st">&quot;GSM1545540_JMS8-3.txt&quot;</span>, </span>
+<span id="cb229-7"><a href="session-3.html#cb229-7"></a>  <span class="st">&quot;GSM1545541_JMS8-4.txt&quot;</span>, </span>
+<span id="cb229-8"><a href="session-3.html#cb229-8"></a>  <span class="st">&quot;GSM1545542_JMS8-5.txt&quot;</span>, </span>
+<span id="cb229-9"><a href="session-3.html#cb229-9"></a>  <span class="st">&quot;GSM1545544_JMS9-P7c.txt&quot;</span>, </span>
+<span id="cb229-10"><a href="session-3.html#cb229-10"></a>  <span class="st">&quot;GSM1545545_JMS9-P8c.txt&quot;</span></span>
+<span id="cb229-11"><a href="session-3.html#cb229-11"></a>)</span></code></pre></div>
 <p>Next, we will create our <code>DGEList</code> object. I have put my data files in a folder
 called “data” (within my working directory). Thus, I must specify
 <code>path = "data"</code>. Depending on where you have put your data files, you may need
 a different input to <code>path</code> or not have to include the <code>path</code> argument
 (if your data files are NOT within a folder in your working directory).</p>
-<div class="sourceCode" id="cb220"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb220-1"><a href="session-3.html#cb220-1"></a>x &lt;-<span class="st"> </span><span class="kw">readDGE</span>(files, <span class="dt">path =</span> <span class="st">&quot;data/counts&quot;</span>, <span class="dt">columns =</span> <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">3</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb230"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb230-1"><a href="session-3.html#cb230-1"></a>dge &lt;-<span class="st"> </span><span class="kw">readDGE</span>(files, <span class="dt">path =</span> <span class="st">&quot;data/counts&quot;</span>, <span class="dt">columns =</span> <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">3</span>), <span class="dt">group =</span> groups)</span>
+<span id="cb230-2"><a href="session-3.html#cb230-2"></a><span class="kw">class</span>(dge)</span></code></pre></div>
+<pre><code>## [1] &quot;DGEList&quot;
+## attr(,&quot;package&quot;)
+## [1] &quot;edgeR&quot;</code></pre>
 <p>The <code>readDGE()</code> function uses the read counts from our 9 data files
 (and thus 9 samples) to create a <code>DGEList</code> object containing count information
 for all 9 samples and every gene included in our data files.</p>
 <p>It has 2 elements, one named <code>samples</code> and one named <code>counts</code>. For small enough
 matrices, if you are using RStudio, you can take a look at each using <code>View()</code>:</p>
-<div class="sourceCode" id="cb221"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb221-1"><a href="session-3.html#cb221-1"></a><span class="kw">View</span>(x<span class="op">$</span>counts)</span></code></pre></div>
+<div class="sourceCode" id="cb232"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb232-1"><a href="session-3.html#cb232-1"></a><span class="kw">View</span>(dge<span class="op">$</span>counts)</span></code></pre></div>
 <p>Note that the column names are the file names. The <code>DGEList</code> object was created
 using the information in the “.txt” files. The function <code>readDGE()</code> has used the
 file name as the name of each sample because we have not told <code>readDGE()</code> what
 the sample names are. It has therefore simply used the file names. This makes
 logical sense as each file contained the count data for one sample.</p>
 <p>The <code>samples</code> data frame can also be viewed:</p>
-<div class="sourceCode" id="cb222"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb222-1"><a href="session-3.html#cb222-1"></a><span class="kw">View</span>(x<span class="op">$</span>samples)</span></code></pre></div>
+<div class="sourceCode" id="cb233"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb233-1"><a href="session-3.html#cb233-1"></a><span class="kw">View</span>(dge<span class="op">$</span>samples)</span></code></pre></div>
 <p>The output should look something like this:</p>
 <div class="figure" style="text-align: center"><span id="fig:dgesamples"></span>
 <img src="Images/samplesdf.png" alt="View of the samples data frame from the DGEList object we created and called x." width="700px" />
@@ -580,18 +664,29 @@ it has used the file names.</p>
 (see Table <a href="session-3.html#tab:samps">3.1</a>).</p>
 <p>We can do this by first creating a vector of sample names. You can simply copy
 and paste the code below into your R script.</p>
-<div class="sourceCode" id="cb223"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb223-1"><a href="session-3.html#cb223-1"></a>samplenames &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;10_6_5_11&quot;</span>, <span class="st">&quot;9_6_5_11&quot;</span>, <span class="st">&quot;purep53&quot;</span>, <span class="st">&quot;JMS8-2&quot;</span>, <span class="st">&quot;JMS8-3&quot;</span>,</span>
-<span id="cb223-2"><a href="session-3.html#cb223-2"></a>                 <span class="st">&quot;JMS8-4&quot;</span>, <span class="st">&quot;JMS8-5&quot;</span>, <span class="st">&quot;JMS9-P7c&quot;</span>, <span class="st">&quot;JMS9-P8c&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb234"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb234-1"><a href="session-3.html#cb234-1"></a>samplenames &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;10_6_5_11&quot;</span>, <span class="st">&quot;9_6_5_11&quot;</span>, <span class="st">&quot;purep53&quot;</span>, <span class="st">&quot;JMS8-2&quot;</span>, <span class="st">&quot;JMS8-3&quot;</span>,</span>
+<span id="cb234-2"><a href="session-3.html#cb234-2"></a>                 <span class="st">&quot;JMS8-4&quot;</span>, <span class="st">&quot;JMS8-5&quot;</span>, <span class="st">&quot;JMS9-P7c&quot;</span>, <span class="st">&quot;JMS9-P8c&quot;</span>)</span></code></pre></div>
 <p>We can change the row names in the <code>samples</code> data frame using the <code>rownames()</code>
 function. This function will give you the row names of a data structure (a data
 frame in this instance):</p>
-<div class="sourceCode" id="cb224"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb224-1"><a href="session-3.html#cb224-1"></a><span class="kw">rownames</span>(x<span class="op">$</span>samples) </span></code></pre></div>
+<div class="sourceCode" id="cb235"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb235-1"><a href="session-3.html#cb235-1"></a><span class="kw">rownames</span>(dge<span class="op">$</span>samples) </span></code></pre></div>
 <pre><code>## [1] &quot;GSM1545535_10_6_5_11&quot; &quot;GSM1545536_9_6_5_11&quot;  &quot;GSM1545538_purep53&quot;  
 ## [4] &quot;GSM1545539_JMS8-2&quot;    &quot;GSM1545540_JMS8-3&quot;    &quot;GSM1545541_JMS8-4&quot;   
 ## [7] &quot;GSM1545542_JMS8-5&quot;    &quot;GSM1545544_JMS9-P7c&quot;  &quot;GSM1545545_JMS9-P8c&quot;</code></pre>
 <p>We can see that the row names are the file names as we saw above. To replace
 these file names with the sample names we can run:</p>
-<div class="sourceCode" id="cb226"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb226-1"><a href="session-3.html#cb226-1"></a><span class="kw">rownames</span>(x<span class="op">$</span>samples) &lt;-<span class="st"> </span>samplenames</span></code></pre></div>
+<div class="sourceCode" id="cb237"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb237-1"><a href="session-3.html#cb237-1"></a><span class="kw">rownames</span>(dge<span class="op">$</span>samples) &lt;-<span class="st"> </span>samplenames</span></code></pre></div>
+<p><strong>Challenge 3.3</strong></p>
+<ol style="list-style-type: decimal">
+<li><p>Create a box plot of the library sizes of the samples.</p></li>
+<li><p>Find the following information:</p></li>
+</ol>
+<ul>
+<li>How many genes are there in <code>dge</code>?</li>
+<li>How many samples are there in <code>dge</code>?</li>
+<li>Which sample has the smallest library size?</li>
+<li>Which sample has the largest library size?</li>
+</ul>
 
 <div id="refs" class="references">
 <div>
