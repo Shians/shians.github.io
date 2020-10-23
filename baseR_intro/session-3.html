@@ -24,7 +24,7 @@
 <meta name="author" content="" />
 
 
-<meta name="date" content="2020-10-19" />
+<meta name="date" content="2020-10-23" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -32,7 +32,7 @@
   
   
 <link rel="prev" href="session-2.html"/>
-
+<link rel="next" href="session-4.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -50,6 +50,7 @@
 
 
 
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
 
 
 <style type="text/css">
@@ -186,9 +187,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.2.3" data-path="session-3.html"><a href="session-3.html#named-list"><i class="fa fa-check"></i><b>3.2.3</b> Named list</a></li>
 </ul></li>
 <li class="chapter" data-level="3.3" data-path="session-3.html"><a href="session-3.html#classes"><i class="fa fa-check"></i><b>3.3</b> Classes</a></li>
-<li class="chapter" data-level="3.4" data-path="session-3.html"><a href="session-3.html#packages"><i class="fa fa-check"></i><b>3.4</b> Packages</a><ul>
-<li class="chapter" data-level="3.4.1" data-path="session-3.html"><a href="session-3.html#dgelist"><i class="fa fa-check"></i><b>3.4.1</b> DGEList</a></li>
+<li class="chapter" data-level="3.4" data-path="session-3.html"><a href="session-3.html#packages"><i class="fa fa-check"></i><b>3.4</b> Packages</a></li>
+<li class="chapter" data-level="3.5" data-path="session-3.html"><a href="session-3.html#dgelist"><i class="fa fa-check"></i><b>3.5</b> DGEList</a></li>
 </ul></li>
+<li class="chapter" data-level="4" data-path="session-4.html"><a href="session-4.html"><i class="fa fa-check"></i><b>4</b> Session 4</a><ul>
+<li class="chapter" data-level="4.1" data-path="session-4.html"><a href="session-4.html#dgelist-1"><i class="fa fa-check"></i><b>4.1</b> DGEList</a></li>
+<li class="chapter" data-level="4.2" data-path="session-4.html"><a href="session-4.html#filtering"><i class="fa fa-check"></i><b>4.2</b> Filtering</a></li>
+<li class="chapter" data-level="4.3" data-path="session-4.html"><a href="session-4.html#normalisation"><i class="fa fa-check"></i><b>4.3</b> Normalisation</a></li>
+<li class="chapter" data-level="4.4" data-path="session-4.html"><a href="session-4.html#mds-plots"><i class="fa fa-check"></i><b>4.4</b> MDS plots</a></li>
+<li class="chapter" data-level="4.5" data-path="session-4.html"><a href="session-4.html#linear-modelling"><i class="fa fa-check"></i><b>4.5</b> Linear modelling</a><ul>
+<li class="chapter" data-level="4.5.1" data-path="session-4.html"><a href="session-4.html#design-matrix"><i class="fa fa-check"></i><b>4.5.1</b> Design matrix</a></li>
+<li class="chapter" data-level="4.5.2" data-path="session-4.html"><a href="session-4.html#contrasts"><i class="fa fa-check"></i><b>4.5.2</b> Contrasts</a></li>
+<li class="chapter" data-level="4.5.3" data-path="session-4.html"><a href="session-4.html#variance-modelling-with-voom"><i class="fa fa-check"></i><b>4.5.3</b> Variance modelling with voom</a></li>
+<li class="chapter" data-level="4.5.4" data-path="session-4.html"><a href="session-4.html#fitting-the-linear-model"><i class="fa fa-check"></i><b>4.5.4</b> Fitting the linear model</a></li>
+</ul></li>
+<li class="chapter" data-level="4.6" data-path="session-4.html"><a href="session-4.html#statistical-testing"><i class="fa fa-check"></i><b>4.6</b> Statistical testing</a></li>
+<li class="chapter" data-level="4.7" data-path="session-4.html"><a href="session-4.html#ma-plot"><i class="fa fa-check"></i><b>4.7</b> MA Plot</a></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -273,8 +287,8 @@ are created using the <code>hist()</code> function.</p>
 <div id="boxplots" class="section level3">
 <h3><span class="header-section-number">3.1.3</span> Boxplots</h3>
 <p>Box plots are used to visualise the distribution of values by their medians,
-quartiles and interquartile ranges. It can be useful for comparing the
-distribution of multiple groups. The simplest way to create a boxplot is to
+quartiles and inter-quartile ranges. It can be useful for comparing the
+distribution of multiple groups. The simplest way to create a box plot is to
 use the format <code>x ~ group</code>, where x is the variable on the y-axis and group
 is the grouping variable along the x-axis.</p>
 <p>For example we can create box plots of the gene lengths across chromosomes.</p>
@@ -289,7 +303,7 @@ page, change the plotting symbol from circles to solid dots.</p></li>
 histogram that is broken into 40 cells/bins. Create the histogram with 40
 cells. Set the title of the plot to “Histogram of gene lengths” and the x-axis
 label to “Gene length”.</p></li>
-<li><p>Find and use the argument of <code>boxplot()</code> that allows the boxplots to be
+<li><p>Find and use the argument of <code>boxplot()</code> that allows the box plot to be
 drawn horizontally.</p></li>
 </ol>
 </div>
@@ -366,7 +380,7 @@ hierarchical structure resembling folders in a computer.</p>
 <li>Single brackets <code>[]</code> will return a list.</li>
 <li>Double brackets <code>[[]]</code> will return elements of the list.</li>
 </ul>
-<p>To demonsterate, let’s make a list:</p>
+<p>To demonstrate, let’s make a list:</p>
 <div class="sourceCode" id="cb191"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb191-1"><a href="session-3.html#cb191-1"></a>my_list &lt;-<span class="st"> </span><span class="kw">list</span>(</span>
 <span id="cb191-2"><a href="session-3.html#cb191-2"></a>  <span class="kw">c</span>(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>),</span>
 <span id="cb191-3"><a href="session-3.html#cb191-3"></a>  <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>),</span>
@@ -466,14 +480,14 @@ also be chained together.</p>
 <li><p>Using our <code>genes</code> data frame, create a list <code>genes_list</code> containing
 3 elements: “chr1”, “chr2” and “chr3” where each element contains the subset
 data frame of genes belonging to that chromosome.</p></li>
-<li><p>Use str to inspect the following list and access the value “success!” using
+<li><p>Use <code>str()</code> to inspect the following list and access the value “success!” using
 both double bracket numeric indices and named $ indices.</p></li>
 </ol>
 <div class="sourceCode" id="cb222"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb222-1"><a href="session-3.html#cb222-1"></a>maze_list &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">a =</span> <span class="st">&quot;nope&quot;</span>, <span class="dt">b =</span> <span class="kw">list</span>(<span class="dt">x =</span> <span class="st">&quot;nope&quot;</span>, <span class="dt">y =</span> <span class="kw">list</span>(<span class="dt">i =</span> <span class="st">&quot;nope&quot;</span>,</span>
 <span id="cb222-2"><a href="session-3.html#cb222-2"></a>  <span class="dt">ii =</span> <span class="st">&quot;nope&quot;</span>), <span class="dt">z =</span> <span class="kw">list</span>(<span class="dt">i =</span> <span class="st">&quot;nope&quot;</span>, <span class="dt">ii =</span> <span class="st">&quot;nope&quot;</span>, <span class="dt">iii =</span> <span class="st">&quot;success!&quot;</span>)),</span>
 <span id="cb222-3"><a href="session-3.html#cb222-3"></a>  <span class="dt">c =</span> <span class="st">&quot;nope&quot;</span>)</span></code></pre></div>
 <ol start="3" style="list-style-type: decimal">
-<li>Create a list “my_gene” that has the follwing structure.</li>
+<li>Create a list “my_gene” that has the following structure.</li>
 </ol>
 <pre><code>&gt; str(my_gene)
 
@@ -535,8 +549,9 @@ to the library function to save some typing because it’s so commonly used.</p>
 <div class="sourceCode" id="cb225"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb225-1"><a href="session-3.html#cb225-1"></a><span class="kw">library</span>(edgeR)</span></code></pre></div>
 <pre><code>## Loading required package: limma</code></pre>
 <div class="sourceCode" id="cb227"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb227-1"><a href="session-3.html#cb227-1"></a><span class="kw">library</span>(limma)</span></code></pre></div>
-<div id="dgelist" class="section level3">
-<h3><span class="header-section-number">3.4.1</span> DGEList</h3>
+</div>
+<div id="dgelist" class="section level2">
+<h2><span class="header-section-number">3.5</span> DGEList</h2>
 <p>The RNA sequencing analysis we will go through is a simplified version of that performed in the article from Law <em>et al.</em> <span class="citation">(Law et al. <a href="#ref-law2016rna" role="doc-biblioref">2016</a>)</span>. The RNA sequencing data we will use is from Sheridan <em>et al.</em> <span class="citation">(Sheridan et al. <a href="#ref-sheridan2015pooled" role="doc-biblioref">2015</a>)</span>. It consists of 9 samples from 3 cell populations; basal, luminal progenitor (LP) and mature luminal (ML), which has been sorted from the mammary glands of female virgin mice. The reads have been aligned to the mouse reference genome (mm10) and reads summarised at the gene-level (using mm10 RefSeq-based annotation) to obtain gene counts. Gene level summarisation involves counting the number of reads mapped to each gene, for each sample. The resulting ‘count of reads’ is often referred to simply as ‘counts’.</p>
 <p>Each data file corresponds to one sample and thus there is one data file for each sample. Each data file details the number of reads mapped to every gene for the sample corresponding to that data file. Within each data file, there are 3 columns - ‘EntrezID’, ‘GeneLength’ and ‘Count.’ ‘EntrezID’ and ‘GeneLength’ gives the EntrezID and gene length of one gene and ‘Count’ gives the number of reads mapped to that gene. The first four lines of one file (and thus one sample) is shown below:</p>
 <pre><code>EntrezID    GeneLength  Count
@@ -619,7 +634,9 @@ to the library function to save some typing because it’s so commonly used.</p>
 <span id="cb229-8"><a href="session-3.html#cb229-8"></a>  <span class="st">&quot;GSM1545542_JMS8-5.txt&quot;</span>, </span>
 <span id="cb229-9"><a href="session-3.html#cb229-9"></a>  <span class="st">&quot;GSM1545544_JMS9-P7c.txt&quot;</span>, </span>
 <span id="cb229-10"><a href="session-3.html#cb229-10"></a>  <span class="st">&quot;GSM1545545_JMS9-P8c.txt&quot;</span></span>
-<span id="cb229-11"><a href="session-3.html#cb229-11"></a>)</span></code></pre></div>
+<span id="cb229-11"><a href="session-3.html#cb229-11"></a>)</span>
+<span id="cb229-12"><a href="session-3.html#cb229-12"></a></span>
+<span id="cb229-13"><a href="session-3.html#cb229-13"></a>groups &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;LP&quot;</span>, <span class="st">&quot;ML&quot;</span>, <span class="st">&quot;Basal&quot;</span>, <span class="st">&quot;Basal&quot;</span>, <span class="st">&quot;ML&quot;</span>, <span class="st">&quot;LP&quot;</span>, <span class="st">&quot;Basal&quot;</span>, <span class="st">&quot;ML&quot;</span>, <span class="st">&quot;LP&quot;</span>)</span></code></pre></div>
 <p>Next, we will create our <code>DGEList</code> object. I have put my data files in a folder
 called “data” (within my working directory). Thus, I must specify
 <code>path = "data"</code>. Depending on where you have put your data files, you may need
@@ -688,15 +705,6 @@ these file names with the sample names we can run:</p>
 <li>Which sample has the largest library size?</li>
 </ul>
 
-<div id="refs" class="references">
-<div>
-<p>Law, Charity W, Monther Alhamdoosh, Shian Su, Gordon K Smyth, and Matthew E Ritchie. 2016. “RNA-Seq Analysis Is Easy as 1-2-3 with Limma, Glimma and edgeR.” <em>F1000Research</em> 5.</p>
-</div>
-<div>
-<p>Sheridan, Julie M, Matthew E Ritchie, Sarah A Best, Kun Jiang, Tamara J Beck, François Vaillant, Kevin Liu, et al. 2015. “A Pooled shRNA Screen for Regulators of Primary Mammary Stem and Progenitor Cells Identifies Roles for Asap1 and Prox1.” <em>BMC Cancer</em> 15 (1): 221.</p>
-</div>
-</div>
-</div>
 </div>
 </div>
 <h3>References</h3>
@@ -713,8 +721,8 @@ these file names with the sample names we can run:</p>
           </div>
         </div>
       </div>
-<a href="session-2.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-
+<a href="session-2.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="session-4.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -764,6 +772,20 @@ gitbook.start({
 });
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>
