@@ -24,7 +24,7 @@
 <meta name="author" content="" />
 
 
-<meta name="date" content="2020-10-23" />
+<meta name="date" content="2020-10-26" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -234,7 +234,8 @@ RNA-seq experiment using the
 <li>normalisation</li>
 <li>creating a multidimensional scaling (MDS) plot</li>
 <li>creating a design matrix</li>
-<li>fitting gene-wise linear models (with empirical Bayes moderation to more accurately estimate gene-wise variability)</li>
+<li>fitting gene-wise linear models (with empirical Bayes moderation to more
+accurately estimate gene-wise variability)</li>
 <li>performing statistical testing for differential expression</li>
 </ul>
 <p>The aim of this session is to give you experience with a real-world RNA-seq
@@ -246,7 +247,20 @@ the package’s requirements.</p>
 guide. You can view this by typing <code>help("limma")</code> and following the links.</p>
 <div id="dgelist-1" class="section level2">
 <h2><span class="header-section-number">4.1</span> DGEList</h2>
-<p>Let’s start by creating our <code>DGEList</code> object:</p>
+<p>The data we are looking at comes from three cell populations (basal, luminal
+progenitor (LP) and mature luminal (ML)) sorted from the mammary glands of
+female virgin mice, each profiled in triplicate.</p>
+<p>Let’s start by creating our <code>DGEList</code> object. As a reminder, this object
+contains 3 key pieces of data:</p>
+<ul>
+<li><code>counts</code>: the main data of this object, a matrix of count values with samples
+along the columns and features/genes along the rows.</li>
+<li><code>samples</code>: a data frame containing annotation for the samples. The rows
+in this table describe the corresponding column of the counts data.</li>
+<li><code>genes</code>: a data frame containing annotation for the genes in the counts
+matrix. The rows in this table describe the corresponding row in the counts
+matrix.</li>
+</ul>
 <div class="sourceCode" id="cb238"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb238-1"><a href="session-4.html#cb238-1"></a><span class="co"># load required packages</span></span>
 <span id="cb238-2"><a href="session-4.html#cb238-2"></a><span class="kw">library</span>(edgeR)</span>
 <span id="cb238-3"><a href="session-4.html#cb238-3"></a><span class="kw">library</span>(limma)</span>
@@ -263,6 +277,9 @@ guide. You can view this by typing <code>help("limma")</code> and following the 
 <span id="cb238-14"><a href="session-4.html#cb238-14"></a></span>
 <span id="cb238-15"><a href="session-4.html#cb238-15"></a><span class="co"># add gene annotation information</span></span>
 <span id="cb238-16"><a href="session-4.html#cb238-16"></a>dge<span class="op">$</span>genes &lt;-<span class="st"> </span><span class="kw">read.delim</span>(<span class="st">&quot;data/Ses3_geneAnnot.tsv&quot;</span>, <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
+<p>You can index the DGEList object by treating it as if it were the counts matrix,
+the object will handle the extraction and ordering of the sample and gene
+annotation data frames.</p>
 </div>
 <div id="filtering" class="section level2">
 <h2><span class="header-section-number">4.2</span> Filtering</h2>
@@ -307,7 +324,7 @@ similar result to the above criteria. This is to prevent bias against samples
 with small library sizes.</p>
 <p>The output of this function is a vector of logicals, indicating which genes
 (rows) should be kept and which filtered.</p>
-<div class="sourceCode" id="cb239"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb239-1"><a href="session-4.html#cb239-1"></a>keep &lt;-<span class="st"> </span><span class="kw">filterByExpr</span>(dge, <span class="dt">group =</span> group)</span>
+<div class="sourceCode" id="cb239"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb239-1"><a href="session-4.html#cb239-1"></a>keep &lt;-<span class="st"> </span><span class="kw">filterByExpr</span>(dge)</span>
 <span id="cb239-2"><a href="session-4.html#cb239-2"></a><span class="kw">table</span>(keep)</span></code></pre></div>
 <pre><code>## keep
 ## FALSE  TRUE 
@@ -381,6 +398,18 @@ and puts this information in the <code>samples</code> data frame. Note that it t
 ## JMS9-P8c   GSM1545545_JMS9-P8c.txt    LP 19955335    0.9839203</code></pre>
 <p>These normalisation factors are all close to 1 for all samples, suggesting
 minimal difference in relative RNA levels between samples.</p>
+<div class="sourceCode" id="cb246"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb246-1"><a href="session-4.html#cb246-1"></a><span class="kw">boxplot</span>(<span class="kw">log</span>(dge<span class="op">$</span>counts <span class="op">+</span><span class="st"> </span><span class="fl">0.5</span>))</span></code></pre></div>
+<p><img src="IntroBaseR_files/figure-html/unnamed-chunk-112-1.png" width="672" /></p>
+<div class="sourceCode" id="cb247"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb247-1"><a href="session-4.html#cb247-1"></a><span class="kw">boxplot</span>(<span class="kw">cpm</span>(dge<span class="op">$</span>counts, <span class="dt">log =</span> <span class="ot">TRUE</span>))</span></code></pre></div>
+<p><img src="IntroBaseR_files/figure-html/unnamed-chunk-113-1.png" width="672" /></p>
+<p><strong>Challenge 4.1</strong></p>
+<ol style="list-style-type: decimal">
+<li><p>Create a boxplot of the normalisation factors versus group.</p></li>
+<li><p><code>rowSums()</code> can be used on a matrix to take sums across the rows. Use this
+to retrieve annotations of all genes with more than 1,000,000 total counts
+across all samples.</p></li>
+<li><p>What are the 5 most highly expressed genes within the ML samples?</p></li>
+</ol>
 </div>
 <div id="mds-plots" class="section level2">
 <h2><span class="header-section-number">4.4</span> MDS plots</h2>
@@ -395,16 +424,16 @@ the algorithm is to find a representation in lower dimensional space such that
 points that the distance of two objects from each other in high dimensional
 space is preserved in lower dimensions.</p>
 <p>The <code>plotMDS()</code> from <code>limma</code> creates an MDS plot from a <code>DGEList</code> object.</p>
-<div class="sourceCode" id="cb246"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb246-1"><a href="session-4.html#cb246-1"></a><span class="kw">plotMDS</span>(dge)</span></code></pre></div>
-<p><img src="IntroBaseR_files/figure-html/unnamed-chunk-112-1.png" width="672" /></p>
+<div class="sourceCode" id="cb248"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb248-1"><a href="session-4.html#cb248-1"></a><span class="kw">plotMDS</span>(dge)</span></code></pre></div>
+<p><img src="IntroBaseR_files/figure-html/unnamed-chunk-114-1.png" width="672" /></p>
 <p>Each point on the plot represents one sample and is ‘labelled’ using the sample
 name. The distances between each sample in the resulting plot can be interpreted
 as the typical log2-fold-change between the samples, for the most differentially
 expressed genes.</p>
 <p>We can change the labelling to use the name of the group the sample belongs to
 instead:</p>
-<div class="sourceCode" id="cb247"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb247-1"><a href="session-4.html#cb247-1"></a><span class="kw">plotMDS</span>(dge, <span class="dt">labels =</span> group)</span></code></pre></div>
-<p><img src="IntroBaseR_files/figure-html/unnamed-chunk-113-1.png" width="672" /></p>
+<div class="sourceCode" id="cb249"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb249-1"><a href="session-4.html#cb249-1"></a><span class="kw">plotMDS</span>(dge, <span class="dt">labels =</span> group)</span></code></pre></div>
+<p><img src="IntroBaseR_files/figure-html/unnamed-chunk-115-1.png" width="672" /></p>
 <p>This shows us that the phenotype groups tend to cluster together, meaning that
 the gene expression profiles are similar for samples within a phenotype group.
 The ‘Basal’ type samples quite close together while the ‘LP’
@@ -508,11 +537,17 @@ LP
 <p>For example, let’s say we wanted LP samples to be coloured green, ML samples to
 be coloured red and Basal samples to be coloured blue. The <code>col</code> argument would
 then require a vector that we can generate as follows</p>
-<div class="sourceCode" id="cb248"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb248-1"><a href="session-4.html#cb248-1"></a>group_col &lt;-<span class="st"> </span>dge<span class="op">$</span>samples<span class="op">$</span>group</span>
-<span id="cb248-2"><a href="session-4.html#cb248-2"></a><span class="kw">levels</span>(group_col) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;blue&quot;</span>, <span class="st">&quot;green&quot;</span>, <span class="st">&quot;red&quot;</span>)</span>
-<span id="cb248-3"><a href="session-4.html#cb248-3"></a>group_col &lt;-<span class="st"> </span><span class="kw">as.character</span>(group_col)</span>
-<span id="cb248-4"><a href="session-4.html#cb248-4"></a>group_col</span></code></pre></div>
+<div class="sourceCode" id="cb250"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb250-1"><a href="session-4.html#cb250-1"></a>group_col &lt;-<span class="st"> </span>dge<span class="op">$</span>samples<span class="op">$</span>group</span>
+<span id="cb250-2"><a href="session-4.html#cb250-2"></a><span class="kw">levels</span>(group_col) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;blue&quot;</span>, <span class="st">&quot;green&quot;</span>, <span class="st">&quot;red&quot;</span>)</span>
+<span id="cb250-3"><a href="session-4.html#cb250-3"></a>group_col &lt;-<span class="st"> </span><span class="kw">as.character</span>(group_col)</span>
+<span id="cb250-4"><a href="session-4.html#cb250-4"></a>group_col</span></code></pre></div>
 <pre><code>## [1] &quot;green&quot; &quot;red&quot;   &quot;blue&quot;  &quot;blue&quot;  &quot;red&quot;   &quot;green&quot; &quot;blue&quot;  &quot;red&quot;   &quot;green&quot;</code></pre>
+<p>We can also add a legend to the figure by running the <code>legend()</code> function
+immediately after a new figure is created. We have to specify where to position
+the legend as well as the labels and colours within the legend.</p>
+<div class="sourceCode" id="cb252"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb252-1"><a href="session-4.html#cb252-1"></a><span class="kw">plotMDS</span>(dge, <span class="dt">labels =</span> group, <span class="dt">col =</span> group_col)</span>
+<span id="cb252-2"><a href="session-4.html#cb252-2"></a><span class="kw">legend</span>(<span class="st">&quot;topright&quot;</span>, <span class="dt">legend =</span> <span class="kw">c</span>(<span class="st">&quot;Basal&quot;</span>, <span class="st">&quot;LP&quot;</span>, <span class="st">&quot;ML&quot;</span>), <span class="dt">fill =</span> <span class="kw">c</span>(<span class="st">&quot;blue&quot;</span>, <span class="st">&quot;green&quot;</span>, <span class="st">&quot;red&quot;</span>))</span></code></pre></div>
+<p><img src="IntroBaseR_files/figure-html/unnamed-chunk-118-1.png" width="672" /></p>
 </div>
 <div id="linear-modelling" class="section level2">
 <h2><span class="header-section-number">4.5</span> Linear modelling</h2>
@@ -544,8 +579,8 @@ expression <code>~0 + group</code>. This returns a matrix representing the desig
 there is no intercept term and group is the only covariate. If we omit the
 <code>0</code> then there would be an intercept in the model, and if we included more
 covariates then more columns would be generated.</p>
-<div class="sourceCode" id="cb250"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb250-1"><a href="session-4.html#cb250-1"></a>design &lt;-<span class="st"> </span><span class="kw">model.matrix</span>(<span class="op">~</span><span class="dv">0</span> <span class="op">+</span><span class="st"> </span>group, <span class="dt">data =</span> dge<span class="op">$</span>samples)</span>
-<span id="cb250-2"><a href="session-4.html#cb250-2"></a>design</span></code></pre></div>
+<div class="sourceCode" id="cb253"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb253-1"><a href="session-4.html#cb253-1"></a>design &lt;-<span class="st"> </span><span class="kw">model.matrix</span>(<span class="op">~</span><span class="dv">0</span> <span class="op">+</span><span class="st"> </span>group, <span class="dt">data =</span> dge<span class="op">$</span>samples)</span>
+<span id="cb253-2"><a href="session-4.html#cb253-2"></a>design</span></code></pre></div>
 <pre><code>##           groupBasal groupLP groupML
 ## 10_6_5_11          0       1       0
 ## 9_6_5_11           0       0       1
@@ -583,9 +618,9 @@ above).</p>
 of the model. This is passed through the <code>levels</code> argument, which either accepts
 a matrix with the column names corresponding to levels of your experimental
 groups, or the levels themselves as a character vector</p>
-<div class="sourceCode" id="cb252"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb252-1"><a href="session-4.html#cb252-1"></a>contr.matrix &lt;-<span class="st"> </span><span class="kw">makeContrasts</span>(<span class="dt">BasalvsLP =</span> <span class="st">&quot;Basal - LP&quot;</span>, <span class="dt">BasalvsML =</span> <span class="st">&quot;Basal - ML&quot;</span>, </span>
-<span id="cb252-2"><a href="session-4.html#cb252-2"></a>    <span class="dt">LPvsML =</span> <span class="st">&quot;LP - ML&quot;</span>, <span class="dt">levels =</span> design)  <span class="co"># alternatively &#39;levels = colnames(design)&#39;</span></span>
-<span id="cb252-3"><a href="session-4.html#cb252-3"></a>contr.matrix</span></code></pre></div>
+<div class="sourceCode" id="cb255"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb255-1"><a href="session-4.html#cb255-1"></a>contr.matrix &lt;-<span class="st"> </span><span class="kw">makeContrasts</span>(<span class="dt">BasalvsLP =</span> <span class="st">&quot;Basal - LP&quot;</span>, <span class="dt">BasalvsML =</span> <span class="st">&quot;Basal - ML&quot;</span>, </span>
+<span id="cb255-2"><a href="session-4.html#cb255-2"></a>    <span class="dt">LPvsML =</span> <span class="st">&quot;LP - ML&quot;</span>, <span class="dt">levels =</span> design)  <span class="co"># alternatively &#39;levels = colnames(design)&#39;</span></span>
+<span id="cb255-3"><a href="session-4.html#cb255-3"></a>contr.matrix</span></code></pre></div>
 <pre><code>##        Contrasts
 ## Levels  BasalvsLP BasalvsML LPvsML
 ##   Basal         1         1      0
@@ -613,19 +648,24 @@ being more heavily influenced by more variable data points.</p>
 <p>The <code>voom()</code> function takes as arguments, our <code>DGEList</code> object and our design
 matrix. It also optionally outputs a plot of the mean-variance relationship of
 our data, called the ‘voom-plot’.</p>
-<div class="sourceCode" id="cb254"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb254-1"><a href="session-4.html#cb254-1"></a>v &lt;-<span class="st"> </span><span class="kw">voom</span>(dge, design, <span class="dt">plot =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
-<p><img src="IntroBaseR_files/figure-html/unnamed-chunk-119-1.png" width="672" /></p>
+<div class="sourceCode" id="cb257"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb257-1"><a href="session-4.html#cb257-1"></a>v &lt;-<span class="st"> </span><span class="kw">voom</span>(dge, design, <span class="dt">plot =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<p><img src="IntroBaseR_files/figure-html/unnamed-chunk-122-1.png" width="672" /></p>
 <p>The output of <code>voom()</code> (our variable <code>v</code>) is an <code>EList</code> object which contains
 the following elements:</p>
 <ul>
-<li><code>genes</code> - a data frame of gene annotation data. This is the same as the
-element <code>genes</code> from our <code>DGEList</code> object <code>dge</code>.</li>
-<li><code>targets</code> - data frame of sample data. This is the same as the element
-<code>samples</code> from our <code>DGEList</code> object <code>dge</code>.</li>
+<li><code>genes</code> - a data frame of gene annotation data.</li>
+<li><code>targets</code> - data frame of sample data.</li>
 <li><code>E</code> - numeric matrix of normalised log-cpm values.</li>
 <li><code>weights</code> - numeric matrix of precision weights.</li>
-<li><code>design</code> - the design matrix we gave as an argument to <code>voom()</code>.</li>
+<li><code>design</code> - the design matrix.</li>
 </ul>
+<p><strong>Challenge 4.2</strong></p>
+<ol style="list-style-type: decimal">
+<li><p>Create the MDS plot with legend, but with solid dots instead of text within
+the plot.</p></li>
+<li><p>Which of the elements of the <code>EList</code> is newly generated, which are taken
+from previous objects?</p></li>
+</ol>
 </div>
 <div id="fitting-the-linear-model" class="section level3">
 <h3><span class="header-section-number">4.5.4</span> Fitting the linear model</h3>
@@ -636,9 +676,10 @@ same data frame as <code>genes</code> from our <code>EList</code> object <code>v
 and a number of statistical outputs. Of most interest to us is the coefficients,
 stored in an element called <code>coefficients</code>. The first rows of this matrix is
 shown below. Each gene is row and is labelled using the EntrezID. Each column
-gives coefficients for each of our phenotype groups.</p>
-<div class="sourceCode" id="cb255"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb255-1"><a href="session-4.html#cb255-1"></a>vfit &lt;-<span class="st"> </span><span class="kw">lmFit</span>(v, design)</span>
-<span id="cb255-2"><a href="session-4.html#cb255-2"></a><span class="kw">head</span>(vfit<span class="op">$</span>coefficients)</span></code></pre></div>
+gives coefficients for each of our phenotype groups. These coefficients are
+weighted averages of the log-cpm of each gene in each group.</p>
+<div class="sourceCode" id="cb258"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb258-1"><a href="session-4.html#cb258-1"></a>vfit &lt;-<span class="st"> </span><span class="kw">lmFit</span>(v, design)</span>
+<span id="cb258-2"><a href="session-4.html#cb258-2"></a><span class="kw">head</span>(vfit<span class="op">$</span>coefficients)</span></code></pre></div>
 <pre><code>##             Basal        LP        ML
 ## 497097  3.0241632 -4.490392 -3.944477
 ## 20671   0.2681245 -2.488746 -2.024896
@@ -651,8 +692,8 @@ gives coefficients for each of our phenotype groups.</p>
 object of the class <code>MArrayLM</code> (also known as an <code>MArrayLM</code> object). When we
 inspect the <code>coefficients</code> element now, we can see that each column is a
 contrast that we specified in our contrast matrix.</p>
-<div class="sourceCode" id="cb257"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb257-1"><a href="session-4.html#cb257-1"></a>vfit &lt;-<span class="st"> </span><span class="kw">contrasts.fit</span>(vfit, <span class="dt">contrasts =</span> contr.matrix)</span>
-<span id="cb257-2"><a href="session-4.html#cb257-2"></a><span class="kw">head</span>(vfit<span class="op">$</span>coefficients)</span></code></pre></div>
+<div class="sourceCode" id="cb260"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb260-1"><a href="session-4.html#cb260-1"></a>vfit &lt;-<span class="st"> </span><span class="kw">contrasts.fit</span>(vfit, <span class="dt">contrasts =</span> contr.matrix)</span>
+<span id="cb260-2"><a href="session-4.html#cb260-2"></a><span class="kw">head</span>(vfit<span class="op">$</span>coefficients)</span></code></pre></div>
 <pre><code>##         Contrasts
 ##           BasalvsLP   BasalvsML      LPvsML
 ##   497097  7.5145557  6.96864007 -0.54591559
@@ -672,7 +713,7 @@ each gene, given a fitted linear model. ‘Moderated’ refers to empirical Baye
 moderation, which borrows information across genes to obtain more accurate
 measures of variability for each gene. This also increases our power to detect
 differentially expressed genes.</p>
-<div class="sourceCode" id="cb259"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb259-1"><a href="session-4.html#cb259-1"></a>efit &lt;-<span class="st"> </span><span class="kw">eBayes</span>(vfit)</span></code></pre></div>
+<div class="sourceCode" id="cb262"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb262-1"><a href="session-4.html#cb262-1"></a>efit &lt;-<span class="st"> </span><span class="kw">eBayes</span>(vfit)</span></code></pre></div>
 <p>We can now look at the number of differentially expressed genes using the
 <code>decideTests()</code> function. The output of this function is a matrix where each
 column is a contrast (comparison of interest) and each row is a gene. The
@@ -681,8 +722,8 @@ differentially expressed, respectively.</p>
 <p>Note that <code>decideTests()</code> also accounts for multiple testing. The default method
 is Benjamini and Hochberg <span class="citation">(Benjamini and Hochberg <a href="#ref-benjamini1995controlling" role="doc-biblioref">1995</a>)</span> but several others are also
 available.</p>
-<div class="sourceCode" id="cb260"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb260-1"><a href="session-4.html#cb260-1"></a>dt &lt;-<span class="st"> </span><span class="kw">decideTests</span>(efit)</span>
-<span id="cb260-2"><a href="session-4.html#cb260-2"></a>dt</span></code></pre></div>
+<div class="sourceCode" id="cb263"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb263-1"><a href="session-4.html#cb263-1"></a>dt &lt;-<span class="st"> </span><span class="kw">decideTests</span>(efit)</span>
+<span id="cb263-2"><a href="session-4.html#cb263-2"></a>dt</span></code></pre></div>
 <pre><code>## TestResults matrix
 ##         Contrasts
 ##          BasalvsLP BasalvsML LPvsML
@@ -694,7 +735,7 @@ available.</p>
 ## 16619 more rows ...</code></pre>
 <p>To obtain the total number of differentially expressed genes for each
 comparison, we can add the function <code>summary()</code>:</p>
-<div class="sourceCode" id="cb262"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb262-1"><a href="session-4.html#cb262-1"></a><span class="kw">summary</span>(dt)</span></code></pre></div>
+<div class="sourceCode" id="cb265"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb265-1"><a href="session-4.html#cb265-1"></a><span class="kw">summary</span>(dt)</span></code></pre></div>
 <pre><code>##        BasalvsLP BasalvsML LPvsML
 ## Down        4500      4850   2701
 ## NotSig      7307      6996  11821
@@ -716,8 +757,8 @@ object (<code>efit</code>).</li>
 <li><code>adj.P.Val</code> - adjusted p value.</li>
 <li><code>B</code> - log-odds that the gene is differentially expressed.</li>
 </ul>
-<div class="sourceCode" id="cb264"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb264-1"><a href="session-4.html#cb264-1"></a>top &lt;-<span class="st"> </span><span class="kw">topTable</span>(efit, <span class="dt">coef =</span> <span class="st">&quot;BasalvsLP&quot;</span>, <span class="dt">n =</span> <span class="ot">Inf</span>)</span>
-<span id="cb264-2"><a href="session-4.html#cb264-2"></a><span class="kw">head</span>(top)</span></code></pre></div>
+<div class="sourceCode" id="cb267"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb267-1"><a href="session-4.html#cb267-1"></a>top &lt;-<span class="st"> </span><span class="kw">topTable</span>(efit, <span class="dt">coef =</span> <span class="st">&quot;BasalvsLP&quot;</span>, <span class="dt">n =</span> <span class="ot">Inf</span>)</span>
+<span id="cb267-2"><a href="session-4.html#cb267-2"></a><span class="kw">head</span>(top)</span></code></pre></div>
 <pre><code>##        ENTREZID   SYMBOL TXCHROM     logFC  AveExpr         t      P.Value
 ## 12521     12521     Cd82    chr2 -4.095479 7.069637 -35.46821 3.383539e-12
 ## 22249     22249   Unc13b    chr4 -4.350553 5.663171 -32.38571 8.648521e-12
@@ -733,7 +774,7 @@ object (<code>efit</code>).</li>
 ## 218518 4.660973e-08 16.76959
 ## 12759  4.660973e-08 16.70221</code></pre>
 <p>With that we can complete our analysis by writing out some results</p>
-<div class="sourceCode" id="cb266"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb266-1"><a href="session-4.html#cb266-1"></a><span class="kw">write.csv</span>(top, <span class="dt">file =</span> <span class="st">&quot;BasalvsLP.csv&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb269"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb269-1"><a href="session-4.html#cb269-1"></a><span class="kw">write.csv</span>(top, <span class="dt">file =</span> <span class="st">&quot;BasalvsLP.csv&quot;</span>)</span></code></pre></div>
 </div>
 <div id="ma-plot" class="section level2">
 <h2><span class="header-section-number">4.7</span> MA Plot</h2>
@@ -750,15 +791,22 @@ different contrasts fitted within the object.</li>
 <li><code>status = dt[, 1]</code>: A vector of numerics denoting whether a gene is
 up-regulated or down-regulated.</li>
 </ul>
-<div class="sourceCode" id="cb267"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb267-1"><a href="session-4.html#cb267-1"></a><span class="kw">plotMA</span>(efit, <span class="dt">coef =</span> <span class="dv">1</span>, <span class="dt">status =</span> dt[, <span class="st">&quot;BasalvsLP&quot;</span>])</span></code></pre></div>
-<p><img src="IntroBaseR_files/figure-html/unnamed-chunk-127-1.png" width="672" /></p>
+<div class="sourceCode" id="cb270"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb270-1"><a href="session-4.html#cb270-1"></a><span class="kw">plotMA</span>(efit, <span class="dt">coef =</span> <span class="dv">1</span>, <span class="dt">status =</span> dt[, <span class="st">&quot;BasalvsLP&quot;</span>])</span></code></pre></div>
+<p><img src="IntroBaseR_files/figure-html/unnamed-chunk-130-1.png" width="672" /></p>
 <p>We can also save this plot programmatically as a PDF for further editing. To do
 this we use <code>pdf()</code> to turn on the pdf capture device, run the command that
 creates the plot, which is now captured by the pdf, and then turn the device
 off.</p>
-<div class="sourceCode" id="cb268"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb268-1"><a href="session-4.html#cb268-1"></a><span class="kw">pdf</span>(<span class="dt">file =</span> <span class="st">&quot;BasalvsLP-MAPlot.pdf&quot;</span>)</span>
-<span id="cb268-2"><a href="session-4.html#cb268-2"></a><span class="kw">plotMA</span>(efit, <span class="dt">coef =</span> <span class="dv">1</span>, <span class="dt">status =</span> dt[, <span class="st">&quot;BasalvsLP&quot;</span>])</span>
-<span id="cb268-3"><a href="session-4.html#cb268-3"></a><span class="kw">dev.off</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb271"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb271-1"><a href="session-4.html#cb271-1"></a><span class="kw">pdf</span>(<span class="dt">file =</span> <span class="st">&quot;BasalvsLP-MAPlot.pdf&quot;</span>)</span>
+<span id="cb271-2"><a href="session-4.html#cb271-2"></a><span class="kw">plotMA</span>(efit, <span class="dt">coef =</span> <span class="dv">1</span>, <span class="dt">status =</span> dt[, <span class="st">&quot;BasalvsLP&quot;</span>])</span>
+<span id="cb271-3"><a href="session-4.html#cb271-3"></a><span class="kw">dev.off</span>()</span></code></pre></div>
+<p><strong>Challenge 4.3</strong></p>
+<ol style="list-style-type: decimal">
+<li><p>What are the symbols of the top 5 most differentially expressed genes in
+chromosome X based on adjusted p-value?</p></li>
+<li><p>Create a volcano (scatter) plot of log-fold-change on the x-axis and the
+p-value on y-axis.</p></li>
+</ol>
 
 <div id="refs" class="references">
 <div>
