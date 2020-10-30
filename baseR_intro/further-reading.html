@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Introduction to Base R</title>
+  <title>Chapter 5 Further Reading | Introduction to Base R</title>
   <meta name="description" content="Introductory tutorial to base R, with a biological focus. In particular it will focus on analysing RNA-sequencing data with Bioconductor." />
   <meta name="generator" content="bookdown 0.19 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Introduction to Base R" />
+  <meta property="og:title" content="Chapter 5 Further Reading | Introduction to Base R" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="shians/BaseR_Intro" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Introduction to Base R" />
+  <meta name="twitter:title" content="Chapter 5 Further Reading | Introduction to Base R" />
   
   <meta name="twitter:description" content="Introductory tutorial to base R, with a biological focus. In particular it will focus on analysing RNA-sequencing data with Bioconductor." />
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-
-<link rel="next" href="session-1.html"/>
+<link rel="prev" href="session-4.html"/>
+<link rel="next" href="references.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -226,37 +226,35 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">Introduction to Base R</h1>
-<p class="date"><em>2020-10-30</em></p>
-</div>
-<div id="preface" class="section level1 unnumbered">
-<h1>Preface</h1>
-<p>This introduction to base R course was designed for biologists with no previous programming experience. It has a focus on analysing RNA-sequencing data using the <a href="https://www.bioconductor.org/">Bioconductor</a> package <a href="https://bioconductor.org/packages/release/bioc/html/limma.html">limma</a>. The F1000 paper <a href="https://f1000research.com/articles/5-1408/v3">‘RNA-seq analysis is easy as 1-2-3 with limma, Glimma and edgeR’</a> was used as a guide for the later sessions.</p>
-<p>It is intended to be delivered over four 2.5 hour workshops at the Walter and Eliza Hall Institute of Medical Research (WEHI).</p>
-<div id="data-files" class="section level2">
-<h2><span class="header-section-number">0.1</span> Data files</h2>
-<p>You can download and unzip the files using the following commands</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="index.html#cb1-1"></a><span class="kw">download.file</span>(<span class="st">&quot;https://github.com/Shians/BaseR_Intro/raw/master/data/workshop_data.zip&quot;</span>, <span class="st">&quot;workshop_data.zip&quot;</span>)</span>
-<span id="cb1-2"><a href="index.html#cb1-2"></a><span class="kw">unzip</span>(<span class="st">&quot;workshop_data.zip&quot;</span>, <span class="dt">exdir =</span> <span class="st">&quot;data&quot;</span>)</span>
-<span id="cb1-3"><a href="index.html#cb1-3"></a><span class="kw">unzip</span>(<span class="st">&quot;data/Ses3_counts.zip&quot;</span>, <span class="dt">exdir =</span> <span class="st">&quot;data/counts&quot;</span>)</span></code></pre></div>
-<p><strong>Acknowledgements</strong></p>
+<div id="further-reading" class="section level1">
+<h1><span class="header-section-number">Chapter 5</span> Further Reading</h1>
+<p>What we have presented in this course is only a brief introduction the many uses
+of R. It is most powerful for manipulating a large amount of data in a
+systematic way, performing statistical analysis and creating high quality
+plots. If you are interested in learning more R, then below are some resources
+you can use.</p>
 <ul>
-<li>This course material was originally produced by <a href="https://github.com/lucyleeow">Lucy Liu</a> and later modified by <a href="https://github.com/shians">Shian Su</a>.</li>
-<li>Thanks to <a href="https://github.com/bansell">Brendan Ansell</a> and <a href="https://github.com/gksmyth">Professor Gordon Smyth</a> for your suggestions and review of this tutorial.</li>
-<li>This page was generated using the <a href="https://bookdown.org/">bookdown</a> package by <a href="https://yihui.name/">YiHui Xie</a>.</li>
+<li><a href="https://www.statmethods.net/index.html">Quick R</a> is an useful quick reference
+for many simple tasks in R.
+<ul>
+<li><a href="https://www.statmethods.net/management/index.html">Data management</a> section
+details many ways to manipulate your data.</li>
+<li><a href="https://www.statmethods.net/graphs/index.html">Graphs</a> section details many
+useful graphs you can create.</li>
+</ul></li>
+<li><a href="https://rc2e.com">The R Cookbook</a> is a free online textbook for a much more
+in-depth exploration of what R has to offer.</li>
+<li><a href="https://bookdown.org/ansellbr/WEHI_tidyR_course_book/">Introduction to R - tidyverse</a> is used in the R tidyverse course by Brendan Ansell at WEHI</li>
 </ul>
-<p>The source code for this page can be found on <a href="https://github.com/Shians/BaseR_Intro">Github</a>.</p>
 
-</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-
-<a href="session-1.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="session-4.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="references.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -287,7 +285,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/rstudio/bookdown-demo/edit/master/index.Rmd",
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/05-further.Rmd",
 "text": "Edit"
 },
 "history": {
